@@ -3,7 +3,7 @@
    בגרסה אמיתית השכבה הזו מוחלפת ב-Supabase / Firebase.
    ============================================================ */
 window.Store = (function () {
-  const KEY = 'frame-studio-v7';
+  const KEY = 'frame-studio-v8';
 
   /* ---------- תאריכים ---------- */
   const pad = n => String(n).padStart(2, '0');
@@ -18,7 +18,7 @@ window.Store = (function () {
     { id: 'wedding', name: 'חתונה', desc: 'יום מלא — מההתארגנות ועד הריקודים', fullDay: true, base: 6500 },
     { id: 'barmitzvah', name: 'בר / בת מצווה', desc: 'אירוע ערב וצילומי משפחה', fullDay: true, base: 4200 },
     { id: 'newborn', name: 'ניו בורן', desc: 'סטודיו ביתי, תינוקות עד גיל חודש', base: 1100 },
-    { id: 'family', name: 'משפחה בטבע', desc: 'שעת זהב, שדה פתוח, כולם יחד', base: 850 },
+    { id: 'family', name: 'משפחה בטבע', desc: 'שקיעה, שדה פתוח, כולם יחד', base: 850 },
     { id: 'maternity', name: 'הריון', desc: 'אור רך, בד זורם, רגע של שקט', base: 800 },
     { id: 'brit', name: 'ברית / בריתה', desc: 'אירוע בוקר קצר ומרגש', base: 1300 },
     { id: 'book', name: 'בוק בת מצווה', desc: 'לוקיישן חוץ, החלפות בגדים', base: 900 },
@@ -31,7 +31,7 @@ window.Store = (function () {
     { id: 'classic', name: 'קלאסי ונקי' },
     { id: 'bw', name: 'דוקומנטרי' }
   ];
-  const TIMES = ['בוקר', 'צהריים', 'שעת זהב', 'ערב'];
+  const TIMES = ['בוקר', 'צהריים', 'שקיעה', 'ערב'];
   const STATUS = {
     new:       { name: 'חדשה — לשיבוץ', short: 'חדשה' },
     sent:      { name: 'נשלחה לצלמת', short: 'ממתינה' },
@@ -76,7 +76,7 @@ window.Store = (function () {
       { id: 'p3', name: 'הדס מזרחי', tagline: 'ניו בורן בסטודיו מחומם', areas: ['שרון', 'מרכז'], types: ['newborn', 'maternity', 'family'], styles: ['natural', 'classic'], factor: 0.65, weekdays: [0, 1, 2, 3], commission: 15, rating: 4.9, reviews: 143, years: 7, color: '#7A8C5B', photo: 'hadas-m', bio: 'סטודיו ביתי ברעננה, ציוד חימום ותנוחות בטוחות. סבלנות אינסופית.' },
       { id: 'p4', name: 'רוני אברהם', tagline: 'בוקים ותדמית עם אופי', areas: ['חיפה והקריות', 'צפון'], types: ['book', 'business', 'family', 'maternity'], styles: ['moody', 'natural'], factor: 0.6, weekdays: [0, 1, 2, 3, 4, 5], commission: 15, rating: 4.7, reviews: 41, years: 4, color: '#8C5B7A', photo: 'roni-a', bio: 'צלמת צעירה מחיפה. אוהבת עיר, בטון ושקיעות מעל הים.' },
       { id: 'p5', name: 'יעל שטרן', tagline: 'בר מצוות ואירועי משפחה', areas: ['מרכז', 'שפלה', 'דרום'], types: ['barmitzvah', 'brit', 'family', 'wedding'], styles: ['classic', 'natural'], factor: 0.68, weekdays: [0, 1, 2, 3, 4], commission: 12, rating: 4.8, reviews: 96, years: 9, color: '#3F7F7A', photo: 'yael-s', bio: 'אירועים בסטנדרט גבוה במחיר הוגן. מגיעה עם עוזרת ותאורה.' },
-      { id: 'p6', name: 'ליאת בן דוד', tagline: 'דרום, מדבר ושעת זהב', areas: ['דרום'], types: ['family', 'maternity', 'book', 'brit', 'business'], styles: ['natural', 'moody'], factor: 0.55, weekdays: [0, 1, 3, 4, 5], commission: 18, rating: 4.6, reviews: 29, years: 3, color: '#B07A3E', photo: 'liat-bd', bio: 'מבאר שבע. המדבר הוא הסטודיו שלי.' },
+      { id: 'p6', name: 'ליאת בן דוד', tagline: 'דרום, מדבר ושקיעות', areas: ['דרום'], types: ['family', 'maternity', 'book', 'brit', 'business'], styles: ['natural', 'moody'], factor: 0.55, weekdays: [0, 1, 3, 4, 5], commission: 18, rating: 4.6, reviews: 29, years: 3, color: '#B07A3E', photo: 'liat-bd', bio: 'מבאר שבע. המדבר הוא הסטודיו שלי.' },
       { id: 'p7', name: 'מעיין גולן', tagline: 'צפון ירוק ואור רך', areas: ['צפון', 'חיפה והקריות'], types: ['family', 'newborn', 'maternity', 'wedding'], styles: ['natural', 'bw'], factor: 0.7, weekdays: [1, 2, 3, 4, 5], commission: 15, rating: 4.9, reviews: 58, years: 5, color: '#4E7F55', photo: 'maayan-g', bio: 'מצלמת בגליל ובגולן. משפחות, שדות וחתונות קטנות בחוץ.' },
       { id: 'p8', name: 'נוי פרץ', tagline: 'תדמית לעסקים קטנים', areas: ['מרכז', 'שרון', 'ירושלים'], types: ['business', 'book', 'family'], styles: ['classic', 'moody'], factor: 0.58, weekdays: [0, 1, 2, 3, 4], commission: 15, rating: 4.7, reviews: 37, years: 4, color: '#6A5B8C', photo: 'noy-p', bio: 'עוזרת לעסקים להיראות כמו שהם באמת. סשנים קצרים וממוקדים.' }
     ];
@@ -130,7 +130,7 @@ window.Store = (function () {
     extra.forEach(x => {
       let d = addDays(t, x.off); if (d.getDay() === 6) d = addDays(d, 1);
       state.bookings.push(mkBooking(state, {
-        date: ymd(d), typeId: x.typeId, photographerId: x.pid || null, status: x.status, area: x.area, time: 'שעת זהב',
+        date: ymd(d), typeId: x.typeId, photographerId: x.pid || null, status: x.status, area: x.area, time: 'שקיעה',
         client: { name: x.name, phone: '050-' + Math.floor(1000000 + rnd() * 8999999), email: '', notes: x.notes },
         createdAt: addDays(t, -1).toISOString(), viaStudio: !x.pid
       }));
