@@ -33,6 +33,7 @@
   function show(v) {
     view = v; history.replaceState(null, '', '#' + v);
     $$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+    const on = $('#nav button.on'); if (on && innerWidth < 860) on.scrollIntoView({ inline: 'center', block: 'nearest' });
     const n = B().filter(needsAction).length; $('#badge').textContent = n || ''; $('#badge').hidden = !n;
     ({ desk, inbox, cal, post, team, money: moneyView, settings })[v]();
     const mineLate = B().filter(b => S.postOwner(b) === 'studio').length; $('#badgePost').textContent = mineLate || ''; $('#badgePost').hidden = !mineLate;
@@ -218,7 +219,7 @@
             <div class="strip14" title="14 הימים הקרובים">${next14.map(ds => `<i class="pd-${S.parse(ds).getDay() === 6 ? 'off' : S.dayState(p, ds)}" title="${dateShort(ds)}"></i>`).join('')}</div>
             <p class="ro-stats mono">${s.count} החודש · ${p.owner ? `הכנסה ${money(s.mine)}` : p.payType === 'salary' ? `הכניסה ${money(s.gross || 0)} מול משכורת ${money(p.salary)}` : `עמלה ${money(s.mine)}`}${pending ? ` · <span class="red">${pending} ממתינות</span>` : ''}</p>
           </div>
-          <div class="ro-act"><button class="btn btn-line btn-sm" data-edit="${p.id}">עריכה</button><a class="btn btn-ghost btn-sm" href="portal.html?p=${p.id}">פורטל</a></div>
+          <div class="ro-act"><button class="btn btn-line btn-sm" data-edit="${p.id}">עריכה</button>${p.owner ? '' : `<a class="btn btn-ghost btn-sm" href="portal.html?p=${p.id}">פורטל</a>`}</div>
         </article>`;
       }).join('')}</section>`;
     $$('[data-edit]').forEach(b => b.onclick = () => editP(S.getP(b.dataset.edit)));

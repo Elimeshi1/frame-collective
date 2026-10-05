@@ -117,7 +117,7 @@
         if (!n) return { disabled: true, cls: 'lvl-none', html: '<span class="cal-tag">מלא</span>' };
         return { cls: n >= 3 ? 'lvl-many' : 'lvl-few', html: `<span class="cal-tag">${n} פנויות</span>` };
       },
-      onPick: ds => { w.date = ds; cal.setSelected(ds); peek(); $('[data-act=next]', wiz).disabled = false; stepsBar(); }
+      onPick: ds => { w.date = ds; cal.setSelected(ds); peek(); $('[data-act=next]', wiz).disabled = false; stepsBar(); if (innerWidth < 860) $('#dayPeek', wiz).scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
     $$('[data-time]', wiz).forEach(b => b.onclick = () => { w.time = w.time === b.dataset.time ? null : b.dataset.time; $$('[data-time]', wiz).forEach(x => x.classList.toggle('on', x.dataset.time === w.time)); });
     if (w.date) peek();
