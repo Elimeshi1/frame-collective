@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פריים · קולקטיב צלמות</title>
+<meta name="description" content="קולקטיב של צלמות מובחרות. בוחרים תאריך וסוג צילום — ורואים מי פנויה.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315120F'/%3E%3Crect x='7' y='9' width='18' height='14' fill='none' stroke='%23C8371D' stroke-width='2.5'/%3E%3C/svg%3E">
+</head>
+<body class="page-client">
+
+<header class="topbar">
+  <a href="#" class="logo"><span class="logo-mark"></span><span class="logo-word">פריים</span><span class="logo-sub">קולקטיב צלמות</span></a>
+  <nav class="topnav">
+    <a href="#book">הזמנת צילום</a>
+    <a href="#team">הצלמות</a>
+    <a href="#how">איך זה עובד</a>
+  </nav>
+  <a href="#book" class="btn btn-ink btn-sm">לבדוק תאריך</a>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="kicker mono">ROLL 01 · ISRAEL · <span id="heroCount">9</span> צלמות</p>
+    <h1>כל הצלמות הטובות.<br><span class="hl">יומן אחד.</span></h1>
+    <p class="lead">בוחרים סוג צילום ותאריך — ורואים מיד מי מהצלמות שלנו פנויה, באיזה אזור ובאיזה מחיר. כל הצלמות בקולקטיב נבחרו ונבדקו אישית.</p>
+    <div class="hero-cta">
+      <a href="#book" class="btn btn-red">למצוא צלמת לתאריך שלי</a>
+      <a href="#team" class="btn btn-line">להכיר את הצלמות</a>
+    </div>
+    <dl class="hero-facts">
+      <div><dt class="mono">01</dt><dd>תאריך פנוי? רואים בזמן אמת</dd></div>
+      <div><dt class="mono">02</dt><dd>מכל טווחי המחירים</dd></div>
+      <div><dt class="mono">03</dt><dd>תשובה תוך 24 שעות</dd></div>
+    </dl>
+  </div>
+  <div class="hero-sheet" id="heroSheet" aria-hidden="true"></div>
+</section>
+
+<section class="darkroom" id="book">
+  <div class="dr-inner">
+    <div class="dr-head">
+      <p class="kicker mono safelight">● חדר החושך</p>
+      <h2>הזמנת צילום</h2>
+      <ol class="filmsteps" id="steps">
+        <li data-step="1"><span class="mono">01A</span>סוג צילום</li>
+        <li data-step="2"><span class="mono">02A</span>תאריך</li>
+        <li data-step="3"><span class="mono">03A</span>צלמת</li>
+        <li data-step="4"><span class="mono">04A</span>פרטים</li>
+      </ol>
+    </div>
+    <div class="wizard" id="wizard"></div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="sec-head">
+    <p class="kicker mono">CONTACT SHEET · הצלמות</p>
+    <h2>מי בקולקטיב</h2>
+    <div class="chips" id="teamFilter"></div>
+  </div>
+  <div class="sheet" id="teamGrid"></div>
+</section>
+
+<section class="how" id="how">
+  <div class="sec-head">
+    <p class="kicker mono">PROCESS</p>
+    <h2>איך זה עובד</h2>
+  </div>
+  <div class="how-grid">
+    <article><span class="how-n mono">01</span><h3>בוחרים צילום ותאריך</h3><p>הלוח מראה כמה צלמות פנויות בכל יום. ימים מלאים מסומנים — לא צריך לשלוח עשר הודעות כדי לגלות.</p></article>
+    <article><span class="how-n mono">02</span><h3>בוחרים צלמת — או נותנים לנו לבחור</h3><p>מסננים לפי אזור, סגנון ותקציב. לא בטוחים? הבקשה מגיעה ישירות לצלמת הראשית, שמתאימה לכם את הצלמת הנכונה.</p></article>
+    <article><span class="how-n mono">03</span><h3>הצלמת מאשרת</h3><p>התאריך נשמר לכם מיד, והצלמת מאשרת תוך יממה. אם משהו משתבש — אנחנו משבצות צלמת חלופית באותו יום.</p></article>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="logo"><span class="logo-mark"></span><span class="logo-word">פריים</span></div>
+  <p>קולקטיב צלמות · כל הזכויות שמורות · <span class="mono">EST. 2026</span></p>
+  <p class="foot-small">אתר דמו — הנתונים נשמרים בדפדפן שלך בלבד.</p>
+</footer>
+
+<script src="assets/store.js"></script>
+<script src="assets/ui.js"></script>
+<script src="assets/client.js"></script>
+</body>
+</html>
