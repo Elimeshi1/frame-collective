@@ -90,10 +90,8 @@ window.UI = (function () {
     bar.innerHTML = `<span class="demobar-tag">דמו</span>
       <a href="index.html" class="${active === 'client' ? 'on' : ''}">מסך לקוחה</a>
       <a href="admin.html" class="${active === 'admin' ? 'on' : ''}">ניהול (את)</a>
-      <a href="portal.html" class="${active === 'portal' ? 'on' : ''}">פורטל צלמת</a>
-      <button type="button" class="demobar-reset" title="איפוס נתוני הדמו">איפוס</button>`;
+      <a href="portal.html" class="${active === 'portal' ? 'on' : ''}">פורטל צלמת</a>`;
     document.body.prepend(bar);
-    $('.demobar-reset', bar).onclick = () => { S.reset(); location.reload(); };
   }
 
   const statusChip = s => `<span class="chip-status st-${s}">${S.STATUS[s].short}</span>`;

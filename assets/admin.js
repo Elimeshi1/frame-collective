@@ -340,14 +340,8 @@
           <label class="fld"><span>הוואטסאפ שלך (לקבלת בקשות)</span><input name="studioPhone" value="${esc(s.studioPhone)}"></label>
           <div><button class="btn btn-ink">שמירה</button></div>
         </form>
-      </section>
-      <section class="panel pad">
-        <h2 class="p-h">נתוני הדמו</h2>
-        <p class="muted">כל הנתונים באתר הזה הם לדוגמה ונשמרים רק בדפדפן הזה. איפוס מחזיר את הצלמות והבקשות לדוגמה.</p>
-        <button class="btn btn-line" id="rst">איפוס נתוני דמו</button>
       </section>`;
     $('#setf').onsubmit = e => { e.preventDefault(); Object.assign(s, Object.fromEntries(new FormData(e.target))); S.save(); toast('נשמר'); };
-    $('#rst').onclick = () => { S.reset(); toast('הנתונים אופסו'); show('desk'); };
   }
 
   /* כניסה אוטומטית אם כבר הוזן קוד בלשונית הזו */
