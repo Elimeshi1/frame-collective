@@ -7,10 +7,10 @@
 .pad { padding: 18px 20px; }
 
 /* כניסה */
-.gate { min-height: calc(100vh - 34px); display: grid; place-items: center; padding: 20px; background: var(--dark); background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,55,29,.25), transparent 70%); }
-.gate-box { background: var(--paper); padding: 36px 32px; width: min(360px, 100%); display: flex; flex-direction: column; gap: 18px; transform: rotate(-.8deg); box-shadow: 0 30px 60px -20px #000; }
+.gate { min-height: calc(100vh - 34px); min-height: calc(100dvh - 34px); display: flex; align-items: center; justify-content: center; padding: 20px 16px; background: var(--dark); background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,55,29,.25), transparent 70%); }
+.gate-box { background: var(--paper); padding: 36px 32px; width: 100%; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 18px; transform: rotate(-.8deg); box-shadow: 0 30px 60px -20px #000; }
 .gate-box .logo { margin-bottom: 4px; }
-.gate-box input { font-family: var(--mono); font-size: 28px; letter-spacing: .5em; text-align: center; }
+.gate-box input { font-family: var(--mono); font-size: 28px; letter-spacing: .5em; text-align: center; width: 100%; min-width: 0; }
 .gate-hint { font-size: 13px; margin: 0; }
 .shake { animation: shake .35s; }
 @keyframes shake { 25% { transform: translateX(8px) rotate(-.8deg); } 75% { transform: translateX(-8px) rotate(-.8deg); } }
@@ -263,6 +263,8 @@
   .search { min-width: 0; width: 100%; }
 }
 @media (max-width: 560px) {
+  .gate-box { padding: 28px 22px; transform: none; }
+  .gate-box .kicker { letter-spacing: 0; }
   .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
   .kpi { padding: 14px; }
   .kpi-hero { grid-column: 1 / -1; }
