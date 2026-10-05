@@ -101,7 +101,8 @@
           <div class="legend"><span><i class="lg lg-many"></i>הרבה פנויות</span><span><i class="lg lg-few"></i>מעט</span><span><i class="lg lg-none"></i>מלא</span></div>
           <div id="dayPeek" class="day-peek">${w.date ? '' : '<p class="muted">בחרו יום בלוח כדי לראות מי פנויה.</p>'}</div>
           <h4 class="side-h">מתי ביום?</h4>
-          <div class="chips chips-dark">${S.TIMES.map(x => `<button class="chip ${w.time === x ? 'on' : ''}" data-time="${x}">${x}</button>`).join('')}</div>
+          <div class="chips chips-dark" id="times"></div>
+          <p class="muted small-note" id="friNote"></p>
         </aside>
       </div>${navRow(!!w.date)}`;
     const cal = calendar($('#cal', wiz), {
@@ -109,17 +110,26 @@
       dayInfo: ds => {
         if (S.parse(ds).getDay() === 6) return { disabled: true, cls: 'is-shabbat', html: '<span class="cal-tag">שבת</span>' };
         if (ds < S.todayStr()) return { disabled: true, cls: 'is-past' };
+        if (S.isFriday(ds) && S.typeOf(w.typeId).fullDay) return { disabled: true, cls: 'is-shabbat', html: '<span class="cal-tag">רק בוקר</span>' };
         if (w.lockP) {
           const ok = S.canTake(S.getP(w.lockP), ds, w.typeId);
           return ok ? { cls: 'lvl-many', html: '<span class="cal-tag">פנויה</span>' } : { disabled: true, cls: 'lvl-none', html: '<span class="cal-tag">—</span>' };
         }
         const n = S.availableFor(ds, w.typeId).length;
         if (!n) return { disabled: true, cls: 'lvl-none', html: '<span class="cal-tag">מלא</span>' };
-        return { cls: n >= 3 ? 'lvl-many' : 'lvl-few', html: `<span class="cal-tag">${n} פנויות</span>` };
+        return { cls: n >= 3 ? 'lvl-many' : 'lvl-few', html: `<span class="cal-tag">${S.isFriday(ds) ? 'בוקר · ' : ''}${n} פנויות</span>` };
       },
-      onPick: ds => { w.date = ds; cal.setSelected(ds); peek(); $('[data-act=next]', wiz).disabled = false; stepsBar(); if (innerWidth < 860) $('#dayPeek', wiz).scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      onPick: ds => { w.date = ds; cal.setSelected(ds); peek(); times(); $('[data-act=next]', wiz).disabled = false; stepsBar(); if (innerWidth < 860) $('#dayPeek', wiz).scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
-    $$('[data-time]', wiz).forEach(b => b.onclick = () => { w.time = w.time === b.dataset.time ? null : b.dataset.time; $$('[data-time]', wiz).forEach(x => x.classList.toggle('on', x.dataset.time === w.time)); });
+    function times() {
+      const allowed = S.timesFor(w.date);
+      if (w.time && !allowed.includes(w.time)) w.time = null;
+      if (w.date && S.isFriday(w.date)) w.time = 'בוקר';
+      $('#times', wiz).innerHTML = S.TIMES.map(x => `<button class="chip ${w.time === x ? 'on' : ''}" data-time="${x}" ${allowed.includes(x) ? '' : 'disabled'}>${x}</button>`).join('');
+      $('#friNote', wiz).textContent = w.date && S.isFriday(w.date) ? 'בשישי מצלמים רק בבוקר.' : '';
+      $$('[data-time]', wiz).forEach(b => b.onclick = () => { if (S.isFriday(w.date || '2000-01-01')) return; w.time = w.time === b.dataset.time ? null : b.dataset.time; times(); });
+    }
+    times();
     if (w.date) peek();
   }
   function peek() {

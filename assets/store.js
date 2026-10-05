@@ -3,7 +3,7 @@
    בגרסה אמיתית השכבה הזו מוחלפת ב-Supabase / Firebase.
    ============================================================ */
 window.Store = (function () {
-  const KEY = 'frame-studio-v8';
+  const KEY = 'frame-studio-v9';
 
   /* ---------- תאריכים ---------- */
   const pad = n => String(n).padStart(2, '0');
@@ -54,6 +54,11 @@ window.Store = (function () {
   ];
   const DELIVERY_DAYS = { wedding: 45, barmitzvah: 30 };
   const DAY_SLOTS = 2; // צילום קצר תופס חצי יום, אירוע תופס יום מלא
+  /* שישי: רק בוקר — משבצת אחת לצילום קצר, בלי אירועים של יום מלא */
+  const FRIDAY_TIMES = ['בוקר'];
+  const isFriday = ds => parse(ds).getDay() === 5;
+  const capacity = ds => (isFriday(ds) ? 1 : DAY_SLOTS);
+  const timesFor = ds => (ds && isFriday(ds) ? FRIDAY_TIMES : TIMES);
 
   /* ---------- PRNG דטרמיניסטי לדמו ---------- */
   function mulberry32(a) {
@@ -115,7 +120,7 @@ window.Store = (function () {
       const status = off < 0 ? (rnd() < 0.92 ? 'done' : 'cancelled') : (off < 3 || rnd() < 0.62 ? 'confirmed' : 'sent');
       const created = addDays(d, -(4 + Math.floor(rnd() * 40)));
       state.bookings.push(mkBooking(state, {
-        date: ds, typeId, photographerId: useP.id, status, area: pick(useP.areas), time: pick(TIMES),
+        date: ds, typeId, photographerId: useP.id, status, area: pick(useP.areas), time: d.getDay() === 5 ? 'בוקר' : pick(TIMES),
         client: { name: pick(clients), phone: '05' + Math.floor(rnd() * 9) + '-' + Math.floor(1000000 + rnd() * 8999999), email: '', notes: '' },
         createdAt: status === 'sent' ? new Date(Date.now() - rnd() * 30 * 36e5).toISOString() : (created < t ? created : t).toISOString(), viaStudio: rnd() < 0.3
       }));
@@ -188,13 +193,14 @@ window.Store = (function () {
   function canTake(st, p, ds, typeId, ignoreId) {
     if (!p.active || !worksOn(p, ds)) return false;
     if (typeId && !p.types.includes(typeId)) return false;
-    return loadOn(st, p.id, ds, ignoreId) + (typeId ? slotsFor(typeId) : 1) <= DAY_SLOTS;
+    if (typeId && isFriday(ds) && typeOf(typeId).fullDay) return false;
+    return loadOn(st, p.id, ds, ignoreId) + (typeId && !isFriday(ds) ? slotsFor(typeId) : 1) <= capacity(ds);
   }
   /** מצב יום לצלמת: off | free | partial | full */
   function dayState(p, ds) {
     if (!worksOn(p, ds)) return 'off';
     const l = loadOn(state, p.id, ds);
-    return l === 0 ? 'free' : l >= DAY_SLOTS ? 'full' : 'partial';
+    return l === 0 ? 'free' : l >= capacity(ds) ? 'full' : 'partial';
   }
   function isBookableDate(ds) {
     return ds >= todayStr() && parse(ds).getDay() !== 6;
@@ -300,7 +306,7 @@ window.Store = (function () {
   load();
   return {
     get state() { return state; }, load, save, reset,
-    SHOOT_TYPES, AREAS, STYLES, TIMES, STATUS, BLOCKING, PAY_TYPES, SCOPES, POST,
+    SHOOT_TYPES, AREAS, STYLES, TIMES, timesFor, isFriday, STATUS, BLOCKING, PAY_TYPES, SCOPES, POST,
     postOf, dueDate, postOwner, isLate, advancePost,
     ymd, parse, addDays, today, todayStr, typeOf,
     getP, getB, worksOn, dayState, canTake: (p, ds, t, ig) => canTake(state, p, ds, t, ig),

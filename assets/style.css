@@ -91,6 +91,9 @@ p { margin: 0 0 .8em; }
 :root .chip.on { color: var(--paper); }
 .darkroom .chip.on { color: var(--dark); }
 .chip-sm { padding: 3px 10px; font-size: 13px; }
+.chip:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
+.chip:disabled:hover { border-color: var(--ln); color: var(--fg-2); }
+.small-note { font-size: 13px; margin-top: 10px; color: var(--amber) !important; }
 
 /* ---------- סרגל דמו ---------- */
 .demobar {
