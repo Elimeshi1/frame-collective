@@ -17,21 +17,25 @@
   const owner = () => S.state.photographers.find(p => p.owner);
   const B = () => S.state.bookings;
   const P = () => S.state.photographers;
+  const postWho = b => { const o = S.postOwner(b); return o === 'studio' ? 'אצלך' : o ? 'אצל ' + pName(o).split(' ')[0] : ''; };
+  const payLabel = p => p.owner ? 'את' : p.payType === 'salary' ? `משכורת ${money(p.salary)}` : `${p.commission}% עמלה`;
+  const scopeLabel = p => p.owner || p.scope === 'full' ? 'תהליך מלא' : 'צילום בלבד';
   const pName = id => id ? (S.getP(id) || {}).name || '—' : 'לא שובצה';
-  const needsAction = b => b.status === 'new' || b.status === 'declined' || (b.status === 'sent' && (Date.now() - new Date(b.history[b.history.length - 1].at)) > 864e5 && b.date >= S.todayStr());
+  const needsAction = b => S.isLate(b) || b.status === 'new' || b.status === 'declined' || (b.status === 'sent' && (Date.now() - new Date(b.history[b.history.length - 1].at)) > 864e5 && b.date >= S.todayStr());
 
   function boot() {
     const me = owner();
     $('#meImg').src = photo(me, 80, 80); $('#meName').textContent = me.name;
     $$('#nav button').forEach(b => b.onclick = () => show(b.dataset.view));
-    const h = location.hash.slice(1); show(['desk', 'inbox', 'cal', 'team', 'money', 'settings'].includes(h) ? h : 'desk');
+    const h = location.hash.slice(1); show(['desk', 'inbox', 'cal', 'post', 'team', 'money', 'settings'].includes(h) ? h : 'desk');
     document.addEventListener('store:changed', () => { show(view); toast('התקבל עדכון חדש'); });
   }
   function show(v) {
     view = v; history.replaceState(null, '', '#' + v);
     $$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
     const n = B().filter(needsAction).length; $('#badge').textContent = n || ''; $('#badge').hidden = !n;
-    ({ desk, inbox, cal, team, money: moneyView, settings })[v]();
+    ({ desk, inbox, cal, post, team, money: moneyView, settings })[v]();
+    const mineLate = B().filter(b => S.postOwner(b) === 'studio').length; $('#badgePost').textContent = mineLate || ''; $('#badgePost').hidden = !mineLate;
     main.scrollTop = 0;
   }
   const head = (k, title, extra = '') => `<header class="m-head"><div><p class="kicker mono">${k}</p><h1>${title}</h1></div>${extra}</header>`;
@@ -48,9 +52,9 @@
 
     main.innerHTML = head(`${dateMono(S.todayStr())} · ${monthNames[t.getMonth()]}`, `${hello}, ${esc(owner().name.split(' ')[0])}.`) + `
       <section class="kpis">
-        <div class="kpi kpi-hero"><span>עמלות מהצלמות · ${monthNames[t.getMonth()]}</span><b class="mono">${money(st.commission)}</b><small>${st.referred} צילומים שהעברת · ${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta)}% מהחודש שעבר</small></div>
-        <div class="kpi"><span>הצילומים שלי החודש</span><b class="mono">${money(st.own)}</b><small>${st.count - st.referred} צילומים</small></div>
-        <div class="kpi"><span>מחזור כל הצלמות</span><b class="mono">${money(st.volume)}</b><small>${st.count} צילומים מאושרים</small></div>
+        <div class="kpi kpi-hero"><span>הרווח שלך · ${monthNames[t.getMonth()]}</span><b class="mono">${money(st.net)}</b><small>עמלות + צלמות בשכר + הצילומים שלך, אחרי משכורות</small></div>
+        <div class="kpi"><span>עמלות מצלמות באחוזים</span><b class="mono">${money(st.commission)}</b><small>${st.referred} צילומים · ${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta)}% מהחודש שעבר</small></div>
+        <div class="kpi"><span>צלמות בשכר</span><b class="mono ${st.salariedGross - st.salaries < 0 ? 'red' : ''}">${money(st.salariedGross - st.salaries)}</b><small>${st.salariedCount} צילומים ${money(st.salariedGross)} − משכורות ${money(st.salaries)}</small></div>
         <div class="kpi ${todo.length ? 'kpi-alert' : ''}"><span>דורש טיפול</span><b class="mono">${todo.length}</b><small>${freeToday} צלמות פנויות היום</small></div>
       </section>
       <div class="desk-grid">
@@ -65,14 +69,14 @@
       </div>
       <section class="panel insight">
         <p class="mono kicker">לפני פריים</p>
-        <p>החודש הפנית <b>${st.referred}</b> לקוחות לצלמות אחרות. פעם זה היה שווה <b>₪0</b>. עכשיו זה <b class="red">${money(st.commission)}</b> — בלי לצלם פריים אחד.</p>
+        <p>החודש הפנית <b>${st.referred + st.salariedCount}</b> לקוחות לצלמות אחרות. פעם זה היה שווה <b>₪0</b>. עכשיו זה <b class="red">${money(st.net - st.own)}</b> — בלי לצלם פריים אחד.</p>
       </section>`;
     bindRows();
   }
 
   function row(b) {
     const p = b.photographerId ? S.getP(b.photographerId) : null;
-    const why = b.status === 'new' ? 'ממתינה לשיבוץ' : b.status === 'declined' ? 'צריך צלמת חלופית' : b.status === 'sent' && needsAction(b) ? 'אין תשובה מעל יממה' : '';
+    const why = b.status === 'new' ? 'ממתינה לשיבוץ' : b.status === 'declined' ? 'צריך צלמת חלופית' : b.status === 'sent' && needsAction(b) ? 'אין תשובה מעל יממה' : S.isLate(b) ? `${S.postOf(b.post).short} באיחור · ${postWho(b)}` : '';
     return `<li class="r" data-b="${b.id}">
       <span class="r-date"><b class="mono">${dateShort(b.date)}</b><small>${UI.dayNames[S.parse(b.date).getDay()]}</small></span>
       <span class="r-main"><b>${esc(b.client.name)}</b> · ${typeName(b.typeId)}<small>${p ? `<i class="dot" style="--c:${p.color}"></i>${esc(p.name)}` : '<i class="dot dot-empty"></i>לא שובצה'} · ${esc(b.area || '')}${why ? ` · <em>${why}</em>` : ''}</small></span>
@@ -126,7 +130,10 @@
         </section>
         <section>
           <h4 class="side-h">צלמת</h4>
-          ${p ? `<div class="bk-p"><img src="${photo(p, 100, 100)}" alt=""><div><b>${esc(p.name)}</b><span>${money(b.price)}${mm.own ? ' · הצילום שלך' : ` · עמלה ${b.commissionPct}% = <b class="red">${money(mm.mine)}</b>`}</span></div></div>` : '<p class="muted">עדיין לא שובצה צלמת.</p>'}
+          ${p ? `<div class="bk-p"><img src="${photo(p, 100, 100)}" alt=""><div><b>${esc(p.name)}</b><span>${money(b.price)}${mm.own ? ' · הצילום שלך' : mm.salaried ? ' · צלמת בשכר — כל ההכנסה שלך' : ` · עמלה ${b.commissionPct}% = <b class="red">${money(mm.mine)}</b>`}<br><small>${scopeLabel(p)}</small></span></div></div>` : '<p class="muted">עדיין לא שובצה צלמת.</p>'}
+          ${b.post ? `<h4 class="side-h">עריכה ומסירה</h4>${postTrack(b)}
+            <p class="small ${S.isLate(b) ? 'red' : 'muted'}">${b.post === 'delivered' ? 'נמסר ללקוחות' : `${postWho(b)} · מסירה עד ${dateShort(S.dueDate(b))}${S.isLate(b) ? ' — באיחור' : ''}`}</p>
+            ${b.post !== 'delivered' ? `<button class="btn btn-ink btn-sm" data-adv>${nextPostLabel(b)}</button>` : ''}` : ''}
           <div class="bk-actions">
             ${p && b.status === 'sent' ? `<button class="btn btn-ink btn-sm" data-st="confirmed">סימון כמאושרת</button>` : ''}
             ${p && b.status === 'sent' ? `<a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(p.phone, pMsg(p))}">תזכורת לצלמת</a>` : ''}
@@ -135,10 +142,11 @@
           </div>
           ${canReassign ? `<h4 class="side-h">${p && b.status !== 'declined' ? 'העברה לצלמת אחרת' : 'שיבוץ'} · פנויות ב־${dateShort(b.date)}</h4>
             ${avail.length ? `<ul class="assign">${avail.sort((a, c) => (a.owner ? 1 : 0) - (c.owner ? 1 : 0) || (c.areas.includes(b.area) ? 1 : 0) - (a.areas.includes(b.area) ? 1 : 0)).map(x => `
-              <li><img src="${photo(x, 60, 60)}" alt=""><span><b>${esc(x.name)}</b><small>${x.areas.includes(b.area) ? '✓ ' + esc(b.area) : esc(x.areas[0])} · ${money(x.prices[b.typeId])}${x.owner ? ' · את' : ` · עמלה ${money(Math.round(x.prices[b.typeId] * x.commission / 100))}`}</small></span>
+              <li><img src="${photo(x, 60, 60)}" alt=""><span><b>${esc(x.name)}</b><small>${x.areas.includes(b.area) ? '✓ ' + esc(b.area) : esc(x.areas[0])} · ${money(x.prices[b.typeId])}${x.owner ? ' · את' : x.payType === 'salary' ? ' · בשכר' : ` · עמלה ${money(Math.round(x.prices[b.typeId] * x.commission / 100))}`} · ${scopeLabel(x)}</small></span>
               <button class="btn btn-red btn-sm" data-assign="${x.id}">שיבוץ</button></li>`).join('')}</ul>` : '<p class="muted">אף צלמת לא פנויה בתאריך הזה לסוג הצילום הזה.</p>'}` : ''}
         </section>
       </div></div>`, { wide: true });
+    const adv = $('[data-adv]', m.el); adv && (adv.onclick = () => { S.advancePost(b.id, 'עודכן על ידך'); m.close(); toast(`${b.id}: ${S.postOf(S.getB(b.id).post).name}`); show(view); });
     $$('[data-st]', m.el).forEach(x => x.onclick = () => { S.setStatus(b.id, x.dataset.st); m.close(); toast(`${b.id}: ${S.STATUS[x.dataset.st].name}`); show(view); });
     $$('[data-assign]', m.el).forEach(x => x.onclick = () => {
       const np = S.getP(x.dataset.assign);
@@ -206,8 +214,9 @@
             <h3><i class="dot" style="--c:${p.color}"></i>${esc(p.name)}${p.owner ? ' <em>· את</em>' : ''}${p.active ? '' : ' <em>· מושהית</em>'}</h3>
             <p class="muted">${p.areas.join(' · ')}</p>
             <p class="ro-types">${p.types.map(typeName).join(' · ')}</p>
+            <p class="ro-tags"><span class="tag ${p.payType === 'salary' ? 'tag-salary' : ''}">${payLabel(p)}</span><span class="tag ${p.scope === 'shoot' && !p.owner ? 'tag-shoot' : ''}">${scopeLabel(p)}</span></p>
             <div class="strip14" title="14 הימים הקרובים">${next14.map(ds => `<i class="pd-${S.parse(ds).getDay() === 6 ? 'off' : S.dayState(p, ds)}" title="${dateShort(ds)}"></i>`).join('')}</div>
-            <p class="ro-stats mono">${s.count} החודש · ${p.owner ? 'הכנסה' : 'עמלה'} ${money(s.mine)}${p.owner ? '' : ` · ${p.commission}%`}${pending ? ` · <span class="red">${pending} ממתינות</span>` : ''}</p>
+            <p class="ro-stats mono">${s.count} החודש · ${p.owner ? `הכנסה ${money(s.mine)}` : p.payType === 'salary' ? `הכניסה ${money(s.gross || 0)} מול משכורת ${money(p.salary)}` : `עמלה ${money(s.mine)}`}${pending ? ` · <span class="red">${pending} ממתינות</span>` : ''}</p>
           </div>
           <div class="ro-act"><button class="btn btn-line btn-sm" data-edit="${p.id}">עריכה</button><a class="btn btn-ghost btn-sm" href="portal.html?p=${p.id}">פורטל</a></div>
         </article>`;
@@ -217,14 +226,19 @@
   }
   function editP(p) {
     const isNew = !p;
-    p = p ? JSON.parse(JSON.stringify(p)) : { id: S.newPhotographerId(), name: '', tagline: '', areas: [], types: [], styles: ['natural'], weekdays: [0, 1, 2, 3, 4], commission: 15, rating: 5, reviews: 0, years: 1, color: '#' + Math.floor(0x404040 + Math.random() * 0x8f8f8f).toString(16).slice(0, 6), photo: 'new-' + Date.now(), bio: '', prices: {}, exceptions: {}, phone: '', active: true };
+    p = p ? JSON.parse(JSON.stringify(p)) : { id: S.newPhotographerId(), name: '', tagline: '', areas: [], types: [], styles: ['natural'], weekdays: [0, 1, 2, 3, 4], commission: 15, payType: 'commission', salary: 0, scope: 'full', rating: 5, reviews: 0, years: 1, color: '#' + Math.floor(0x404040 + Math.random() * 0x8f8f8f).toString(16).slice(0, 6), photo: 'new-' + Date.now(), bio: '', prices: {}, exceptions: {}, phone: '', active: true };
     const m = modal(`<form class="pe" id="pe">
       <p class="kicker mono">${isNew ? 'NEW' : p.id}</p><h2>${isNew ? 'צלמת חדשה' : esc(p.name)}</h2>
       <div class="pe-grid">
         <label class="fld"><span>שם</span><input name="name" required value="${esc(p.name)}"></label>
         <label class="fld"><span>טלפון</span><input name="phone" value="${esc(p.phone)}"></label>
         <label class="fld fld-wide"><span>שורת תיאור</span><input name="tagline" value="${esc(p.tagline)}"></label>
-        ${p.owner ? '' : `<label class="fld"><span>עמלה לפריים (%)</span><input name="commission" type="number" min="0" max="50" value="${p.commission}"></label>`}
+        ${p.owner ? '' : `<div class="fld fld-wide"><span>מודל העסקה</span>
+          <div class="seg">${Object.entries(S.PAY_TYPES).map(([k, v]) => `<label class="chk"><input type="radio" name="payType" value="${k}" ${p.payType === k ? 'checked' : ''}><span>${v}</span></label>`).join('')}</div></div>
+        <label class="fld" data-pay="commission"><span>אחוז עמלה שלך (%)</span><input name="commission" type="number" min="0" max="60" value="${p.commission}"></label>
+        <label class="fld" data-pay="salary"><span>משכורת חודשית (₪)</span><input name="salary" type="number" min="0" step="100" value="${p.salary || 5000}"></label>
+        <div class="fld fld-wide"><span>מה היא עושה</span>
+          <div class="seg">${Object.entries(S.SCOPES).map(([k, v]) => `<label class="chk"><input type="radio" name="scope" value="${k}" ${p.scope === k ? 'checked' : ''}><span>${v}</span></label>`).join('')}</div></div>`}
         <label class="fld"><span>צבע ביומן</span><input name="color" type="color" value="${p.color}"></label>
       </div>
       <h4 class="side-h">ימי עבודה קבועים</h4>
@@ -239,6 +253,8 @@
       <div class="wz-nav"><button type="button" class="btn btn-ghost" data-x>ביטול</button><button class="btn btn-red">שמירה</button></div>
     </form>`, { wide: true });
     const f = $('#pe', m.el);
+    const syncPay = () => { const v = (f.querySelector('[name=payType]:checked') || {}).value; $$('[data-pay]', f).forEach(x => x.hidden = x.dataset.pay !== v); };
+    $$('[name=payType]', f).forEach(r => r.onchange = syncPay); syncPay();
     $$('.pp input[type=checkbox]', f).forEach(c => c.onchange = () => c.closest('.pp').classList.toggle('on', c.checked));
     $('[data-x]', f).onclick = m.close;
     f.onsubmit = e => {
@@ -247,6 +263,8 @@
       Object.assign(p, {
         name: fd.get('name').trim(), phone: fd.get('phone'), tagline: fd.get('tagline'), color: fd.get('color'),
         commission: p.owner ? 0 : Number(fd.get('commission')) || 0,
+        payType: p.owner ? 'commission' : fd.get('payType') || 'commission', salary: Number(fd.get('salary')) || 0,
+        scope: p.owner ? 'full' : fd.get('scope') || 'full',
         weekdays: fd.getAll('wd').map(Number), areas: fd.getAll('area'), styles: fd.getAll('style'), types: fd.getAll('type'),
         active: !!fd.get('active')
       });
@@ -260,27 +278,55 @@
   /* ---------- עמלות ---------- */
   function moneyView() {
     const t = S.today();
-    const months = [-2, -1, 0, 1].map(o => { const d = new Date(t.getFullYear(), t.getMonth() + o, 1); return { d, s: S.monthStats(d.getFullYear(), d.getMonth()) }; });
-    const max = Math.max(...months.map(x => x.s.commission + x.s.own), 1);
-    const cur = months[2].s;
-    const rows = P().filter(p => !p.owner).map(p => ({ p, s: cur.per[p.id] || { count: 0, mine: 0, gross: 0 } })).sort((a, b) => b.s.mine - a.s.mine);
-    const topMine = Math.max(...rows.map(r => r.s.mine), 1);
-    main.innerHTML = head('LEDGER', 'עמלות והכנסות') + `
+    const months = [-1, 0, 1].map(o => { const d = new Date(t.getFullYear(), t.getMonth() + o, 1); return { d, s: S.monthStats(d.getFullYear(), d.getMonth()) }; });
+    const max = Math.max(...months.map(x => x.s.commission + x.s.own + x.s.salariedGross), 1);
+    const cur = months[1].s;
+    const rows = P().filter(p => !p.owner).map(p => {
+      const s = cur.per[p.id] || { count: 0, mine: 0, gross: 0 };
+      const net = p.payType === 'salary' ? s.gross - (p.active ? p.salary : 0) : s.mine;
+      return { p, s, net };
+    }).sort((a, b) => b.net - a.net);
+    const topNet = Math.max(...rows.map(r => Math.abs(r.net)), 1);
+    main.innerHTML = head('LEDGER', 'הכנסות, עמלות ומשכורות') + `
       <section class="panel">
-        <h2 class="p-h">ארבעה חודשים</h2>
+        <h2 class="p-h">שלושה חודשים · הרווח נטו מתחת לכל עמודה</h2>
         <div class="bars">${months.map(({ d, s }) => `<div class="bar-col">
-          <div class="bar-stack" style="--h:${(s.commission + s.own) / max * 100}%">
-            <span class="bar-own" style="flex:${s.own}"></span><span class="bar-com" style="flex:${s.commission}"></span></div>
-          <b class="mono">${money(s.commission + s.own)}</b><span>${monthNames[d.getMonth()]}${d.getMonth() === t.getMonth() ? ' · עכשיו' : ''}</span></div>`).join('')}</div>
-        <div class="legend legend-light"><span><i class="lg" style="background:var(--red)"></i>עמלות מהצלמות</span><span><i class="lg" style="background:var(--ink)"></i>הצילומים שלך</span></div>
+          <div class="bar-stack" style="--h:${(s.commission + s.own + s.salariedGross) / max * 100}%">
+            <span class="bar-own" style="flex:${s.own}"></span><span class="bar-sal" style="flex:${s.salariedGross}"></span><span class="bar-com" style="flex:${s.commission}"></span></div>
+          <b class="mono">${money(s.net)}</b><span>${monthNames[d.getMonth()]}${d.getMonth() === t.getMonth() ? ' · עכשיו' : ''}</span></div>`).join('')}</div>
+        <div class="legend legend-light"><span><i class="lg" style="background:var(--red)"></i>עמלות</span><span><i class="lg" style="background:var(--amber)"></i>צילומים של צלמות בשכר</span><span><i class="lg" style="background:var(--ink)"></i>הצילומים שלך</span><span>נטו = אחרי משכורות</span></div>
       </section>
       <section class="panel">
-        <h2 class="p-h">עמלות לפי צלמת · ${monthNames[t.getMonth()]}</h2>
-        <table class="ledger"><thead><tr><th>צלמת</th><th>צילומים</th><th>מחזור</th><th>אחוז</th><th>העמלה שלך</th><th></th></tr></thead><tbody>
-        ${rows.map(({ p, s }) => `<tr><td><i class="dot" style="--c:${p.color}"></i>${esc(p.name)}</td><td class="mono">${s.count}</td><td class="mono">${money(s.gross)}</td><td class="mono">${p.commission}%</td><td class="mono"><b>${money(s.mine)}</b></td><td class="lbar"><i style="width:${s.mine / topMine * 100}%"></i></td></tr>`).join('')}
-        </tbody><tfoot><tr><td>סה״כ</td><td class="mono">${cur.referred}</td><td></td><td></td><td class="mono"><b class="red">${money(cur.commission)}</b></td><td></td></tr></tfoot></table>
-        <p class="muted small">העמלה מחושבת על צילומים מאושרים ושבוצעו, לפי תאריך הצילום. בגרסה מלאה: הפקת דוח חודשי ושליחת חשבון עמלה לכל צלמת בלחיצה.</p>
+        <h2 class="p-h">לפי צלמת · ${monthNames[t.getMonth()]}</h2>
+        <table class="ledger"><thead><tr><th>צלמת</th><th>מודל</th><th>צילומים</th><th>מחזור</th><th>נשאר לך</th><th></th></tr></thead><tbody>
+        ${rows.map(({ p, s, net }) => `<tr><td><i class="dot" style="--c:${p.color}"></i>${esc(p.name)}</td><td>${payLabel(p)}</td><td class="mono">${s.count}</td><td class="mono">${money(s.gross)}</td><td class="mono"><b class="${net < 0 ? 'red' : ''}">${money(net)}</b></td><td class="lbar"><i class="${net < 0 ? 'neg' : ''}" style="width:${Math.abs(net) / topNet * 100}%"></i></td></tr>`).join('')}
+        </tbody><tfoot><tr><td>סה״כ</td><td></td><td class="mono">${cur.referred + cur.salariedCount}</td><td></td><td class="mono"><b class="red">${money(cur.net - cur.own)}</b></td><td></td></tr></tfoot></table>
+        <p class="muted small">צלמת באחוזים: הלקוחות משלמות לה ואת מקבלת עמלה. צלמת בשכר: כל ההכנסה מהצילומים שלה אצלך, ומשכורת החודש יורדת ממנה. הכל מחושב על צילומים מאושרים ושבוצעו, לפי תאריך הצילום.</p>
       </section>`;
+  }
+
+  /* ---------- עריכה ומסירה ---------- */
+  const postTrack = b => { const i = S.POST.findIndex(x => x.id === b.post); return `<ol class="ptrack">${S.POST.map((x, k) => `<li class="${k < i ? 'past' : k === i ? 'on' : ''}">${x.short}</li>`).join('')}</ol>`; };
+  const nextPostLabel = b => ({ raw: 'החומרים התקבלו ←', editing: 'העריכה הסתיימה ←', design: 'נמסר ללקוחות ✓' })[b.post];
+  let postMine = false;
+  function post() {
+    const list = B().filter(b => b.post && (!postMine || S.postOwner(b) === 'studio'));
+    const recent = d => d >= S.ymd(S.addDays(S.today(), -30));
+    main.innerHTML = head('POST', 'עריכה ומסירה', `<label class="chk"><input type="checkbox" id="pm" ${postMine ? 'checked' : ''}><span>רק מה שאצלי</span></label>`) + `
+      <p class="muted post-intro">צלמות בתהליך מלא עורכות ומעצבות לבד, ואת רק עוקבת. צלמות שרק מצלמות מעבירות לך חומרים, והעריכה והעיצוב עוברים אלייך.</p>
+      <div class="kanban">${S.POST.map(col => {
+        const items = list.filter(b => b.post === col.id && (col.id !== 'delivered' || recent(b.date))).sort((a, b) => S.dueDate(a).localeCompare(S.dueDate(b)));
+        return `<section class="kcol"><h2 class="p-h">${col.name} <span class="mono">${items.length}</span></h2>
+          ${items.map(b => { const p = S.getP(b.photographerId); const late = S.isLate(b); const who = S.postOwner(b);
+            return `<article class="kcard ${late ? 'is-late' : ''} ${who === 'studio' ? 'is-mine' : ''}" data-b="${b.id}">
+              <b>${esc(b.client.name)}</b><span>${typeName(b.typeId)} · צולם ${dateShort(b.date)}</span>
+              <span><i class="dot" style="--c:${p ? p.color : '#999'}"></i>${p ? esc(p.name) : ''} · ${p ? scopeLabel(p) : ''}</span>
+              ${col.id === 'delivered' ? '' : `<span class="kc-foot"><em>${postWho(b)}</em><span class="mono">${late ? 'באיחור' : 'עד ' + dateShort(S.dueDate(b))}</span></span>`}
+            </article>`; }).join('') || '<p class="muted pad small">ריק</p>'}
+        </section>`;
+      }).join('')}</div>`;
+    $('#pm').onchange = e => { postMine = e.target.checked; post(); };
+    bindRows();
   }
 
   /* ---------- הגדרות ---------- */

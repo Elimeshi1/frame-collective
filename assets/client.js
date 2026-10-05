@@ -1,4 +1,4 @@
-/* מסך הלקוחה: הזמנה בארבעה שלבים + גיליון הצלמות */
+/* מסך הלקוחה: הזמנה בארבעה שלבים + רשימת הצלמות */
 (function () {
   const S = Store, { $, $$, esc, money, dateLong, dateMono, photo, frameNo, typeName, grease, calendar, modal, toast, waLink } = UI;
   UI.demoBar('client');
@@ -7,7 +7,7 @@
   const wiz = $('#wizard');
   const team = () => S.state.photographers.filter(p => p.active);
 
-  /* ---------- HERO: גיליון מגע ---------- */
+  /* ---------- HERO: פילים ---------- */
   function hero() {
     const ps = team();
     $('#heroCount').textContent = ps.length;
@@ -18,7 +18,7 @@
         <figcaption class="mono">${frameNo(i)} <span>▸</span></figcaption>
         ${marks[i] === 'circle' ? grease : ''}
       </figure>`).join('')}</div>
-      <p class="hs-note">← הסימון האדום הוא איך עורכות בחרו פריים מגיליון מגע. כאן בוחרים צלמת.</p>`;
+      <p class="hs-note">← כמו שמסמנים פריים על הפילים — כאן מסמנים צלמת.</p>`;
   }
 
   /* ---------- ניווט שלבים ---------- */
@@ -252,7 +252,7 @@
     $('[data-act=again]', wiz).onclick = () => { Object.assign(w, { step: 1, typeId: null, date: null, time: null, pid: null, studio: false, lockP: null, done: null, client: null, budget: null }); render(); };
   }
 
-  /* ---------- גיליון הצלמות ---------- */
+  /* ---------- הצלמות ---------- */
   let teamType = '';
   function renderTeam() {
     $('#teamFilter').innerHTML = `<button class="chip ${!teamType ? 'on' : ''}" data-tt="">כולן</button>` + S.SHOOT_TYPES.map(t => `<button class="chip ${teamType === t.id ? 'on' : ''}" data-tt="${t.id}">${t.name}</button>`).join('');

@@ -192,7 +192,7 @@
 .req:last-child { border-bottom: 0; }
 .req h3 { font-size: 22px; margin-bottom: 4px; }
 .req p { margin: 0 0 4px; font-size: 14px; color: var(--ink-2); }
-.req .req-money { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.req .req-money { font-size: 13px; color: var(--muted); }
 .req-act { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .pt-cal { padding: 20px; }
 .pt-cal .cal-cell { aspect-ratio: 1; }
@@ -202,6 +202,37 @@
 .pt-earn div:first-child { border: 0; }
 .pt-earn span { font-size: 12px; color: var(--muted); display: block; }
 .pt-earn b { font-family: var(--mono); font-size: 22px; font-weight: 500; }
+.pt-earn b.pt-scope { font-family: var(--sans); font-size: 15px; }
+
+
+/* מודל העסקה והיקף עבודה */
+.ro-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 0 !important; }
+.tag { font-size: 11px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-2); }
+.tag-salary { background: #F5E2BC; border-color: #E5C27E; color: #6b4708; }
+.tag-shoot { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+.seg { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.bar-sal { background: var(--amber); }
+.lbar i.neg { background: repeating-linear-gradient(-45deg, var(--red) 0 3px, transparent 3px 6px); }
+
+/* עריכה ומסירה */
+.ptrack { list-style: none; display: flex; padding: 0; margin: 0 0 8px; counter-reset: s; }
+.ptrack li { flex: 1; font-size: 12px; text-align: center; padding: 6px 2px; border-bottom: 3px solid var(--line); color: var(--muted); }
+.ptrack li.past { border-color: var(--ink-2); color: var(--ink-2); }
+.ptrack li.on { border-color: var(--red); color: var(--ink); font-weight: 600; }
+.post-intro { margin: -14px 0 20px; max-width: 720px; }
+.kanban { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.kcol { background: var(--paper-2); border: 1px solid var(--line); min-height: 200px; }
+.kcol .p-h { background: var(--cream); }
+.kcard { background: var(--cream); margin: 10px; padding: 12px; border: 1px solid var(--line); border-inline-start: 3px solid var(--line); display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--ink-2); cursor: pointer; transition: transform .12s, box-shadow .12s; }
+.kcard:hover { transform: translateY(-2px); box-shadow: 0 8px 16px -10px rgba(0,0,0,.35); }
+.kcard b { font-family: var(--serif); font-size: 17px; color: var(--ink); }
+.kcard.is-mine { border-inline-start-color: var(--amber); }
+.kcard.is-late { border-inline-start-color: var(--red); }
+.kc-foot { display: flex; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.kc-foot em { font-style: normal; color: var(--ink); }
+.kcard.is-late .kc-foot .mono { color: var(--red); font-weight: 600; }
+@media (max-width: 1100px) { .kanban { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .kanban { grid-template-columns: 1fr; } }
 
 @media (max-width: 1100px) {
   .kpis { grid-template-columns: 1fr 1fr; }

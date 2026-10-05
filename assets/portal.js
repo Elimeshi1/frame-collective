@@ -18,6 +18,8 @@
     const mine = S.state.bookings.filter(b => b.photographerId === pid);
     const pending = mine.filter(b => b.status === 'sent' && b.date >= S.todayStr()).sort((a, b) => a.date.localeCompare(b.date));
     const upcoming = mine.filter(b => b.status === 'confirmed' && b.date >= S.todayStr()).sort((a, b) => a.date.localeCompare(b.date));
+    const sal = p.payType === 'salary';
+    const myPost = mine.filter(b => S.postOwner(b) === pid).sort((a, b) => S.dueDate(a).localeCompare(S.dueDate(b)));
     const st = S.monthStats(t.getFullYear(), t.getMonth()).per[pid] || { count: 0, gross: 0, mine: 0 };
 
     $('#portal').innerHTML = `
@@ -25,8 +27,9 @@
         <p class="muted">${pending.length ? `יש לך <b class="red">${pending.length}</b> בקשות שמחכות לתשובה.` : 'אין בקשות שמחכות לך כרגע.'}</p></div></div>
       <section class="panel pt-earn">
         <div><span>צילומים ב${monthNames[t.getMonth()]}</span><b>${st.count}</b></div>
-        <div><span>הכנסה ברוטו</span><b>${money(st.gross)}</b></div>
-        <div><span>נטו אחרי עמלת פריים (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>
+        ${sal ? `<div><span>המשכורת החודשית שלך</span><b>${money(p.salary)}</b></div>
+        <div><span>מה את עושה</span><b class="pt-scope">${S.SCOPES[p.scope]}</b></div>` : `<div><span>הכנסה ברוטו</span><b>${money(st.gross)}</b></div>
+        <div><span>נטו אחרי עמלת פריים (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>`}
       </section>
       <div class="pt-grid">
         <div>
@@ -35,7 +38,7 @@
               <h3>${typeName(b.typeId)} · ${esc(b.client.name)}</h3>
               <p>${dateLong(b.date)}${b.time ? ' · ' + b.time : ''} · ${esc(b.area || '')}</p>
               ${b.client.notes ? `<p><i>“${esc(b.client.notes)}”</i></p>` : ''}
-              <p class="req-money">${money(b.price)} · עמלה ${b.commissionPct}% · נטו לך ${money(b.price - Math.round(b.price * b.commissionPct / 100))}</p>
+              <p class="req-money">${sal ? 'במסגרת המשכורת' : `${money(b.price)} · עמלה ${b.commissionPct}% · נטו לך ${money(b.price - Math.round(b.price * b.commissionPct / 100))}`}${p.scope === 'shoot' ? ' · צילום בלבד, העריכה בסטודיו' : ''}</p>
               <div class="req-act"><button class="btn btn-red btn-sm" data-ok="${b.id}">מאשרת ✓</button><button class="btn btn-ghost btn-sm" data-no="${b.id}">לא יכולה</button></div>
             </article>`).join('') : '<p class="muted pad">הכל נקי.</p>'}
           </section>
@@ -47,6 +50,14 @@
             </article>`).join('') : '<p class="muted pad">אין צילומים מאושרים בקרוב.</p>'}
           </section>
         </div>
+        <div>
+        <section class="panel"><h2 class="p-h">${p.scope === 'shoot' ? 'חומרים להעביר לסטודיו' : 'עריכה ומסירה'} <span class="mono">${myPost.length}</span></h2>
+          ${myPost.length ? myPost.map(b => `<article class="req">
+            <h3>${esc(b.client.name)} · ${typeName(b.typeId)}</h3>
+            <p>צולם ${dateShort(b.date)} · ${S.postOf(b.post).name} · <span class="${S.isLate(b) ? 'red' : ''}">${S.isLate(b) ? 'באיחור' : 'מסירה עד ' + dateShort(S.dueDate(b))}</span></p>
+            <div class="req-act"><button class="btn btn-ink btn-sm" data-adv="${b.id}">${{ raw: 'העברתי את החומרים לסטודיו', editing: 'סיימתי לערוך', design: 'מסרתי ללקוחות ✓' }[b.post]}</button></div>
+          </article>`).join('') : `<p class="muted pad">${p.scope === 'shoot' ? 'אין חומרים שמחכים להעברה. את רק מצלמת, ורחל אחראית על העריכה והעיצוב.' : 'אין עבודות פתוחות.'}</p>`}
+        </section>
         <section class="panel">
           <h2 class="p-h">הזמינות שלי</h2>
           <div class="pt-cal">
@@ -55,6 +66,7 @@
             <div id="ptCal"></div>
           </div>
         </section>
+        </div>
       </div>`;
 
     const cal = calendar($('#ptCal'), {
@@ -75,6 +87,7 @@
       }
     });
 
+    $$('[data-adv]').forEach(b => b.onclick = () => { S.advancePost(b.dataset.adv, p.name); toast('עודכן. רחל רואה את זה אצלה'); render(); });
     $$('[data-ok]').forEach(b => b.onclick = () => { S.setStatus(b.dataset.ok, 'confirmed', `${p.name} אישרה`); toast('אישרת! הלקוח/ה והמנהלת יקבלו עדכון'); render(); });
     $$('[data-no]').forEach(b => b.onclick = () => { S.setStatus(b.dataset.no, 'declined', `${p.name} דחתה — דרוש שיבוץ מחדש`); toast('הבקשה חזרה למנהלת לשיבוץ מחדש'); render(); });
   }

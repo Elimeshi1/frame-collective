@@ -3,7 +3,7 @@
    בגרסה אמיתית השכבה הזו מוחלפת ב-Supabase / Firebase.
    ============================================================ */
 window.Store = (function () {
-  const KEY = 'frame-studio-v2';
+  const KEY = 'frame-studio-v7';
 
   /* ---------- תאריכים ---------- */
   const pad = n => String(n).padStart(2, '0');
@@ -41,6 +41,18 @@ window.Store = (function () {
     cancelled: { name: 'בוטלה', short: 'בוטלה' }
   };
   const BLOCKING = ['sent', 'confirmed', 'done'];
+  /* מודל העסקה: עמלה באחוזים (הלקוחה משלמת לצלמת, את מקבלת אחוז) או משכורת (ההכנסה שלך, את משלמת לה) */
+  const PAY_TYPES = { commission: 'עובדת לפי אחוזים', salary: 'מקבלת משכורת' };
+  /* היקף עבודה: תהליך מלא (מצלמת, עורכת ומעצבת לבד) או צילום בלבד (העריכה והעיצוב אצלך) */
+  const SCOPES = { full: 'תהליך מלא — צילום, עריכה ועיצוב', shoot: 'צילום בלבד — עריכה ועיצוב בסטודיו' };
+  /* שלבי עריכה ומסירה אחרי הצילום */
+  const POST = [
+    { id: 'raw', name: 'ממתין לחומרים', short: 'חומרים' },
+    { id: 'editing', name: 'בעריכה', short: 'עריכה' },
+    { id: 'design', name: 'עיצוב אלבום / גלריה', short: 'עיצוב' },
+    { id: 'delivered', name: 'נמסר ללקוחות', short: 'נמסר' }
+  ];
+  const DELIVERY_DAYS = { wedding: 45, barmitzvah: 30 };
   const DAY_SLOTS = 2; // צילום קצר תופס חצי יום, אירוע תופס יום מלא
 
   /* ---------- PRNG דטרמיניסטי לדמו ---------- */
@@ -68,6 +80,14 @@ window.Store = (function () {
       { id: 'p7', name: 'מעיין גולן', tagline: 'צפון ירוק ואור רך', areas: ['צפון', 'חיפה והקריות'], types: ['family', 'newborn', 'maternity', 'wedding'], styles: ['natural', 'bw'], factor: 0.7, weekdays: [1, 2, 3, 4, 5], commission: 15, rating: 4.9, reviews: 58, years: 5, color: '#4E7F55', photo: 'maayan-g', bio: 'מצלמת בגליל ובגולן. משפחות, שדות וחתונות קטנות בחוץ.' },
       { id: 'p8', name: 'נוי פרץ', tagline: 'תדמית לעסקים קטנים', areas: ['מרכז', 'שרון', 'ירושלים'], types: ['business', 'book', 'family'], styles: ['classic', 'moody'], factor: 0.58, weekdays: [0, 1, 2, 3, 4], commission: 15, rating: 4.7, reviews: 37, years: 4, color: '#6A5B8C', photo: 'noy-p', bio: 'עוזרת לעסקים להיראות כמו שהם באמת. סשנים קצרים וממוקדים.' }
     ];
+    const model = {
+      p3: { payType: 'salary', salary: 3000 },
+      p4: { scope: 'shoot' },
+      p5: { payType: 'salary', salary: 4000, scope: 'shoot' },
+      p6: { scope: 'shoot' },
+      p8: { payType: 'salary', salary: 2500, scope: 'shoot' }
+    };
+    P.forEach(p => Object.assign(p, { payType: 'commission', salary: 0, scope: 'full' }, model[p.id] || {}));
     const t = today();
     P.forEach((p, i) => {
       p.phone = '05' + (2 + (i % 6)) + '-' + String(1000000 + Math.floor(rnd() * 8999999)).slice(0, 7);
@@ -83,12 +103,12 @@ window.Store = (function () {
 
     const clients = ['משפחת אזולאי', 'דנה ויוסי', 'רחלי כהנא', 'אורית שמעוני', 'משפחת לוינסון', 'נגה ואלון', 'חן מלכה', 'שני ברק', 'משפחת דהן', 'עדי ואורי', 'מיכל טל', 'סיוון ונדב', 'משפחת פרידמן', 'אלה גבאי', 'הילה ושחר', 'רותם קליין'];
     const state = { photographers: P, bookings: [], seq: 1040, settings: { studioPhone: '0500000000', studioName: 'פריים' } };
-    for (let i = 0; i < 46; i++) {
-      const off = Math.floor(rnd() * 64) - 22;
+    for (let i = 0; i < 170; i++) {
+      const off = Math.floor(rnd() * 84) - 40;
       const d = addDays(t, off);
       if (d.getDay() === 6) continue;
       const p = pick(P.slice(1)) ;
-      const useP = rnd() < 0.18 ? P[0] : p;
+      const useP = rnd() < 0.12 ? P[0] : (p.payType === 'salary' || rnd() < 0.7) ? p : pick(P.filter(x => x.payType === 'salary'));
       const typeId = pick(useP.types);
       const ds = ymd(d);
       if (!canTake(state, useP, ds, typeId)) continue;
@@ -97,7 +117,7 @@ window.Store = (function () {
       state.bookings.push(mkBooking(state, {
         date: ds, typeId, photographerId: useP.id, status, area: pick(useP.areas), time: pick(TIMES),
         client: { name: pick(clients), phone: '05' + Math.floor(rnd() * 9) + '-' + Math.floor(1000000 + rnd() * 8999999), email: '', notes: '' },
-        createdAt: (created < t ? created : t).toISOString(), viaStudio: rnd() < 0.3
+        createdAt: status === 'sent' ? new Date(Date.now() - rnd() * 30 * 36e5).toISOString() : (created < t ? created : t).toISOString(), viaStudio: rnd() < 0.3
       }));
     }
     // בקשות שמחכות לשיבוץ / תגובה
@@ -115,6 +135,14 @@ window.Store = (function () {
         createdAt: addDays(t, -1).toISOString(), viaStudio: !x.pid
       }));
     });
+    // שלבי עריכה לצילומים שכבר בוצעו
+    state.bookings.filter(b => b.status === 'done').forEach(b => {
+      const age = Math.round((t - parse(b.date)) / 864e5);
+      const p = P.find(x => x.id === b.photographerId);
+      const first = firstPost(p);
+      const order = POST.map(x => x.id).slice(POST.findIndex(x => x.id === first));
+      b.post = age > (DELIVERY_DAYS[b.typeId] || 21) - 3 ? (rnd() < 0.92 ? 'delivered' : 'design') : order[Math.min(order.length - 2, Math.floor(rnd() * (order.length - 1)))];
+    });
     state.bookings.sort((a, b) => a.date.localeCompare(b.date));
     return state;
   }
@@ -126,8 +154,11 @@ window.Store = (function () {
     const history = [{ at: b.createdAt || new Date().toISOString(), text: b.viaStudio || !p ? 'הבקשה נכנסה לסטודיו' : `הבקשה נשלחה ישירות ל${p.name}` }];
     if (b.status === 'confirmed' || b.status === 'done') history.push({ at: b.createdAt, text: 'הצלמת אישרה' });
     if (b.status === 'declined') history.push({ at: b.createdAt, text: `${p.name} דחתה — דרוש שיבוץ מחדש` });
-    return Object.assign({ id, price, commissionPct: p ? p.commission : null, history, createdAt: new Date().toISOString() }, b);
+    return Object.assign({ id, price, commissionPct: p ? pctOf(p) : null, post: null, history, createdAt: new Date().toISOString() }, b);
   }
+
+  function pctOf(p) { return p.owner || p.payType === 'salary' ? 0 : p.commission; }
+  function firstPost(p) { return p && p.scope === 'shoot' && !p.owner ? 'raw' : 'editing'; }
 
   /* ---------- טעינה ושמירה ---------- */
   let state;
@@ -195,11 +226,12 @@ window.Store = (function () {
     const b = getB(id); if (!b) return;
     b.status = status;
     b.history.push({ at: now(), text: note || STATUS[status].name });
+    if (status === 'done' && !b.post) b.post = firstPost(getP(b.photographerId));
     save(); return b;
   }
   function assign(id, pid, note) {
     const b = getB(id), p = getP(pid); if (!b || !p) return;
-    b.photographerId = pid; b.price = p.prices[b.typeId] || b.price; b.commissionPct = p.commission;
+    b.photographerId = pid; b.price = p.prices[b.typeId] || b.price; b.commissionPct = pctOf(p);
     b.status = 'sent';
     b.history.push({ at: now(), text: note || `שובצה ל${p.name} ונשלחה לאישור` });
     save(); return b;
@@ -219,31 +251,57 @@ window.Store = (function () {
   }
   function newPhotographerId() { return 'p' + (Date.now() % 1e7).toString(36); }
 
+  /* ---------- עריכה ומסירה ---------- */
+  const postOf = id => POST.find(x => x.id === id);
+  function dueDate(b) { return ymd(addDays(parse(b.date), DELIVERY_DAYS[b.typeId] || 21)); }
+  /** מי אחראית כרגע: מזהה צלמת, 'studio' (את), או null אם נמסר */
+  function postOwner(b) {
+    if (!b.post || b.post === 'delivered') return null;
+    const p = getP(b.photographerId);
+    if (!p || p.owner) return 'studio';
+    if (p.scope === 'shoot') return b.post === 'raw' ? p.id : 'studio';
+    return p.id;
+  }
+  function isLate(b) { return !!b.post && b.post !== 'delivered' && dueDate(b) < todayStr(); }
+  function advancePost(id, by) {
+    const b = getB(id); if (!b || !b.post) return;
+    const i = POST.findIndex(x => x.id === b.post);
+    if (i >= POST.length - 1) return b;
+    b.post = POST[i + 1].id;
+    b.history.push({ at: now(), text: `${POST[i + 1].name}${by ? ' · ' + by : ''}` });
+    save(); return b;
+  }
+
   /* ---------- כסף ---------- */
   function money(b) {
     if (!b.photographerId || !b.price) return { gross: 0, mine: 0, own: false };
     const p = getP(b.photographerId);
     if (p && p.owner) return { gross: b.price, mine: b.price, own: true };
+    if (p && p.payType === 'salary') return { gross: b.price, mine: b.price, own: false, salaried: true };
     return { gross: b.price, mine: Math.round(b.price * (b.commissionPct || 0) / 100), own: false };
   }
   function monthStats(y, m) {
     const pre = `${y}-${pad(m + 1)}`;
     const list = state.bookings.filter(b => b.date.startsWith(pre) && (b.status === 'confirmed' || b.status === 'done'));
-    let commission = 0, own = 0, referred = 0, volume = 0;
+    let commission = 0, own = 0, referred = 0, volume = 0, salariedGross = 0, salariedCount = 0;
     const per = {};
     list.forEach(b => {
       const mm = money(b); volume += mm.gross;
-      if (mm.own) own += mm.mine; else { commission += mm.mine; referred++; }
+      if (mm.own) own += mm.mine;
+      else if (mm.salaried) { salariedGross += mm.gross; salariedCount++; }
+      else { commission += mm.mine; referred++; }
       per[b.photographerId] = per[b.photographerId] || { count: 0, mine: 0, gross: 0 };
       per[b.photographerId].count++; per[b.photographerId].mine += mm.mine; per[b.photographerId].gross += mm.gross;
     });
-    return { count: list.length, commission, own, referred, volume, per };
+    const salaries = state.photographers.filter(p => p.active && p.payType === 'salary').reduce((s, p) => s + (p.salary || 0), 0);
+    return { count: list.length, commission, own, referred, volume, per, salariedGross, salariedCount, salaries, net: commission + own + salariedGross - salaries };
   }
 
   load();
   return {
     get state() { return state; }, load, save, reset,
-    SHOOT_TYPES, AREAS, STYLES, TIMES, STATUS, BLOCKING,
+    SHOOT_TYPES, AREAS, STYLES, TIMES, STATUS, BLOCKING, PAY_TYPES, SCOPES, POST,
+    postOf, dueDate, postOwner, isLate, advancePost,
     ymd, parse, addDays, today, todayStr, typeOf,
     getP, getB, worksOn, dayState, canTake: (p, ds, t, ig) => canTake(state, p, ds, t, ig),
     availableFor, isBookableDate, nextFreeDates,
