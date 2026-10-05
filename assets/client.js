@@ -277,7 +277,7 @@
     const m = modal(`<div class="profile">
       <div class="pf-img"><img src="${photo(p, 700, 880)}" alt="${esc(p.name)}"></div>
       <div class="pf-body">
-        <p class="kicker mono">${p.owner ? 'הצלמת הראשית' : 'צלמת בקולקטיב'} · ${p.years} שנות ניסיון</p>
+        <p class="kicker mono">${p.owner ? 'הצלמת הראשית' : 'צלמת בצוות'} · ${p.years} שנות ניסיון</p>
         <h2>${esc(p.name)}</h2>
         <p class="pf-tag">${esc(p.tagline)}</p>
         <p>${esc(p.bio)}</p>

@@ -1,4 +1,4 @@
-/* שולחן העבודה של מנהלת הקולקטיב */
+/* שולחן העבודה של מנהלת פריים */
 (function () {
   const S = Store, { $, $$, esc, money, dateLong, dateShort, dateMono, ago, photo, typeName, waLink, calendar, modal, toast, statusChip, monthNames } = UI;
   UI.demoBar('admin');
@@ -48,9 +48,9 @@
 
     main.innerHTML = head(`${dateMono(S.todayStr())} · ${monthNames[t.getMonth()]}`, `${hello}, ${esc(owner().name.split(' ')[0])}.`) + `
       <section class="kpis">
-        <div class="kpi kpi-hero"><span>עמלות מהקולקטיב · ${monthNames[t.getMonth()]}</span><b class="mono">${money(st.commission)}</b><small>${st.referred} צילומים שהעברת · ${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta)}% מהחודש שעבר</small></div>
+        <div class="kpi kpi-hero"><span>עמלות מהצלמות · ${monthNames[t.getMonth()]}</span><b class="mono">${money(st.commission)}</b><small>${st.referred} צילומים שהעברת · ${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta)}% מהחודש שעבר</small></div>
         <div class="kpi"><span>הצילומים שלי החודש</span><b class="mono">${money(st.own)}</b><small>${st.count - st.referred} צילומים</small></div>
-        <div class="kpi"><span>מחזור הקולקטיב</span><b class="mono">${money(st.volume)}</b><small>${st.count} צילומים מאושרים</small></div>
+        <div class="kpi"><span>מחזור כל הצלמות</span><b class="mono">${money(st.volume)}</b><small>${st.count} צילומים מאושרים</small></div>
         <div class="kpi ${todo.length ? 'kpi-alert' : ''}"><span>דורש טיפול</span><b class="mono">${todo.length}</b><small>${freeToday} צלמות פנויות היום</small></div>
       </section>
       <div class="desk-grid">
@@ -64,7 +64,7 @@
         </section>
       </div>
       <section class="panel insight">
-        <p class="mono kicker">לפני הקולקטיב</p>
+        <p class="mono kicker">לפני פריים</p>
         <p>החודש הפנית <b>${st.referred}</b> לקוחות לצלמות אחרות. פעם זה היה שווה <b>₪0</b>. עכשיו זה <b class="red">${money(st.commission)}</b> — בלי לצלם פריים אחד.</p>
       </section>`;
     bindRows();
@@ -106,7 +106,7 @@
     const mm = S.money(b);
     const avail = S.availableFor(b.date, b.typeId, b.id).filter(x => !p || x.id !== p.id);
     const canReassign = b.date >= S.todayStr() && !['done', 'cancelled'].includes(b.status);
-    const pMsg = x => `היי ${x.name.split(' ')[0]}, יש לי בשבילך צילום מהקולקטיב 📷\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\nאזור: ${b.area}\nלקוח/ה: ${b.client.name}\n${b.client.notes ? 'הערות: ' + b.client.notes + '\n' : ''}מחיר: ${money(x.prices[b.typeId])}\nאפשר לאשר בפורטל: ${location.origin}${location.pathname.replace('admin.html', '')}portal.html?p=${x.id}`;
+    const pMsg = x => `היי ${x.name.split(' ')[0]}, יש לי בשבילך צילום דרך פריים 📷\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\nאזור: ${b.area}\nלקוח/ה: ${b.client.name}\n${b.client.notes ? 'הערות: ' + b.client.notes + '\n' : ''}מחיר: ${money(x.prices[b.typeId])}\nאפשר לאשר בפורטל: ${location.origin}${location.pathname.replace('admin.html', '')}portal.html?p=${x.id}`;
     const m = modal(`<div class="bk">
       <header class="bk-head">
         <p class="mono kicker">${b.id} · נוצרה ${ago(b.createdAt)}${b.viaStudio ? ' · דרך הסטודיו' : ''}</p>
@@ -152,7 +152,7 @@
 
   /* ---------- יומן ---------- */
   function cal() {
-    main.innerHTML = head('SCHEDULE', 'יומן הקולקטיב') + `
+    main.innerHTML = head('SCHEDULE', 'היומן המשותף') + `
       <div class="legend legend-light">${P().filter(p => p.active).map(p => `<span><i class="dot" style="--c:${p.color}"></i>${esc(p.name.split(' ')[0])}</span>`).join('')}</div>
       <section class="panel cal-big" id="bigCal"></section>`;
     const c = calendar($('#bigCal'), {
@@ -224,7 +224,7 @@
         <label class="fld"><span>שם</span><input name="name" required value="${esc(p.name)}"></label>
         <label class="fld"><span>טלפון</span><input name="phone" value="${esc(p.phone)}"></label>
         <label class="fld fld-wide"><span>שורת תיאור</span><input name="tagline" value="${esc(p.tagline)}"></label>
-        ${p.owner ? '' : `<label class="fld"><span>עמלה לקולקטיב (%)</span><input name="commission" type="number" min="0" max="50" value="${p.commission}"></label>`}
+        ${p.owner ? '' : `<label class="fld"><span>עמלה לפריים (%)</span><input name="commission" type="number" min="0" max="50" value="${p.commission}"></label>`}
         <label class="fld"><span>צבע ביומן</span><input name="color" type="color" value="${p.color}"></label>
       </div>
       <h4 class="side-h">ימי עבודה קבועים</h4>
@@ -272,7 +272,7 @@
           <div class="bar-stack" style="--h:${(s.commission + s.own) / max * 100}%">
             <span class="bar-own" style="flex:${s.own}"></span><span class="bar-com" style="flex:${s.commission}"></span></div>
           <b class="mono">${money(s.commission + s.own)}</b><span>${monthNames[d.getMonth()]}${d.getMonth() === t.getMonth() ? ' · עכשיו' : ''}</span></div>`).join('')}</div>
-        <div class="legend legend-light"><span><i class="lg" style="background:var(--red)"></i>עמלות מהקולקטיב</span><span><i class="lg" style="background:var(--ink)"></i>הצילומים שלך</span></div>
+        <div class="legend legend-light"><span><i class="lg" style="background:var(--red)"></i>עמלות מהצלמות</span><span><i class="lg" style="background:var(--ink)"></i>הצילומים שלך</span></div>
       </section>
       <section class="panel">
         <h2 class="p-h">עמלות לפי צלמת · ${monthNames[t.getMonth()]}</h2>

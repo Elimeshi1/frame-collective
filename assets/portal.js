@@ -26,7 +26,7 @@
       <section class="panel pt-earn">
         <div><span>צילומים ב${monthNames[t.getMonth()]}</span><b>${st.count}</b></div>
         <div><span>הכנסה ברוטו</span><b>${money(st.gross)}</b></div>
-        <div><span>נטו אחרי עמלת קולקטיב (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>
+        <div><span>נטו אחרי עמלת פריים (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>
       </section>
       <div class="pt-grid">
         <div>
@@ -43,7 +43,7 @@
             ${upcoming.length ? upcoming.map(b => `<article class="req">
               <h3>${dateShort(b.date)} · ${typeName(b.typeId)}</h3>
               <p>${esc(b.client.name)} · <a href="tel:${esc(b.client.phone)}" class="mono">${esc(b.client.phone)}</a> · ${esc(b.area || '')}${b.time ? ' · ' + b.time : ''}</p>
-              <div class="req-act"><a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${p.name} מקולקטיב פריים 📷 רציתי לתאם איתך את הצילום ב${dateLong(b.date)}`)}">וואטסאפ ללקוח/ה</a></div>
+              <div class="req-act"><a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${p.name} מפריים 📷 רציתי לתאם איתך את הצילום ב${dateLong(b.date)}`)}">וואטסאפ ללקוח/ה</a></div>
             </article>`).join('') : '<p class="muted pad">אין צילומים מאושרים בקרוב.</p>'}
           </section>
         </div>
@@ -75,7 +75,7 @@
       }
     });
 
-    $$('[data-ok]').forEach(b => b.onclick = () => { S.setStatus(b.dataset.ok, 'confirmed', `${p.name} אישרה`); toast('אישרת! הלקוח/ה ומנהלת הקולקטיב יקבלו עדכון'); render(); });
+    $$('[data-ok]').forEach(b => b.onclick = () => { S.setStatus(b.dataset.ok, 'confirmed', `${p.name} אישרה`); toast('אישרת! הלקוח/ה והמנהלת יקבלו עדכון'); render(); });
     $$('[data-no]').forEach(b => b.onclick = () => { S.setStatus(b.dataset.no, 'declined', `${p.name} דחתה — דרוש שיבוץ מחדש`); toast('הבקשה חזרה למנהלת לשיבוץ מחדש'); render(); });
   }
 

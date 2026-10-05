@@ -1,9 +1,9 @@
 /* ============================================================
-   פריים · קולקטיב צלמות — שכבת נתונים (דמו, נשמר ב-localStorage)
+   פריים · סטודיו צילום — שכבת נתונים (דמו, נשמר ב-localStorage)
    בגרסה אמיתית השכבה הזו מוחלפת ב-Supabase / Firebase.
    ============================================================ */
 window.Store = (function () {
-  const KEY = 'frame-collective-v1';
+  const KEY = 'frame-studio-v2';
 
   /* ---------- תאריכים ---------- */
   const pad = n => String(n).padStart(2, '0');
@@ -58,7 +58,7 @@ window.Store = (function () {
     const rnd = mulberry32(20261005);
     const pick = arr => arr[Math.floor(rnd() * arr.length)];
     const P = [
-      { id: 'p0', owner: true, name: 'מירב אלון', tagline: 'הצלמת הראשית · מנהלת הקולקטיב', areas: ['מרכז', 'שרון', 'ירושלים', 'שפלה'], types: ['wedding', 'barmitzvah', 'newborn', 'maternity', 'family'], styles: ['moody', 'classic'], factor: 1, weekdays: [0, 1, 2, 3, 4], commission: 0, rating: 5.0, reviews: 212, years: 14, color: '#C8371D', photo: 'meirav', bio: 'מצלמת אנשים כבר ארבע־עשרה שנה. בניתי את הקולקטיב כדי שאף לקוחה לא תישאר בלי צלמת טובה — גם כשאני תפוסה.' },
+      { id: 'p0', owner: true, name: 'רחל פרלמוטר', tagline: 'הצלמת הראשית · מנהלת פריים', areas: ['מרכז', 'שרון', 'ירושלים', 'שפלה'], types: ['wedding', 'barmitzvah', 'newborn', 'maternity', 'family'], styles: ['moody', 'classic'], factor: 1, weekdays: [0, 1, 2, 3, 4], commission: 0, rating: 5.0, reviews: 212, years: 14, color: '#C8371D', photo: 'meirav', bio: 'מצלמת אנשים כבר ארבע־עשרה שנה. בניתי את פריים כדי שאף לקוחה לא תישאר בלי צלמת טובה — גם כשאני תפוסה.' },
       { id: 'p1', name: 'תמר כהן', tagline: 'אור טבעי, ילדים אמיתיים', areas: ['מרכז', 'שרון'], types: ['family', 'newborn', 'maternity', 'book'], styles: ['natural'], factor: 0.72, weekdays: [0, 1, 2, 3, 4, 5], commission: 15, rating: 4.9, reviews: 87, years: 6, color: '#D9962B', photo: 'tamar-c', bio: 'רגעים לא מבוימים. אני נותנת לילדים לרוץ ומצלמת את מה שקורה ביניהם.' },
       { id: 'p2', name: 'אביטל רוזן', tagline: 'חתונות בגובה העיניים', areas: ['ירושלים', 'שפלה', 'מרכז'], types: ['wedding', 'barmitzvah', 'brit'], styles: ['bw', 'classic'], factor: 0.8, weekdays: [0, 1, 2, 3, 4], commission: 12, rating: 4.8, reviews: 64, years: 8, color: '#5B6E8C', photo: 'avital-r', bio: 'צילום דוקומנטרי לאירועים. מעט הכוונה, הרבה עיניים פתוחות.' },
       { id: 'p3', name: 'הדס מזרחי', tagline: 'ניו בורן בסטודיו מחומם', areas: ['שרון', 'מרכז'], types: ['newborn', 'maternity', 'family'], styles: ['natural', 'classic'], factor: 0.65, weekdays: [0, 1, 2, 3], commission: 15, rating: 4.9, reviews: 143, years: 7, color: '#7A8C5B', photo: 'hadas-m', bio: 'סטודיו ביתי ברעננה, ציוד חימום ותנוחות בטוחות. סבלנות אינסופית.' },
