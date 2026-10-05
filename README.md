@@ -34,3 +34,10 @@ GitHub Pages שומר קבצים בדפדפן ל־10 דקות. לכן כל קי�
 ```sh
 V=$(date +%Y%m%d%H%M); sed -i '' -E "s#\?v=[0-9]+#?v=$V#g" index.html admin.html portal.html
 ```
+
+## תמונת תצוגה מקדימה (וואטסאפ / פייסבוק)
+`og-image.jpg` (1200×630) נוצרת מ־`tools/og.html`. לרינדור מחדש:
+```sh
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --window-size=1200,630 --virtual-time-budget=8000 --screenshot="$PWD/tools/og.png" "file://$PWD/tools/og.html"
+sips -s format jpeg -s formatOptions 85 tools/og.png --out og-image.jpg && rm tools/og.png
+```

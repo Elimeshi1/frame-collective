@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- מקור תמונת התצוגה המקדימה (og-image.jpg). לרינדור מחדש: ראו README -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;900&family=IBM+Plex+Sans+Hebrew:wght@400;500&family=IBM+Plex+Mono:wght@400&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #141110; color: #EEE6D8; font-family: 'IBM Plex Sans Hebrew', sans-serif; position: relative;
+    background-image: radial-gradient(ellipse 60% 70% at 100% 0%, rgba(200,55,29,.32), transparent 70%);
+  }
+  /* חורי פילם למעלה ולמטה */
+  .edge { position: absolute; inset-inline: 0; height: 34px; background: #0B0908;
+    background-image: linear-gradient(to left, #3A322B 0 18px, transparent 18px); background-size: 34px 12px; background-repeat: repeat-x; background-position: 0 11px; }
+  .edge.top { top: 0; } .edge.bot { bottom: 0; }
+  .edge span { position: absolute; top: 8px; font: 13px 'IBM Plex Mono', monospace; color: #D9962B; background: #0B0908; padding: 0 10px; }
+  .wrap { position: absolute; inset: 34px 0; display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; padding: 0 72px; gap: 40px; }
+  .logo { display: flex; align-items: center; gap: 22px; margin-bottom: 30px; }
+  .mark { width: 74px; height: 54px; border: 9px solid #C8371D; position: relative; }
+  .mark::after { content: ''; position: absolute; inset: 9px; background: #EEE6D8; }
+  .word { font: 900 104px/1 'Frank Ruhl Libre', serif; letter-spacing: -.02em; }
+  h1 { font: 900 64px/1.05 'Frank Ruhl Libre', serif; letter-spacing: -.01em; }
+  h1 em { color: #C8371D; font-style: italic; font-weight: 500; }
+  p { font-size: 26px; color: #BDB2A2; margin-top: 22px; }
+  .frames { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; transform: rotate(-3deg); }
+  .f { background: #0B0908; padding: 10px 10px 26px; position: relative; }
+  .f img { width: 100%; aspect-ratio: 4/5; object-fit: cover; filter: grayscale(1) contrast(1.08); display: block; }
+  .f b { position: absolute; bottom: 6px; inset-inline-start: 10px; font: 400 12px 'IBM Plex Mono', monospace; color: #D9962B; }
+  .f.sel img { filter: none; }
+  .f.sel svg { position: absolute; inset: -14px; width: calc(100% + 28px); height: calc(100% + 28px); overflow: visible; }
+  .f.sel path { fill: none; stroke: #C8371D; stroke-width: 6; stroke-linecap: round; }
+</style>
+</head>
+<body>
+  <div class="edge top"><span style="inset-inline-end:80px;letter-spacing:.1em">ROLL 01 ▸ 12A</span></div>
+  <div class="wrap">
+    <div>
+      <div class="logo"><span class="mark"></span><span class="word">פריים</span></div>
+      <h1>כל הצלמות הטובות.<br><em>יומן אחד.</em></h1>
+      <p>בוחרים צילום ותאריך — ורואים מי פנויה</p>
+    </div>
+    <div class="frames">
+      <div class="f"><img src="https://picsum.photos/seed/hadas-m/360/450"><b>01A ▸</b></div>
+      <div class="f sel"><img src="https://picsum.photos/seed/tamar-c/360/450"><b>02A ▸</b>
+        <svg viewBox="0 0 200 240" preserveAspectRatio="none"><path d="M104 10 C 162 6, 194 52, 191 120 C 188 192, 148 231, 97 230 C 40 229, 9 186, 10 118 C 11 58, 46 14, 112 12 C 132 12, 150 19, 163 28"/></svg></div>
+    </div>
+  </div>
+  <div class="edge bot"><span style="inset-inline-start:80px;font-family:'IBM Plex Sans Hebrew';font-size:14px;top:6px">סטודיו צילום</span></div>
+</body>
+</html>
