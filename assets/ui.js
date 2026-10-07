@@ -119,12 +119,16 @@ window.UI = (function () {
       document.documentElement.classList.add('theme-swap');
       T.set(b.dataset.themeId); mark(true);
       setTimeout(() => document.documentElement.classList.remove('theme-swap'), 450);
-      toast('עיצוב: ' + T.byId(T.current).name);
+      toast('עיצוב: ' + T.byId(T.current).name + ' · ' + T.brand);
     });
     mark(true);
   }
 
+  /* שם הסטודיו לפי העיצוב הנוכחי */
+  const brand = () => (window.Themes ? Themes.brand : 'פריים');
+  const brandify = s => (window.Themes ? Themes.brandify(s) : s);
+
   const statusChip = s => `<span class="chip-status st-${s}">${S.STATUS[s].short}</span>`;
 
-  return { $, $$, esc, money, dateLong, dateShort, dateMono, ago, photo, frameNo, typeName, waLink, grease, calendar, modal, toast, demoBar, statusChip, dayNames, dayFull, monthNames };
+  return { $, $$, esc, money, dateLong, dateShort, dateMono, ago, photo, frameNo, typeName, waLink, grease, calendar, modal, toast, demoBar, statusChip, brand, brandify, dayNames, dayFull, monthNames };
 })();

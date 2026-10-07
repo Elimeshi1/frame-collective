@@ -29,6 +29,7 @@
     $$('#nav button').forEach(b => b.onclick = () => show(b.dataset.view));
     const h = location.hash.slice(1); show(['desk', 'inbox', 'cal', 'post', 'team', 'money', 'settings'].includes(h) ? h : 'desk');
     document.addEventListener('store:changed', () => { show(view); toast('התקבל עדכון חדש'); });
+    document.addEventListener('theme:changed', () => show(view));
   }
   function show(v) {
     view = v; history.replaceState(null, '', '#' + v);
@@ -69,7 +70,7 @@
         </section>
       </div>
       <section class="panel insight">
-        <p class="mono kicker">לפני פריים</p>
+        <p class="mono kicker">לפני ${esc(UI.brand())}</p>
         <p>החודש הפנית <b>${st.referred + st.salariedCount}</b> לקוחות לצלמות אחרות. פעם זה היה שווה <b>₪0</b>. עכשיו זה <b class="red">${money(st.net - st.own)}</b> — בלי לצלם פריים אחד.</p>
       </section>`;
     bindRows();
@@ -111,7 +112,7 @@
     const mm = S.money(b);
     const avail = S.availableFor(b.date, b.typeId, b.id).filter(x => !p || x.id !== p.id);
     const canReassign = b.date >= S.todayStr() && !['done', 'cancelled'].includes(b.status);
-    const pMsg = x => `היי ${x.name.split(' ')[0]}, יש לי בשבילך צילום דרך פריים 📷\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\nאזור: ${b.area}\nלקוח/ה: ${b.client.name}\n${b.client.notes ? 'הערות: ' + b.client.notes + '\n' : ''}מחיר: ${money(x.prices[b.typeId])}\nאפשר לאשר בפורטל: ${location.origin}${location.pathname.replace('admin.html', '')}portal.html?p=${x.id}`;
+    const pMsg = x => `היי ${x.name.split(' ')[0]}, יש לי בשבילך צילום דרך ${UI.brand()} 📷\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\nאזור: ${b.area}\nלקוח/ה: ${b.client.name}\n${b.client.notes ? 'הערות: ' + b.client.notes + '\n' : ''}מחיר: ${money(x.prices[b.typeId])}\nאפשר לאשר בפורטל: ${location.origin}${location.pathname.replace('admin.html', '')}portal.html?p=${x.id}`;
     const m = modal(`<div class="bk">
       <header class="bk-head">
         <p class="mono kicker">${b.id} · נוצרה ${ago(b.createdAt)}${b.viaStudio ? ' · דרך הסטודיו' : ''}</p>
@@ -125,7 +126,7 @@
           <p class="bk-line"><span>טלפון</span><a href="tel:${esc(b.client.phone)}" class="mono">${esc(b.client.phone)}</a></p>
           ${b.client.email ? `<p class="bk-line"><span>אימייל</span><span>${esc(b.client.email)}</span></p>` : ''}
           ${b.client.notes ? `<p class="bk-notes">“${esc(b.client.notes)}”</p>` : ''}
-          <a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${owner().name} מפריים, לגבי בקשת הצילום שלך (${b.id})`)}">וואטסאפ ללקוח/ה</a>
+          <a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${owner().name} מ${UI.brand()}, לגבי בקשת הצילום שלך (${b.id})`)}">וואטסאפ ללקוח/ה</a>
           <h4 class="side-h">היסטוריה</h4>
           <ol class="hist">${b.history.slice().reverse().map(h => `<li><span class="mono">${ago(h.at)}</span>${esc(h.text)}</li>`).join('')}</ol>
         </section>

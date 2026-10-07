@@ -18,8 +18,7 @@
 /* מבנה */
 .desk { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 34px); }
 .side { background: var(--dark); color: #bdb3a5; padding: 26px 18px; display: flex; flex-direction: column; gap: 22px; position: sticky; top: 34px; height: calc(100vh - 34px); }
-.side .logo-word { color: var(--cream); }
-.side .logo-mark::after { background: var(--dark); }
+.side .logo { color: var(--cream); }
 .side-who { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--cream); margin: 0; padding: 12px 0; border-block: 1px solid rgba(238,230,216,.1); }
 .side-who img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; filter: grayscale(1); }
 .side-who small { color: #857a6d; }

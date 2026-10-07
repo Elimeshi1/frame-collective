@@ -196,7 +196,7 @@
       <div class="fc-img"><img src="${photo(p)}" alt="${esc(p.name)}" loading="lazy">${p.owner ? '<span class="fc-badge">הצלמת הראשית</span>' : ''}</div>
       <div class="fc-edge mono"><span>${frameNo(idx)}</span><span>▸</span><span>${p.rating.toFixed(1)}★</span></div>
       <div class="fc-body">
-        <h4>${esc(p.name)}</h4><p class="fc-tag">${esc(p.tagline)}</p>
+        <h4>${esc(p.name)}</h4><p class="fc-tag">${esc(UI.brandify(p.tagline))}</p>
         <p class="fc-meta">${p.areas.slice(0, 3).join(' · ')}</p>
         <div class="fc-foot"><span class="fc-price mono">${money(p.prices[w.typeId])}</span><button class="link" data-profile>פרופיל</button></div>
       </div>${sel ? grease : ''}</article>`;
@@ -217,7 +217,7 @@
         </form>
         <aside class="ticket">
           <p class="mono ticket-h">REQUEST · ${dateMono(w.date)}</p>
-          ${p ? `<div class="ticket-p"><img src="${photo(p, 120, 120)}" alt=""><div><b>${esc(p.name)}</b><span>${esc(p.tagline)}</span></div></div>` : `<div class="ticket-p"><span class="ticket-q">?</span><div><b>הסטודיו יבחר</b><span>הצלמת הראשית תשבץ עבורכם</span></div></div>`}
+          ${p ? `<div class="ticket-p"><img src="${photo(p, 120, 120)}" alt=""><div><b>${esc(p.name)}</b><span>${esc(UI.brandify(p.tagline))}</span></div></div>` : `<div class="ticket-p"><span class="ticket-q">?</span><div><b>הסטודיו יבחר</b><span>הצלמת הראשית תשבץ עבורכם</span></div></div>`}
           <dl>
             <div><dt>צילום</dt><dd>${typeName(w.typeId)}</dd></div>
             <div><dt>תאריך</dt><dd>${dateLong(w.date)}</dd></div>
@@ -242,7 +242,7 @@
   /* ---------- סיום ---------- */
   function renderDone() {
     const b = w.done, p = b.photographerId ? S.getP(b.photographerId) : null;
-    const msg = `שלום, שלחתי בקשה לצילום באתר פריים.\nמספר בקשה: ${b.id}\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\n${p ? 'צלמת: ' + p.name : 'ביקשתי שתבחרו עבורי צלמת'}\nשם: ${b.client.name}`;
+    const msg = `שלום, שלחתי בקשה לצילום באתר ${UI.brand()}.\nמספר בקשה: ${b.id}\n${typeName(b.typeId)} · ${dateLong(b.date)}${b.time ? ' · ' + b.time : ''}\n${p ? 'צלמת: ' + p.name : 'ביקשתי שתבחרו עבורי צלמת'}\nשם: ${b.client.name}`;
     wiz.innerHTML = `<div class="done">
       <div class="print">
         <div class="print-img">${p ? `<img src="${photo(p, 500, 380)}" alt="">` : '<div class="print-blank">?</div>'}</div>
@@ -276,7 +276,7 @@
         <div class="pc-cap">
           <span class="mono pc-n">${frameNo(idx)}</span>
           <h3>${esc(p.name)}${p.owner ? ' <em>· הראשית</em>' : ''}</h3>
-          <p>${esc(p.tagline)}</p>
+          <p>${esc(UI.brandify(p.tagline))}</p>
           <p class="pc-meta">${p.rating.toFixed(1)}★ · ${p.years} שנים · מ־${money(teamType ? p.prices[teamType] : Math.min(...prices))}</p>
         </div></article>`;
     }).join('');
@@ -289,8 +289,8 @@
       <div class="pf-body">
         <p class="kicker mono">${p.owner ? 'הצלמת הראשית' : 'צלמת בצוות'} · ${p.years} שנות ניסיון</p>
         <h2>${esc(p.name)}</h2>
-        <p class="pf-tag">${esc(p.tagline)}</p>
-        <p>${esc(p.bio)}</p>
+        <p class="pf-tag">${esc(UI.brandify(p.tagline))}</p>
+        <p>${esc(UI.brandify(p.bio))}</p>
         <p class="pf-meta"><b>${p.rating.toFixed(1)}★</b> מתוך ${p.reviews} ביקורות · ${p.areas.join(', ')}</p>
         <p class="pf-meta">סגנון: ${p.styles.map(s => S.STYLES.find(x => x.id === s).name).join(' · ')}</p>
         <table class="prices">${p.types.map(t => `<tr><td>${typeName(t)}</td><td class="mono">${money(p.prices[t])}</td></tr>`).join('')}</table>
@@ -315,5 +315,6 @@
   }
 
   document.addEventListener('store:changed', () => { hero(); renderTeam(); if (!w.done) render(); });
+  document.addEventListener('theme:changed', () => { renderTeam(); if (!w.done) render(); });
   hero(); render(); renderTeam();
 })();
