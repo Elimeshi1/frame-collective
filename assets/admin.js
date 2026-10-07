@@ -5,7 +5,7 @@
 
   /* ---------- כניסה ---------- */
   const AUTH = 'frame-admin-ok';
-  function enter() { $('#gate').hidden = true; $('#desk').hidden = false; boot(); }
+  function enter() { $('#gate').hidden = true; $('#deskWrap').hidden = false; boot(); }
   $('#gateForm').onsubmit = e => {
     e.preventDefault();
     if ($('#pin').value === '1234') { try { sessionStorage.setItem(AUTH, 1); } catch (er) { } enter(); }

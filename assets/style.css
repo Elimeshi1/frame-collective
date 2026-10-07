@@ -107,6 +107,51 @@ p { margin: 0 0 .8em; }
 .demobar a.on { background: var(--red); color: var(--cream); }
 .demobar-tag { font-family: var(--mono); font-size: 11px; color: var(--red); margin-left: 8px; }
 
+/* ---------- סרגל עיצובים — ניטרלי, נראה אותו דבר בכל העיצובים ---------- */
+.themebar {
+  position: relative; z-index: 61; display: flex; align-items: center; gap: 10px;
+  background: #0A0908; color: #A79D90; padding: 7px 12px;
+  font: 500 13px/1 system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; letter-spacing: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+}
+.tb-tag {
+  flex-shrink: 0; font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .08em; color: #EDE6DA;
+  padding: 6px 9px; border: 1px solid rgba(255, 255, 255, .16); border-radius: 4px;
+}
+.tb-tag b { color: #F2B33D; font-weight: 600; }
+.tb-list {
+  flex: 1; min-width: 0; display: flex; gap: 3px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
+  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(to left, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+  padding: 0 14px;
+}
+.tb-list::-webkit-scrollbar { display: none; }
+.tb-list > :first-child { margin-inline-start: auto; }
+.tb-list > :last-child { margin-inline-end: auto; }
+.tb {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  background: none; border: 1px solid transparent; color: inherit; font: inherit;
+  padding: 5px 11px 5px 9px; border-radius: 99px; transition: background .15s, color .15s, border-color .15s;
+}
+.tb:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.tb.on { background: #F4EFE6; color: #111; border-color: #F4EFE6; }
+.tb-sw {
+  width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+  background: conic-gradient(var(--a) 0 180deg, var(--b) 180deg 270deg, var(--c) 270deg);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .28), inset 0 0 0 1px rgba(0, 0, 0, .12);
+}
+.tb.on .tb-sw { box-shadow: 0 0 0 1px rgba(0, 0, 0, .35); }
+.tb-n { font: 500 10px/1 ui-monospace, Menlo, monospace; opacity: .5; }
+.tb:focus-visible { outline: 2px solid #F2B33D; outline-offset: 1px; }
+/* מעבר רך בזמן החלפת עיצוב */
+html.theme-swap body { animation: themeSwap .45s ease-out; }
+@keyframes themeSwap { from { opacity: .35; } }
+@media (max-width: 560px) {
+  .themebar { padding: 6px 8px; gap: 6px; }
+  .tb-tag { padding: 5px 7px; }
+  .tb-n { display: none; }
+}
+
 /* ---------- כותרת ---------- */
 .topbar {
   display: flex; align-items: center; gap: 24px; padding: 18px var(--gut);
