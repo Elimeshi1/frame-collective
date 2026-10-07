@@ -110,7 +110,7 @@
 .hx-reel-no { position: absolute; top: 14px; inset-inline-start: 18px; z-index: 2; font-size: 11px; letter-spacing: .2em; color: rgba(255, 255, 255, .55); }
 .hx-leader { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; transition: opacity .7s;
   background: linear-gradient(transparent calc(50% - 1px), #8a8a8a calc(50% - 1px) calc(50% + 1px), transparent 0), linear-gradient(90deg, transparent calc(50% - 1px), #8a8a8a calc(50% - 1px) calc(50% + 1px), transparent 0), radial-gradient(circle, #3a3a3a, #161616 75%); }
-.hx-leader.done { opacity: 0; pointer-events: none; }
+.hx-leader.hx-gone { opacity: 0; pointer-events: none; }
 @property --sw { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 .hx-leader i { position: absolute; width: min(44%, 300px); aspect-ratio: 1; border-radius: 50%; border: 3px solid #bbb; box-shadow: 0 0 0 10px rgba(255, 255, 255, .06); background: conic-gradient(rgba(255, 255, 255, .22) var(--sw), transparent 0); animation: noirSweep 1s linear infinite; }
 @keyframes noirSweep { to { --sw: 360deg; } }
@@ -436,6 +436,10 @@
 [data-theme="cyanotype"] .how-grid { gap: 46px; border-top: 0; }
 [data-theme="cyanotype"] .how-grid article { position: relative; border: 1px dashed rgba(255, 255, 255, .45) !important; padding: 22px !important; background: rgba(255, 255, 255, .03); }
 [data-theme="cyanotype"] .how-grid article:not(:last-child)::after { content: '←'; position: absolute; top: 50%; inset-inline-end: -36px; transform: translateY(-50%); font-family: var(--mono); font-size: 26px; color: var(--amber); }
+@media (max-width: 860px) {
+  [data-theme="cyanotype"] .how-grid { gap: 40px; }
+  [data-theme="cyanotype"] .how-grid article:not(:last-child)::after { content: '↓'; top: auto; bottom: -36px; inset-inline-end: 50%; transform: translateX(50%); }
+}
 /* סטודיו לבן: ציר זמן אנכי */
 [data-theme="studio"] .how-grid { grid-template-columns: 1fr; max-width: 760px; gap: 0; position: relative; }
 [data-theme="studio"] .how-grid::before { content: ''; position: absolute; top: 30px; bottom: 30px; inset-inline-start: 50px; width: 2px; background: var(--line); }
@@ -472,4 +476,26 @@
 /* מי שביקשו פחות תנועה — בלי אנימציות רציפות */
 @media (prefers-reduced-motion: reduce) {
   .hero--x *, .hero--x *::before, .hero--x *::after, [data-theme="polaroid"] .print-card { animation-duration: .01s !important; animation-iteration-count: 1 !important; transition-duration: .01s !important; }
+}
+
+/* ============================================================
+   הצלמות בטלפון
+   ============================================================ */
+@media (max-width: 560px) {
+  [data-theme="magazine"] .print-card, [data-theme="magazine"] .print-card:nth-child(n) { grid-template-columns: minmax(0, 1fr) 92px; gap: 14px; padding: 14px 0; }
+  [data-theme="magazine"] .pc-cap { grid-template-columns: 46px minmax(0, 1fr); gap: 0 10px; }
+  [data-theme="magazine"] .pc-n { font-size: 28px; grid-row: span 3; }
+  [data-theme="magazine"] .pc-cap h3 { font-size: 24px; }
+  [data-theme="magazine"] .pc-cap p:not(.pc-meta) { display: block; font-size: 14px; }
+  [data-theme="magazine"] .pc-meta { grid-column: 2; grid-row: auto; text-align: start; letter-spacing: 0; }
+  [data-theme="retro"] .sheet { grid-template-columns: 1fr 1fr; gap: 16px; }
+  [data-theme="retro"] .pc-cap h3 { font-size: 14px; }
+  [data-theme="retro"] .pc-n, [data-theme="retro"] .pc-deco { font-size: 7px; }
+  [data-theme="noir"] .sheet { grid-template-columns: 1fr 1fr; gap: 30px 12px; padding: 16px 10px; }
+  [data-theme="noir"] .pc-cap { margin: -22px 4% 0; padding: 6px; }
+  [data-theme="noir"] .pc-cap h3 { font-size: 12px; letter-spacing: 0; }
+  [data-theme="noir"] .pc-cap p:not(.pc-meta) { display: none; }
+  [data-theme="polaroid"] .hx-pol-pile.pp1 { display: none; }
+  [data-theme="polaroid"] .print-card, [data-theme="polaroid"] .print-card:nth-child(n) { flex-basis: 180px; }
+  [data-theme="neon"] .print-card, [data-theme="neon"] .print-card:nth-child(n) { flex-basis: 200px; }
 }

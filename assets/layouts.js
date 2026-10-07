@@ -142,7 +142,7 @@ window.Layouts = (function () {
     let k = 0, n = 3;
     const say = () => { const p = c.ps[k]; subs.textContent = `— ${p.name}: «${p.tagline}»`; no.textContent = String(k + 1).padStart(2, '0'); };
     say();
-    every(1000, () => { if (n > 1) lead.textContent = --n; else leader.classList.add('done'); });
+    every(1000, () => { if (n > 1) lead.textContent = --n; else leader.classList.add('hx-gone'); });
     every(4500, () => { shots[k].classList.remove('on'); k = (k + 1) % shots.length; shots[k].classList.add('on'); say(); });
   }
 
