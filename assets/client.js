@@ -8,8 +8,16 @@
   const team = () => S.state.photographers.filter(p => p.active);
 
   /* ---------- HERO: פילים ---------- */
+  const heroEl = $('#hero'), heroOrig = heroEl.innerHTML;
   function hero() {
     const ps = team();
+    const ctx = {
+      ps, n: ps.length, brand: UI.brand(), photo, esc, money, brandify: UI.brandify,
+      minPrice: Math.min(...ps.flatMap(p => Object.values(p.prices))),
+      month: UI.monthNames[S.today().getMonth()], today: UI.dateShort(S.todayStr())
+    };
+    if (window.Layouts && Layouts.hero(heroEl, ctx)) return;
+    if (heroEl.classList.contains('hero--x')) { heroEl.innerHTML = heroOrig; heroEl.className = 'hero'; }
     $('#heroCount').textContent = ps.length;
     const marks = { 1: 'circle', 4: 'x', 6: 'check' };
     $('#heroSheet').innerHTML = `<div class="hs-strip">${ps.slice(0, 9).map((p, i) => `
@@ -268,10 +276,11 @@
     $('#teamFilter').innerHTML = `<button class="chip ${!teamType ? 'on' : ''}" data-tt="">כולן</button>` + S.SHOOT_TYPES.map(t => `<button class="chip ${teamType === t.id ? 'on' : ''}" data-tt="${t.id}">${t.name}</button>`).join('');
     $$('#teamFilter .chip').forEach(b => b.onclick = () => { teamType = b.dataset.tt; renderTeam(); });
     const ps = team().filter(p => !teamType || p.types.includes(teamType));
-    $('#teamGrid').innerHTML = ps.map(p => {
+    $('#teamGrid').innerHTML = ps.map((p, i) => {
       const idx = S.state.photographers.indexOf(p);
       const prices = p.types.map(t => p.prices[t]);
-      return `<article class="print-card" data-pid="${p.id}" tabindex="0">
+      return `<article class="print-card" data-pid="${p.id}" tabindex="0" style="--k:${i}">
+        <i class="pc-deco" aria-hidden="true"></i>
         <div class="pc-img"><img src="${photo(p)}" alt="${esc(p.name)}" loading="lazy"></div>
         <div class="pc-cap">
           <span class="mono pc-n">${frameNo(idx)}</span>
@@ -315,6 +324,6 @@
   }
 
   document.addEventListener('store:changed', () => { hero(); renderTeam(); if (!w.done) render(); });
-  document.addEventListener('theme:changed', () => { renderTeam(); if (!w.done) render(); });
+  document.addEventListener('theme:changed', () => { hero(); renderTeam(); if (!w.done) render(); });
   hero(); render(); renderTeam();
 })();

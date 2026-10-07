@@ -36,7 +36,7 @@ window.Themes = (function () {
     { id: 'neon', name: 'ניאון', sw: ['#0C0716', '#FF2E88', '#22E4FF'], bar: '#07030E', fav: ['#0C0716', '#F5EEFF'], fonts: 'family=Rubik:wght@400;500;700;800;900',
       brand: 'לילה',
       logo: `<path d="M19 4 A12 12 0 1 0 28.5 21 A9.5 9.5 0 1 1 19 4 Z" fill="none" stroke-width="2.2" stroke-linejoin="round" ${S('red', '#FF2E88')}/><path d="M24 6 l.9 2.3 2.3 .9 -2.3 .9 -.9 2.3 -.9 -2.3 -2.3 -.9 2.3 -.9 Z" ${C('amber', '#22E4FF')}/><circle cx="28" cy="13.5" r="1.1" ${C('amber', '#22E4FF')}/>` },
-    { id: 'zine', name: 'זין', sw: ['#FFE500', '#111111', '#FF3EA5'], bar: '#111111', fav: ['#F1EEE3', '#111111'], fonts: 'family=Karantina:wght@400;700&family=Rubik:wght@400;500;700',
+    { id: 'collage', name: 'קולאז׳', sw: ['#FFE500', '#111111', '#FF3EA5'], bar: '#111111', fav: ['#F1EEE3', '#111111'], fonts: 'family=Karantina:wght@400;700&family=Rubik:wght@400;500;700',
       brand: 'גזיר',
       logo: `<path d="${burst}" ${C('amber', '#FFE500')} stroke="#111" stroke-width="1.6" stroke-linejoin="round" transform="rotate(-8 16 16)"/><circle cx="16" cy="16" r="5" ${C('red', '#FF3EA5')} stroke="#111" stroke-width="1.6"/>` },
     { id: 'studio', name: 'סטודיו לבן', sw: ['#FAFAF7', '#1A1A1A', '#C8693A'], bar: '#FAFAF7', fav: ['#FFFFFF', '#1A1A1A'], fonts: 'family=Heebo:wght@300;400;500;700;800',
@@ -52,7 +52,8 @@ window.Themes = (function () {
   function initial() {
     const q = new URLSearchParams(location.search).get('theme');
     if (byId(q)) { try { localStorage.setItem(KEY, q); } catch (e) { } return q; }
-    return byId(stored()) ? stored() : 'darkroom';
+    const st = stored() === 'zine' ? 'collage' : stored();
+    return byId(st) ? st : 'darkroom';
   }
 
   let current = null;
