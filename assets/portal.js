@@ -29,7 +29,7 @@
         <div><span>צילומים ב${monthNames[t.getMonth()]}</span><b>${st.count}</b></div>
         ${sal ? `<div><span>המשכורת החודשית שלך</span><b>${money(p.salary)}</b></div>
         <div><span>מה את עושה</span><b class="pt-scope">${S.SCOPES[p.scope]}</b></div>` : `<div><span>הכנסה ברוטו</span><b>${money(st.gross)}</b></div>
-        <div><span>נטו אחרי עמלת פריים (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>`}
+        <div><span>נטו אחרי עמלת ${esc(UI.brand())} (${p.commission}%)</span><b>${money(st.gross - st.mine)}</b></div>`}
       </section>
       <div class="pt-grid">
         <div>
@@ -46,7 +46,7 @@
             ${upcoming.length ? upcoming.map(b => `<article class="req">
               <h3>${dateShort(b.date)} · ${typeName(b.typeId)}</h3>
               <p>${esc(b.client.name)} · <a href="tel:${esc(b.client.phone)}" class="mono">${esc(b.client.phone)}</a> · ${esc(b.area || '')}${b.time ? ' · ' + b.time : ''}</p>
-              <div class="req-act"><a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${p.name} מפריים 📷 רציתי לתאם איתך את הצילום ב${dateLong(b.date)}`)}">וואטסאפ ללקוח/ה</a></div>
+              <div class="req-act"><a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="${waLink(b.client.phone, `היי ${b.client.name}, כאן ${p.name} מ${UI.brand()} 📷 רציתי לתאם איתך את הצילום ב${dateLong(b.date)}`)}">וואטסאפ ללקוח/ה</a></div>
             </article>`).join('') : '<p class="muted pad">אין צילומים מאושרים בקרוב.</p>'}
           </section>
         </div>
@@ -93,5 +93,6 @@
   }
 
   document.addEventListener('store:changed', render);
+  document.addEventListener('theme:changed', render);
   render();
 })();
