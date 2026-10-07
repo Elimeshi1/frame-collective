@@ -92,6 +92,36 @@ window.UI = (function () {
       <a href="admin.html" class="${active === 'admin' ? 'on' : ''}">ניהול (את)</a>
       <a href="portal.html" class="${active === 'portal' ? 'on' : ''}">פורטל צלמת</a>`;
     document.body.prepend(bar);
+    themeBar();
+  }
+
+  /* ---------- סרגל עיצובים (מעל סרגל הדמו) ---------- */
+  function themeBar() {
+    const T = window.Themes; if (!T) return;
+    const bar = document.createElement('div');
+    bar.className = 'themebar';
+    bar.setAttribute('role', 'toolbar');
+    bar.setAttribute('aria-label', 'בחירת עיצוב לאתר');
+    bar.innerHTML = `<span class="tb-tag">עיצוב <b>${T.list.length}</b></span>
+      <div class="tb-list">${T.list.map((t, i) => `<button type="button" class="tb" data-theme-id="${t.id}" aria-pressed="false" style="--a:${t.sw[0]};--b:${t.sw[1]};--c:${t.sw[2]}">
+        <i class="tb-sw"></i><span class="tb-n">${String(i + 1).padStart(2, '0')}</span>${esc(t.name)}</button>`).join('')}</div>`;
+    document.body.prepend(bar);
+    const list = $('.tb-list', bar);
+    function mark(scroll) {
+      $$('.tb', bar).forEach(b => {
+        const on = b.dataset.themeId === T.current;
+        b.classList.toggle('on', on); b.setAttribute('aria-pressed', on);
+        if (on && scroll) list.scrollLeft += b.getBoundingClientRect().left + b.offsetWidth / 2 - (list.getBoundingClientRect().left + list.clientWidth / 2);
+      });
+    }
+    list.addEventListener('click', e => {
+      const b = e.target.closest('.tb'); if (!b || b.dataset.themeId === T.current) return;
+      document.documentElement.classList.add('theme-swap');
+      T.set(b.dataset.themeId); mark(true);
+      setTimeout(() => document.documentElement.classList.remove('theme-swap'), 450);
+      toast('עיצוב: ' + T.byId(T.current).name);
+    });
+    mark(true);
   }
 
   const statusChip = s => `<span class="chip-status st-${s}">${S.STATUS[s].short}</span>`;

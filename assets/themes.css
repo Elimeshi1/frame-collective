@@ -1,0 +1,1207 @@
+/* ============================================================
+   פריים — עשרה עיצובים נוספים.
+   ברירת המחדל (חדר חושך) נמצאת ב־style.css. כל עיצוב כאן נדלק
+   לפי <html data-theme="…">, שנקבע ב־themes.js.
+   ============================================================ */
+
+/* ============================================================
+   משותף לעיצובים כהים (נואר, ציאנוטייפ, ניאון)
+   ============================================================ */
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) body::after { filter: invert(1); mix-blend-mode: screen; opacity: .06; }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) :is(.f select option, .fld select option, .portal-top select option) { color: #111; background: #fff; }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) :is(.foot .logo-word, .side .logo-word) { color: var(--ink); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .side-who { color: var(--ink); border-color: var(--line); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .portal-top select { color: var(--ink); background: var(--cream); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .kpi-alert { background: color-mix(in srgb, var(--amber) 12%, transparent); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) :is(.cd-b.st-new, .cd-b.st-declined) { background: color-mix(in srgb, var(--amber) 22%, transparent); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .kpi-hero { background: var(--dark); color: var(--ink); border-color: var(--line); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .kpi-hero b { color: var(--ink); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) :is(.kpi-hero span, .kpi-hero small) { color: var(--muted); }
+:is([data-theme="noir"], [data-theme="cyanotype"]) .st-declined { color: var(--cream); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .tag-shoot { background: var(--ink); color: var(--paper); }
+:is([data-theme="noir"], [data-theme="cyanotype"], [data-theme="neon"]) .chk input:checked + span { color: var(--paper); }
+
+/* ============================================================
+   משותף לעיצובים שבהם אזור ההזמנה בהיר
+   ============================================================ */
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .darkroom .chip.on { color: var(--cream); }
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .darkroom .cal-cell:not(:disabled):hover { background: rgba(0, 0, 0, .035); }
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .peek-faces img { border-color: var(--surf); }
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .darkroom .ticket { box-shadow: 0 18px 40px -22px rgba(0, 0, 0, .35); }
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .print { box-shadow: 0 30px 50px -24px rgba(0, 0, 0, .45); }
+:is([data-theme="polaroid"], [data-theme="wedding"], [data-theme="studio"], [data-theme="zine"]) .busy li img { opacity: 1; }
+
+
+/* ============================================================
+   01 · פולרואיד — מסגרת לבנה, פס קשת, כתב יד
+   ============================================================ */
+:root[data-theme="polaroid"] {
+  --paper: #F3F0EA; --paper-2: #E9E5DD; --paper-3: #DAD4C8;
+  --ink: #232220; --ink-2: #55524C; --muted: #8C877E; --line: rgba(35, 34, 32, .13);
+  --red: #E2412E; --red-deep: #C0321F; --amber: #F2A12B;
+  --dark: #232220; --dark-2: #2E2C29; --dark-3: #3A3733; --cream: #FFFFFF; --ok: #3E9A57;
+  --serif: 'Playpen Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  --sans: 'Rubik', system-ui, sans-serif;
+  --mono: 'Rubik', ui-monospace, sans-serif;
+  --r: 12px;
+  --rainbow: linear-gradient(to left, #E2412E 0 20%, #F28C28 20% 40%, #F6C445 40% 60%, #4CA35A 60% 80%, #2B7BBF 80%);
+}
+[data-theme="polaroid"] body::after { opacity: .035; }
+[data-theme="polaroid"] :is(h1, h2, h3, h4) { font-weight: 800; letter-spacing: -.01em; }
+[data-theme="polaroid"] .kicker { letter-spacing: .08em; font-weight: 500; }
+[data-theme="polaroid"] .btn { border-radius: 99px; }
+[data-theme="polaroid"] .btn-red { box-shadow: 0 6px 16px -8px rgba(226, 65, 46, .8); }
+[data-theme="polaroid"] .logo-mark { width: 26px; height: 26px; border: 0; background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, .35); }
+[data-theme="polaroid"] .logo-mark::after { inset: 3px 3px 9px; background: var(--ink); border-radius: 1px; }
+[data-theme="polaroid"] .logo-mark::before { content: ''; position: absolute; inset: auto 3px 4px; height: 2px; background: var(--rainbow); }
+[data-theme="polaroid"] .logo-word { font-family: var(--serif); font-weight: 800; }
+[data-theme="polaroid"] .topbar { border-bottom: 0; background: var(--rainbow) bottom / 100% 4px no-repeat; }
+/* hero: פולרואידים מפוזרים */
+[data-theme="polaroid"] .hero h1 { font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+[data-theme="polaroid"] .hero h1 .hl { font-style: normal; font-weight: 800; color: var(--ink); background: var(--rainbow) left bottom .05em / 100% .14em no-repeat; padding-bottom: .04em; }
+[data-theme="polaroid"] .hero-facts dt { color: var(--ink); background: #F6C445; border-radius: 99px; padding: 2px 7px; }
+[data-theme="polaroid"] .hs-strip { background: none; transform: none; box-shadow: none; padding: 6px; gap: 22px 16px; }
+[data-theme="polaroid"] .hs-frame { background: #fff; padding: 8px 8px 34px; border-radius: 3px; box-shadow: 0 1px 1px rgba(0, 0, 0, .08), 0 14px 26px -12px rgba(35, 34, 32, .45); }
+[data-theme="polaroid"] .hs-frame:nth-child(3n+1) { transform: rotate(-3.5deg); }
+[data-theme="polaroid"] .hs-frame:nth-child(3n+2) { transform: rotate(2.5deg) translateY(8px); }
+[data-theme="polaroid"] .hs-frame:nth-child(3n) { transform: rotate(-1deg); }
+[data-theme="polaroid"] .hs-frame img { aspect-ratio: 1; filter: saturate(.9) contrast(.95) sepia(.08); animation: develop 2.6s ease-out both; animation-delay: var(--d); }
+[data-theme="polaroid"] .hs-frame figcaption { bottom: 8px; inset-inline-start: 10px; color: var(--ink-2); font-family: var(--serif); font-size: 12px; }
+[data-theme="polaroid"] .hs-frame figcaption span { display: none; }
+[data-theme="polaroid"] .hs-note { font-family: var(--serif); font-style: normal; }
+/* אזור ההזמנה: מסגרת לבנה עם פס קשת */
+[data-theme="polaroid"] .darkroom {
+  --fg: #232220; --fg-2: #55524C; --fg-mute: #8C877E; --ln: rgba(35, 34, 32, .14); --surf: #F6F4EF;
+  background: #fff; background-image: radial-gradient(ellipse 60% 40% at 90% 0%, rgba(246, 196, 69, .14), transparent 70%);
+}
+[data-theme="polaroid"] .darkroom::before { height: 8px; background: var(--rainbow); opacity: 1; }
+[data-theme="polaroid"] .darkroom .kicker.safelight::first-letter { color: #4CA35A; }
+[data-theme="polaroid"] .filmsteps { border-radius: 99px; background: var(--surf); }
+[data-theme="polaroid"] .filmsteps li.past .mono { color: #4CA35A; }
+[data-theme="polaroid"] :is(.type, .filters) { background: var(--surf); }
+[data-theme="polaroid"] .type:hover { background: #fff; box-shadow: 0 12px 24px -16px rgba(0, 0, 0, .4); }
+[data-theme="polaroid"] .type-n { color: var(--red); }
+[data-theme="polaroid"] .type.is-sel { border-color: var(--red); box-shadow: inset 0 0 0 1px var(--red); }
+[data-theme="polaroid"] .frame-card { background: #fff; padding: 10px 10px 0; border-radius: 3px; box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 16px 28px -16px rgba(0, 0, 0, .4); }
+[data-theme="polaroid"] .frame-card:hover { transform: translateY(-3px) rotate(-1deg); }
+[data-theme="polaroid"] .fc-img img { filter: saturate(.85) contrast(.96); }
+[data-theme="polaroid"] .fc-edge { color: var(--muted); font-family: var(--serif); }
+[data-theme="polaroid"] .fc-body { background: #fff; }
+[data-theme="polaroid"] .fc-body h4 { font-family: var(--serif); }
+[data-theme="polaroid"] .studio-card { background: transparent; border-radius: var(--r); }
+[data-theme="polaroid"] .studio-inner .mono { color: var(--red); }
+[data-theme="polaroid"] .darkroom .cal-cell { border-radius: 8px; }
+[data-theme="polaroid"] .peek-date { color: var(--red); }
+[data-theme="polaroid"] .ticket { background: var(--surf); }
+[data-theme="polaroid"] .print { padding: 14px 14px 26px; }
+/* הצלמות: פולרואידים עם ווֹשי טייפ צבעוני */
+[data-theme="polaroid"] .print-card { padding: 12px 12px 18px; border-radius: 3px; }
+[data-theme="polaroid"] .print-card::before { width: 64px; height: 20px; opacity: .85; background: #F6C445; }
+[data-theme="polaroid"] .print-card:nth-child(5n+2)::before { background: #E2412E; }
+[data-theme="polaroid"] .print-card:nth-child(5n+3)::before { background: #4CA35A; }
+[data-theme="polaroid"] .print-card:nth-child(5n+4)::before { background: #2B7BBF; }
+[data-theme="polaroid"] .print-card:nth-child(5n)::before { background: #F28C28; }
+[data-theme="polaroid"] .pc-img img { aspect-ratio: 1; filter: saturate(.85) sepia(.08); }
+[data-theme="polaroid"] .pc-cap { text-align: center; }
+[data-theme="polaroid"] .pc-cap h3 { font-family: var(--serif); }
+[data-theme="polaroid"] .pc-n { color: var(--muted); }
+[data-theme="polaroid"] .how-grid { border-top: 0; gap: 18px; }
+[data-theme="polaroid"] .how-grid article { background: #fff; border: 0; border-radius: 3px; padding: 22px 22px 14px !important; box-shadow: 0 14px 26px -16px rgba(0, 0, 0, .35); }
+[data-theme="polaroid"] .how-grid article:nth-child(2) { transform: rotate(1deg); }
+[data-theme="polaroid"] .how-grid article:nth-child(odd) { transform: rotate(-.8deg); }
+[data-theme="polaroid"] .how-n { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; color: #fff; background: #E2412E; }
+[data-theme="polaroid"] .how-grid article:nth-child(2) .how-n { background: #F6C445; color: var(--ink); }
+[data-theme="polaroid"] .how-grid article:nth-child(3) .how-n { background: #2B7BBF; }
+[data-theme="polaroid"] .foot { background-image: var(--rainbow); background-size: 100% 6px; background-repeat: no-repeat; }
+[data-theme="polaroid"] .modal { border-radius: 14px; }
+/* ניהול ופורטל */
+[data-theme="polaroid"] :is(.panel, .kpi, .ro, .kcol, .kcard, .search, .gate-box) { border-radius: var(--r); }
+[data-theme="polaroid"] .panel { box-shadow: 0 10px 24px -18px rgba(0, 0, 0, .35); }
+[data-theme="polaroid"] .side { background: var(--rainbow) top / 100% 5px no-repeat, var(--dark); }
+[data-theme="polaroid"] .side-nav button { border-radius: 99px; }
+[data-theme="polaroid"] .gate { background: var(--paper); background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(246, 196, 69, .3), transparent 70%); }
+[data-theme="polaroid"] .gate-box { padding-bottom: 46px; transform: rotate(-2deg); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .45); background: #fff; }
+[data-theme="polaroid"] .kpi-hero::after { background: var(--rainbow); opacity: .6; }
+[data-theme="polaroid"] .pt-hello img { border: 6px solid #fff; border-bottom-width: 16px; border-radius: 3px; box-shadow: 0 8px 18px -8px rgba(0, 0, 0, .4); transform: rotate(-3deg); }
+
+
+/* ============================================================
+   02 · מגזין — שער אופנה. שחור־לבן, כותרות ענק, כחול אחד
+   ============================================================ */
+:root[data-theme="magazine"] {
+  --paper: #FFFFFF; --paper-2: #F3F3F1; --paper-3: #E4E4E1;
+  --ink: #0A0A0A; --ink-2: #3A3A3A; --muted: #8A8A8A; --line: rgba(10, 10, 10, .14);
+  --red: #1D3BD1; --red-deep: #132A9E; --amber: #1D3BD1;
+  --dark: #0A0A0A; --dark-2: #151515; --dark-3: #202020; --cream: #FFFFFF; --ok: #1F8A4C;
+  --serif: 'Noto Serif Hebrew', 'Frank Ruhl Libre', serif;
+  --sans: 'Heebo', system-ui, sans-serif;
+  --mono: 'Heebo', system-ui, sans-serif;
+  --r: 0;
+}
+[data-theme="magazine"] body::after { display: none; }
+[data-theme="magazine"] :is(h1, h2, h3, h4) { font-weight: 800; letter-spacing: -.03em; }
+[data-theme="magazine"] .kicker { letter-spacing: .32em; font-size: 11px; font-weight: 500; color: var(--ink); }
+[data-theme="magazine"] .btn { text-transform: uppercase; letter-spacing: .08em; font-size: 14px; }
+[data-theme="magazine"] .btn-line { border-width: 1px; }
+[data-theme="magazine"] .topbar { border-bottom: 0; box-shadow: inset 0 -1px 0 var(--ink), inset 0 -5px 0 var(--paper), inset 0 -6px 0 var(--ink); padding-block: 22px 26px; }
+[data-theme="magazine"] .logo-mark { border: 0; width: 12px; height: 12px; background: var(--red); }
+[data-theme="magazine"] .logo-mark::after { display: none; }
+[data-theme="magazine"] .logo-word { font-size: 34px; font-weight: 900; letter-spacing: -.04em; }
+[data-theme="magazine"] .logo-sub { text-transform: uppercase; letter-spacing: .3em; font-size: 10px; color: var(--ink); }
+[data-theme="magazine"] .topnav a { text-transform: uppercase; letter-spacing: .14em; font-size: 13px; color: var(--ink); }
+[data-theme="magazine"] .topnav a:hover { color: var(--red); }
+/* hero: שער */
+[data-theme="magazine"] .hero { grid-template-columns: 1fr 1fr; align-items: stretch; }
+[data-theme="magazine"] .hero-text { display: flex; flex-direction: column; justify-content: center; }
+[data-theme="magazine"] .hero h1 { font-size: clamp(54px, 8.6vw, 136px); font-weight: 900; line-height: .9; letter-spacing: -.05em; }
+[data-theme="magazine"] .hero h1 .hl { font-style: normal; font-weight: 300; color: var(--red); letter-spacing: -.03em; }
+[data-theme="magazine"] .lead { font-family: var(--serif); font-size: clamp(18px, 1.6vw, 22px); color: var(--ink); font-weight: 300; border-inline-start: 3px solid var(--red); padding-inline-start: 18px; }
+[data-theme="magazine"] .hero-facts { border-top: 1px solid var(--ink); }
+[data-theme="magazine"] .hero-facts dt { color: var(--ink); font-weight: 700; }
+[data-theme="magazine"] .hs-strip { background: none; transform: none; box-shadow: none; padding: 0; gap: 6px; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; }
+[data-theme="magazine"] .hs-frame:first-child { grid-column: span 2; grid-row: span 2; }
+[data-theme="magazine"] .hs-frame img { height: 100%; aspect-ratio: auto; min-height: 120px; filter: grayscale(1) contrast(1.15); }
+[data-theme="magazine"] .hs-frame:first-child img { filter: none; }
+[data-theme="magazine"] .hs-frame figcaption { bottom: 0; inset-inline-start: 0; background: var(--ink); color: #fff; padding: 3px 7px; font-size: 10px; letter-spacing: .14em; }
+[data-theme="magazine"] .hs-frame figcaption span { display: none; }
+[data-theme="magazine"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: #fff; background: var(--red); font-family: var(--sans); font-size: 18px; width: 30px; height: 30px; display: grid; place-items: center; transform: none; text-shadow: none; }
+[data-theme="magazine"] .hs-note { text-align: start; font-size: 12px; text-transform: uppercase; letter-spacing: .18em; font-family: var(--sans); font-style: normal; color: var(--ink); }
+/* אזור ההזמנה: עמוד כפול בשחור */
+[data-theme="magazine"] .darkroom {
+  --fg: #FFFFFF; --fg-2: #C9C9C9; --fg-mute: #8C8C8C; --ln: rgba(255, 255, 255, .18); --surf: #121212;
+  --red: #5A74FF; --amber: #8EA0FF;
+  background: #0A0A0A; background-image: none;
+}
+[data-theme="magazine"] .darkroom::before { display: none; }
+[data-theme="magazine"] .dr-head h2 { font-size: clamp(48px, 7.4vw, 110px); letter-spacing: -.05em; line-height: .9; }
+[data-theme="magazine"] .darkroom .kicker { color: var(--fg); }
+[data-theme="magazine"] .filmsteps { border: 0; gap: 14px; overflow: visible; }
+[data-theme="magazine"] .filmsteps li { border: 0; border-top: 2px solid var(--ln); padding: 10px 0 0; min-width: 96px; text-transform: uppercase; letter-spacing: .08em; font-size: 13px; }
+[data-theme="magazine"] .filmsteps li.on { background: none; color: #fff; border-top-color: var(--red); }
+[data-theme="magazine"] .filmsteps li.on .mono { color: var(--red); }
+[data-theme="magazine"] .type { background: transparent; border: 0; border-top: 1px solid var(--ln); border-radius: 0; padding-inline: 0; }
+[data-theme="magazine"] .type:hover { background: transparent; border-top-color: #fff; }
+[data-theme="magazine"] .type.is-sel { border-top: 3px solid var(--red); }
+[data-theme="magazine"] .type-name { font-size: 28px; font-weight: 800; letter-spacing: -.03em; }
+[data-theme="magazine"] .wz-q { font-weight: 300; letter-spacing: -.02em; }
+[data-theme="magazine"] .filters { background: transparent; border: 0; border-block: 1px solid var(--ln); border-radius: 0; padding-inline: 0; }
+[data-theme="magazine"] .frame-card { background: transparent; padding: 0; }
+[data-theme="magazine"] .fc-img img { filter: grayscale(1) contrast(1.1); }
+[data-theme="magazine"] .fc-edge { color: var(--fg-mute); padding-inline: 0; letter-spacing: .14em; }
+[data-theme="magazine"] .fc-body { background: transparent; margin: 0; padding: 4px 0 0; }
+[data-theme="magazine"] .fc-body h4 { font-size: 24px; }
+[data-theme="magazine"] .fc-badge { background: #fff; color: #0A0A0A; letter-spacing: .14em; text-transform: uppercase; }
+[data-theme="magazine"] .studio-card { border-color: var(--ln); }
+[data-theme="magazine"] .studio-inner h4 { font-size: 36px; }
+[data-theme="magazine"] .ticket { transform: none; }
+[data-theme="magazine"] .print { transform: none; }
+/* הצלמות: עמוד פורטרטים */
+[data-theme="magazine"] .sec-head h2 { font-size: clamp(44px, 7vw, 100px); letter-spacing: -.05em; line-height: .92; }
+[data-theme="magazine"] .sheet { gap: 54px 26px; }
+[data-theme="magazine"] .print-card, [data-theme="magazine"] .print-card:nth-child(n) { background: transparent; padding: 0; box-shadow: none; transform: none; }
+[data-theme="magazine"] .print-card::before { display: none; }
+[data-theme="magazine"] .print-card:hover { transform: none; box-shadow: none; }
+[data-theme="magazine"] .pc-img { overflow: hidden; }
+[data-theme="magazine"] .pc-img img { filter: grayscale(1) contrast(1.12); transition: filter .5s, transform .8s; }
+[data-theme="magazine"] .print-card:hover .pc-img img { filter: none; transform: scale(1.04); }
+[data-theme="magazine"] .pc-cap { padding: 14px 0 0; border-top: 0; }
+[data-theme="magazine"] .pc-n { color: var(--red); letter-spacing: .2em; font-weight: 700; }
+[data-theme="magazine"] .pc-n::before { content: 'NO. '; }
+[data-theme="magazine"] .pc-cap h3 { font-size: 30px; }
+[data-theme="magazine"] .pc-cap h3 em { color: var(--red); }
+[data-theme="magazine"] .how { border-top: 0; }
+[data-theme="magazine"] .how-grid { border-top: 6px solid var(--ink); }
+[data-theme="magazine"] .how-n { font-family: var(--serif); font-size: 110px; font-weight: 300; line-height: .9; color: var(--ink); letter-spacing: -.06em; }
+[data-theme="magazine"] .how-grid h3 { font-size: 28px; }
+[data-theme="magazine"] .foot { background: var(--paper); color: var(--ink); border-top: 6px solid var(--ink); }
+[data-theme="magazine"] .foot .logo-word { color: var(--ink); }
+[data-theme="magazine"] .modal { box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .6); }
+[data-theme="magazine"] .pf-body h2 { font-size: 54px; letter-spacing: -.04em; }
+[data-theme="magazine"] .pf-tag { font-style: normal; font-weight: 300; }
+/* ניהול ופורטל */
+[data-theme="magazine"] .side { background: #0A0A0A; }
+[data-theme="magazine"] .side-nav button.on { background: #fff; color: #0A0A0A; }
+[data-theme="magazine"] .side-nav button.on .mono { color: var(--red); }
+[data-theme="magazine"] :is(.panel, .kpi, .ro, .kcol) { border-color: var(--ink); box-shadow: none; }
+[data-theme="magazine"] .p-h { color: var(--ink); letter-spacing: .24em; font-size: 11px; border-bottom-color: var(--ink); }
+[data-theme="magazine"] .kpi-hero { background: var(--red); border-color: var(--red); }
+[data-theme="magazine"] .kpi-hero::after { display: none; }
+[data-theme="magazine"] :is(.kpi-hero span, .kpi-hero small) { color: rgba(255, 255, 255, .72); }
+[data-theme="magazine"] .m-head h1 { font-size: clamp(40px, 5vw, 72px); letter-spacing: -.05em; }
+[data-theme="magazine"] .gate { background: #0A0A0A; }
+[data-theme="magazine"] .gate-box { transform: none; }
+[data-theme="magazine"] :is(.ro > img, .side-who img) { filter: grayscale(1) contrast(1.1); }
+
+
+/* ============================================================
+   03 · רטרו 70 — פסים חמים, פינות עגולות, צללים מוערמים
+   ============================================================ */
+:root[data-theme="retro"] {
+  --paper: #F4E4C1; --paper-2: #EBD6AC; --paper-3: #E0C795;
+  --ink: #3A2212; --ink-2: #6B4426; --muted: #9A7552; --line: rgba(58, 34, 18, .18);
+  --red: #D9531E; --red-deep: #B23F12; --amber: #F0A830;
+  --dark: #3A2212; --dark-2: #4A2D19; --dark-3: #5A3820; --cream: #FFF6E3; --ok: #6E8B2F;
+  --serif: 'Secular One', 'Rubik', sans-serif;
+  --sans: 'Rubik', system-ui, sans-serif;
+  --mono: 'Rubik', ui-monospace, sans-serif;
+  --r: 18px;
+  --stripes: linear-gradient(to bottom, #F0A830 0 25%, #E57B26 25% 50%, #D9531E 50% 75%, #8E2E1A 75%);
+  --stripes-h: linear-gradient(to left, #F0A830 0 25%, #E57B26 25% 50%, #D9531E 50% 75%, #8E2E1A 75%);
+}
+[data-theme="retro"] body::after { opacity: .1; }
+[data-theme="retro"] :is(h1, h2, h3, h4) { font-weight: 400; letter-spacing: 0; }
+[data-theme="retro"] .btn { border-radius: 99px; font-weight: 700; }
+[data-theme="retro"] .btn-red { box-shadow: 3px 3px 0 var(--ink); }
+[data-theme="retro"] .btn-red:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(2px, 2px); }
+[data-theme="retro"] .btn-line { border-width: 2px; }
+[data-theme="retro"] .logo-mark { border: 0; width: 30px; height: 20px; border-radius: 10px; background: var(--stripes); }
+[data-theme="retro"] .logo-mark::after { display: none; }
+[data-theme="retro"] .logo-word { font-weight: 400; }
+[data-theme="retro"] .topbar { border-bottom: 0; }
+/* hero: שמש של שנות השבעים */
+[data-theme="retro"] .hero { position: relative; overflow: hidden; background: radial-gradient(circle at 80% 112%, #F0A830 0 16%, transparent 16.2%), radial-gradient(circle at 80% 112%, rgba(229, 123, 38, .22) 0 24%, transparent 24.2%), radial-gradient(circle at 80% 112%, rgba(217, 83, 30, .14) 0 32%, transparent 32.2%); }
+[data-theme="retro"] .hero h1 { font-weight: 400; line-height: 1; }
+[data-theme="retro"] .hero h1 .hl { font-style: normal; font-weight: 400; color: var(--red); text-shadow: 3px 3px 0 var(--amber), 6px 6px 0 rgba(58, 34, 18, .2); }
+[data-theme="retro"] .hero-facts dt { background: var(--red); color: var(--cream); border-radius: 99px; padding: 2px 8px; }
+[data-theme="retro"] .hs-strip { border-radius: 26px; transform: rotate(-3deg); box-shadow: 10px 10px 0 var(--amber), 20px 20px 0 var(--red), 30px 30px 0 #8E2E1A; background-color: var(--dark); background-image: linear-gradient(to left, var(--paper) 0 9px, transparent 9px), linear-gradient(to left, var(--paper) 0 9px, transparent 9px); margin: 0 30px 30px 0; }
+[data-theme="retro"] .hs-frame img { border-radius: 12px; filter: sepia(.35) saturate(1.4) contrast(1.05) hue-rotate(-8deg); }
+[data-theme="retro"] .hs-frame figcaption { color: var(--amber); }
+[data-theme="retro"] .hs-note { margin-top: 44px; font-family: var(--sans); font-style: normal; color: var(--ink-2); }
+/* אזור ההזמנה: עור חום ופסים */
+[data-theme="retro"] .darkroom {
+  --fg: #FFF1D6; --fg-2: #E8CFA6; --fg-mute: #B8936A; --ln: rgba(255, 241, 214, .16); --surf: #4A2D19;
+  background: var(--dark);
+  background-image: repeating-conic-gradient(from 0deg at 100% 0%, rgba(240, 168, 48, .06) 0 5deg, transparent 5deg 10deg);
+  padding-top: calc(clamp(56px, 8vw, 110px) + 24px);
+}
+[data-theme="retro"] .darkroom::before { height: 32px; opacity: 1; background: var(--stripes); }
+[data-theme="retro"] .darkroom .kicker.safelight { color: var(--amber) !important; }
+[data-theme="retro"] .filmsteps { border-radius: 99px; border-width: 2px; }
+[data-theme="retro"] .filmsteps li.on { background: var(--amber); color: var(--dark); }
+[data-theme="retro"] .filmsteps li.on .mono { color: rgba(58, 34, 18, .7); }
+[data-theme="retro"] .type { border-radius: 20px; border-width: 2px; }
+[data-theme="retro"] .type:hover { background: var(--dark-3); box-shadow: 5px 5px 0 var(--amber); transform: translate(-2px, -2px); }
+[data-theme="retro"] .type.is-sel { border-color: var(--amber); background: #5A3820; box-shadow: 5px 5px 0 var(--red); }
+[data-theme="retro"] .type-name { font-weight: 400; }
+[data-theme="retro"] .filters { border-radius: 20px; }
+[data-theme="retro"] .frame-card { background: #2A180C; border-radius: 22px; padding: 10px 10px 0; overflow: hidden; }
+[data-theme="retro"] .frame-card:hover { box-shadow: 6px 6px 0 var(--amber); transform: translate(-3px, -3px); }
+[data-theme="retro"] .fc-img { border-radius: 14px; }
+[data-theme="retro"] .fc-img img { filter: sepia(.35) saturate(1.3) contrast(1.02); }
+[data-theme="retro"] .fc-badge { border-radius: 99px; }
+[data-theme="retro"] .fc-body h4 { font-weight: 400; }
+[data-theme="retro"] .studio-card { border-radius: 22px; border-width: 2px; }
+[data-theme="retro"] .darkroom .cal-cell { border-radius: 10px; }
+[data-theme="retro"] .darkroom .cal-cell.is-selected { background: var(--amber) !important; border-color: var(--amber) !important; color: var(--dark); }
+[data-theme="retro"] .darkroom .cal-cell.is-selected .cal-tag { color: var(--dark); }
+[data-theme="retro"] .cal-cell .grease path { stroke: var(--red); }
+[data-theme="retro"] .ticket { border-radius: 18px; transform: rotate(-1deg); }
+[data-theme="retro"] .print { border-radius: 14px; }
+[data-theme="retro"] .print-img img { border-radius: 8px; }
+/* הצלמות */
+[data-theme="retro"] .print-card { background: var(--cream); border-radius: 22px; padding: 12px 12px 18px; box-shadow: 6px 6px 0 var(--ink); }
+[data-theme="retro"] .print-card:hover { box-shadow: 10px 10px 0 var(--red); }
+[data-theme="retro"] .print-card::before { width: 60px; height: 16px; border-radius: 8px; background: var(--stripes); opacity: 1; }
+[data-theme="retro"] .pc-img img { border-radius: 14px; filter: sepia(.35) saturate(1.35) contrast(1.02); }
+[data-theme="retro"] .pc-cap h3 { font-weight: 400; }
+[data-theme="retro"] .pc-n { color: var(--red); }
+[data-theme="retro"] .how-grid { border-top: 0; gap: 20px; }
+[data-theme="retro"] .how-grid article { background: var(--cream); border: 2px solid var(--ink); border-radius: 24px; padding: 24px !important; }
+[data-theme="retro"] .how-n { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; background: var(--amber); color: var(--ink); font-family: var(--serif); }
+[data-theme="retro"] .how-grid article:nth-child(2) .how-n { background: #E57B26; }
+[data-theme="retro"] .how-grid article:nth-child(3) .how-n { background: var(--red); color: var(--cream); }
+[data-theme="retro"] .foot { background-image: var(--stripes); background-size: 100% 24px; background-repeat: no-repeat; padding-top: 64px; }
+[data-theme="retro"] .modal { border-radius: 22px; }
+[data-theme="retro"] .chip { border-width: 2px; }
+/* ניהול ופורטל */
+[data-theme="retro"] :is(.panel, .kpi, .ro, .kcol, .kcard, .search, .gate-box, .pp) { border-radius: 18px; }
+[data-theme="retro"] .panel { border-width: 2px; border-color: var(--ink); box-shadow: 5px 5px 0 var(--ink); overflow: hidden; }
+[data-theme="retro"] .kpi { border-width: 2px; border-color: var(--ink); }
+[data-theme="retro"] .kpi-hero { background: var(--dark); }
+[data-theme="retro"] .kpi-hero::after { background: var(--amber); }
+[data-theme="retro"] .side { background-color: var(--dark); background-image: var(--stripes-h); background-size: 100% 14px; background-repeat: no-repeat; }
+[data-theme="retro"] .side-nav button { border-radius: 99px; }
+[data-theme="retro"] .side-nav button.on { background: var(--amber); color: var(--dark); }
+[data-theme="retro"] .side-nav button.on .mono { color: rgba(58, 34, 18, .6); }
+[data-theme="retro"] .gate { background-color: var(--dark); background-image: repeating-conic-gradient(from 0deg at 50% 100%, rgba(240, 168, 48, .1) 0 6deg, transparent 6deg 12deg); }
+[data-theme="retro"] .gate-box { box-shadow: 10px 10px 0 var(--amber), 20px 20px 0 var(--red); }
+[data-theme="retro"] .r:hover { background: var(--paper-2); }
+[data-theme="retro"] .pt-hello img { box-shadow: 0 0 0 5px var(--amber), 0 0 0 10px var(--red); }
+
+
+/* ============================================================
+   04 · פילם נואר — שחור־לבן, תריסים, אור טונגסטן
+   ============================================================ */
+:root[data-theme="noir"] {
+  --paper: #0E0E0E; --paper-2: #171717; --paper-3: #222222;
+  --ink: #ECE9E2; --ink-2: #B5B1A8; --muted: #7D7A72; --line: rgba(236, 233, 226, .14);
+  --red: #D4AF5A; --red-deep: #B8923C; --amber: #D4AF5A;
+  --dark: #050505; --dark-2: #121212; --dark-3: #1C1C1C; --cream: #141414; --ok: #8BA888;
+  --serif: 'Suez One', 'Frank Ruhl Libre', serif;
+  --sans: 'Heebo', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Heebo', ui-monospace, monospace;
+  --r: 0;
+}
+[data-theme="noir"] body::after { opacity: .09; }
+[data-theme="noir"] :is(h1, h2, h3, h4) { font-weight: 400; letter-spacing: 0; }
+[data-theme="noir"] .btn-red { color: #0E0E0E; box-shadow: 0 0 30px -6px rgba(212, 175, 90, .55); }
+[data-theme="noir"] .btn-red:hover:not(:disabled) { background: #E6C677; }
+[data-theme="noir"] .btn-ink { color: #0E0E0E; }
+[data-theme="noir"] .btn-ink:hover { background: #fff; }
+[data-theme="noir"] .btn-line:hover { color: #0E0E0E; }
+[data-theme="noir"] .logo-mark { border-color: var(--ink); }
+[data-theme="noir"] .logo-mark::after { background: var(--red); inset: 4px; }
+[data-theme="noir"] .topbar { border-bottom-color: var(--line); }
+[data-theme="noir"] .topnav a { color: var(--ink-2); letter-spacing: .06em; }
+/* hero: זרקור ותריסים */
+[data-theme="noir"] .hero { position: relative; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse 55% 75% at 28% 45%, rgba(255, 236, 190, .1), transparent 62%); }
+[data-theme="noir"] .hero::before { content: ''; position: absolute; inset: -20%; z-index: -1; pointer-events: none; background: repeating-linear-gradient(-16deg, rgba(255, 245, 220, .045) 0 26px, transparent 26px 58px); -webkit-mask-image: radial-gradient(ellipse 50% 60% at 35% 45%, #000, transparent 75%); mask-image: radial-gradient(ellipse 50% 60% at 35% 45%, #000, transparent 75%); }
+[data-theme="noir"] .hero h1 { font-weight: 400; line-height: 1.02; text-shadow: 0 2px 30px rgba(0, 0, 0, .8); }
+[data-theme="noir"] .hero h1 .hl { font-style: normal; font-weight: 400; color: var(--red); text-shadow: 0 0 36px rgba(212, 175, 90, .35); }
+[data-theme="noir"] .lead { color: var(--ink-2); }
+[data-theme="noir"] .hs-strip { background-color: #000; transform: rotate(-1deg); box-shadow: 0 50px 90px -30px #000, 0 0 0 1px rgba(255, 255, 255, .06); background-image: linear-gradient(to left, #262626 0 9px, transparent 9px), linear-gradient(to left, #262626 0 9px, transparent 9px); }
+[data-theme="noir"] .hs-frame img { filter: grayscale(1) contrast(1.35) brightness(.88); }
+[data-theme="noir"] .hs-frame.mk-circle img { filter: grayscale(1) contrast(1.2) brightness(1.08); }
+[data-theme="noir"] .hs-frame::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 26px 6px rgba(0, 0, 0, .75); }
+[data-theme="noir"] .hs-note { color: var(--muted); }
+/* אזור ההזמנה */
+[data-theme="noir"] .darkroom {
+  --fg: #ECE9E2; --fg-2: #B5B1A8; --fg-mute: #7D7A72; --ln: rgba(236, 233, 226, .13); --surf: #111111;
+  background: #050505; background-image: radial-gradient(ellipse 50% 45% at 80% 0%, rgba(212, 175, 90, .12), transparent 70%);
+  border-block: 1px solid var(--line);
+}
+[data-theme="noir"] .darkroom::before { opacity: .06; }
+[data-theme="noir"] .dr-head h2 { letter-spacing: .01em; }
+[data-theme="noir"] .filmsteps li.on { background: var(--red); color: #0E0E0E; }
+[data-theme="noir"] .filmsteps li.on .mono { color: rgba(0, 0, 0, .6); }
+[data-theme="noir"] .type { background: #0D0D0D; }
+[data-theme="noir"] .type:hover { background: #161616; border-color: var(--red); }
+[data-theme="noir"] .type-n { color: var(--red); }
+[data-theme="noir"] .filters { background: #0D0D0D; }
+[data-theme="noir"] .frame-card { background: #000; box-shadow: 0 0 0 1px rgba(255, 255, 255, .06); }
+[data-theme="noir"] .fc-img img { filter: grayscale(1) contrast(1.3) brightness(.9); }
+[data-theme="noir"] .frame-card:hover .fc-img img, [data-theme="noir"] .frame-card.is-sel .fc-img img { filter: grayscale(1) contrast(1.15) brightness(1.08); }
+[data-theme="noir"] .fc-body { background: #0D0D0D; }
+[data-theme="noir"] .fc-badge { color: #0E0E0E; }
+[data-theme="noir"] .darkroom .cal-cell.is-selected { color: #0E0E0E; }
+[data-theme="noir"] .darkroom .cal-cell.is-selected .cal-tag { color: rgba(0, 0, 0, .7); }
+[data-theme="noir"] .darkroom .cal-cell .grease path { stroke: #fff; }
+[data-theme="noir"] .ticket { background: #ECE9E2; color: #111; --fg-mute: #6b675f; --ln: rgba(0, 0, 0, .15); transform: rotate(-1deg); }
+[data-theme="noir"] .ticket :is(.ticket-h, dt, .ticket-fine, .ticket-p span) { color: #6b675f; }
+[data-theme="noir"] .ticket :is(dl div, .ticket-h, .ticket-fine) { border-color: rgba(0, 0, 0, .15); }
+[data-theme="noir"] .ticket-q { background: #111; color: var(--red); }
+[data-theme="noir"] .print { background: #ECE9E2; }
+[data-theme="noir"] .print-cap { color: #111; }
+[data-theme="noir"] .print-img img { filter: grayscale(1) contrast(1.2); }
+/* הצלמות: תמונות סטילס על קיר כהה */
+[data-theme="noir"] .print-card { background: #ECE9E2; padding: 10px 10px 14px; box-shadow: 0 30px 50px -20px #000; }
+[data-theme="noir"] .print-card::before { background: rgba(212, 175, 90, .55); }
+[data-theme="noir"] .pc-img img { filter: grayscale(1) contrast(1.3); }
+[data-theme="noir"] .print-card:hover .pc-img img { filter: grayscale(1) contrast(1.1) brightness(1.05); }
+[data-theme="noir"] .pc-cap h3 { color: #111; }
+[data-theme="noir"] .pc-cap p { color: #4a4740; }
+[data-theme="noir"] .pc-cap .pc-meta { color: #77736a !important; }
+[data-theme="noir"] .pc-n, [data-theme="noir"] .pc-cap h3 em { color: #8A6A22; }
+[data-theme="noir"] .how { border-top-color: var(--line); }
+[data-theme="noir"] .how-grid { border-top: 1px solid var(--red); }
+[data-theme="noir"] .how-n { font-family: var(--serif); font-size: 64px; }
+[data-theme="noir"] .foot { border-top: 1px solid var(--line); }
+[data-theme="noir"] .modal { box-shadow: 0 0 0 1px var(--line), 0 40px 80px -20px #000; }
+[data-theme="noir"] .modal-x { color: #0E0E0E; }
+[data-theme="noir"] .pf-img img { filter: grayscale(1) contrast(1.2); }
+[data-theme="noir"] .chip.on { color: #0E0E0E; }
+/* ניהול ופורטל */
+[data-theme="noir"] .side { background: #050505; border-inline-end: 1px solid var(--line); }
+[data-theme="noir"] .side-nav button.on { background: var(--red); color: #0E0E0E; }
+[data-theme="noir"] .side-nav button.on .mono { color: rgba(0, 0, 0, .55); }
+[data-theme="noir"] .badge { background: var(--ink); }
+[data-theme="noir"] .gate { background: #050505; background-image: radial-gradient(ellipse 40% 60% at 50% 0%, rgba(255, 236, 190, .14), transparent 70%); }
+[data-theme="noir"] .gate-box { box-shadow: 0 0 0 1px var(--line), 0 30px 60px -20px #000; }
+[data-theme="noir"] .kpi-hero::after { background: var(--red); opacity: .3; }
+[data-theme="noir"] .bar-own { background: var(--ink-2); }
+[data-theme="noir"] :is(.ro > img, .side-who img, .bk-p img, .assign img, .pt-hello img) { filter: grayscale(1) contrast(1.2); }
+
+
+/* ============================================================
+   05 · חתונה — בלאש, זהב, קשתות
+   ============================================================ */
+:root[data-theme="wedding"] {
+  --paper: #FBF7F3; --paper-2: #F4ECE6; --paper-3: #EADDD4;
+  --ink: #4B3A36; --ink-2: #7A6560; --muted: #A8928B; --line: rgba(75, 58, 54, .14);
+  --red: #A86B5C; --red-deep: #8E5547; --amber: #B8975A;
+  --dark: #4B3A36; --dark-2: #594642; --dark-3: #66524D; --cream: #FFFFFF; --ok: #7E9277;
+  --serif: 'Bellefair', 'Frank Ruhl Libre', serif;
+  --sans: 'Assistant', system-ui, sans-serif;
+  --mono: 'Assistant', system-ui, sans-serif;
+  --r: 2px;
+}
+[data-theme="wedding"] body { font-size: 17px; }
+[data-theme="wedding"] body::after { opacity: .03; }
+[data-theme="wedding"] :is(h1, h2, h3, h4) { font-weight: 400; letter-spacing: 0; }
+[data-theme="wedding"] .kicker { color: var(--amber); letter-spacing: .3em; font-weight: 600; font-size: 11px; }
+[data-theme="wedding"] .btn { border-radius: 99px; letter-spacing: .04em; font-weight: 600; padding-inline: 28px; }
+[data-theme="wedding"] .btn-line { border-width: 1px; border-color: var(--amber); }
+[data-theme="wedding"] .btn-line:hover { background: var(--amber); border-color: var(--amber); }
+[data-theme="wedding"] .logo-mark { border: 1px solid var(--amber); width: 18px; height: 24px; border-radius: 99px 99px 2px 2px; }
+[data-theme="wedding"] .logo-mark::after { inset: 3px; border-radius: 99px 99px 1px 1px; background: var(--red); opacity: .55; }
+[data-theme="wedding"] .logo-word { font-family: var(--serif); font-weight: 400; letter-spacing: .02em; }
+[data-theme="wedding"] .topbar { border-bottom: 1px solid var(--line); }
+/* hero: קשתות בזהב */
+[data-theme="wedding"] .hero { background: radial-gradient(ellipse 50% 60% at 15% 30%, rgba(168, 107, 92, .1), transparent 70%); }
+[data-theme="wedding"] .hero h1 { font-weight: 400; line-height: 1.04; letter-spacing: 0; }
+[data-theme="wedding"] .hero h1 .hl { font-style: normal; font-weight: 400; color: var(--red); }
+[data-theme="wedding"] .hero h1 .hl::after { content: '✦'; font-size: .3em; color: var(--amber); vertical-align: super; margin-inline-start: .2em; }
+[data-theme="wedding"] .hero-facts { border-top-color: var(--amber); }
+[data-theme="wedding"] .hero-facts dt { color: var(--amber); }
+[data-theme="wedding"] .hs-strip { background: none; transform: none; box-shadow: none; padding: 0 0 26px; gap: 30px 16px; }
+[data-theme="wedding"] .hs-frame { padding: 6px; border: 1px solid var(--amber); border-radius: 999px 999px 4px 4px; }
+[data-theme="wedding"] .hs-frame:nth-child(3n+2) { transform: translateY(26px); }
+[data-theme="wedding"] .hs-frame img { border-radius: 999px 999px 2px 2px; filter: saturate(.72) sepia(.12) brightness(1.05); }
+[data-theme="wedding"] .hs-frame figcaption { bottom: -24px; inset-inline: 0; text-align: center; color: var(--amber); letter-spacing: .2em; }
+[data-theme="wedding"] .hs-frame figcaption span { display: none; }
+[data-theme="wedding"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: var(--red); top: 12%; inset-inline-end: 12%; font-size: 26px; text-shadow: 0 0 10px #fff; }
+[data-theme="wedding"] .hs-frame .grease path { stroke: var(--amber); }
+[data-theme="wedding"] .hs-note { color: var(--ink-2); margin-top: 46px; }
+/* אזור ההזמנה: נייר ורדרד עם קו זהב כפול */
+[data-theme="wedding"] .darkroom {
+  --fg: #4B3A36; --fg-2: #7A6560; --fg-mute: #A8928B; --ln: rgba(75, 58, 54, .15); --surf: #FFFFFF;
+  background: #F4E8E2; background-image: radial-gradient(ellipse 50% 60% at 90% 0%, rgba(184, 151, 90, .16), transparent 70%);
+}
+[data-theme="wedding"] .darkroom::before { top: 18px; inset-inline: var(--gut); height: 6px; background: none; border-block: 1px solid var(--amber); opacity: .7; }
+[data-theme="wedding"] .darkroom .kicker.safelight { color: var(--amber) !important; }
+[data-theme="wedding"] .dr-head h2 { font-weight: 400; }
+[data-theme="wedding"] .filmsteps { border-radius: 99px; border-color: var(--amber); background: #fff; }
+[data-theme="wedding"] .filmsteps li { border-color: rgba(184, 151, 90, .4); }
+[data-theme="wedding"] .filmsteps li.past .mono { color: var(--amber); }
+[data-theme="wedding"] .type { background: #fff; border-color: rgba(184, 151, 90, .35); }
+[data-theme="wedding"] .type:hover { background: #fff; border-color: var(--amber); box-shadow: 0 14px 30px -20px rgba(75, 58, 54, .45); }
+[data-theme="wedding"] .type-n { color: var(--amber); }
+[data-theme="wedding"] .type-name { font-weight: 400; font-size: 25px; }
+[data-theme="wedding"] .filters { background: #fff; border-color: rgba(184, 151, 90, .35); }
+[data-theme="wedding"] .frame-card { background: #fff; padding: 10px 10px 0; box-shadow: 0 16px 30px -22px rgba(75, 58, 54, .5); }
+[data-theme="wedding"] .fc-img { border-radius: 999px 999px 0 0; }
+[data-theme="wedding"] .fc-img img { filter: saturate(.75) sepia(.1) brightness(1.04); }
+[data-theme="wedding"] .fc-badge { inset-inline-start: 50%; transform: translateX(50%); top: auto; bottom: 10px; border-radius: 99px; background: var(--amber); white-space: nowrap; }
+[data-theme="wedding"] .fc-edge { color: var(--amber); }
+[data-theme="wedding"] .fc-body { background: #fff; text-align: center; }
+[data-theme="wedding"] .fc-foot { text-align: start; }
+[data-theme="wedding"] .fc-body h4 { font-weight: 400; font-size: 23px; }
+[data-theme="wedding"] .studio-card { border-color: var(--amber); }
+[data-theme="wedding"] .studio-inner .mono { color: var(--amber); }
+[data-theme="wedding"] .darkroom .cal-cell { background: rgba(255, 255, 255, .55); }
+[data-theme="wedding"] .darkroom .cal-cell.lvl-none { background-color: transparent; }
+[data-theme="wedding"] .ticket { background: #fff; transform: none; }
+[data-theme="wedding"] .print { background: #fff; }
+/* הצלמות: פורטרטים בקשת עם מסגרת זהב דקה */
+[data-theme="wedding"] .print-card, [data-theme="wedding"] .print-card:nth-child(n) { transform: none; background: #fff; padding: 16px 16px 20px; outline: 1px solid rgba(184, 151, 90, .55); outline-offset: -7px; box-shadow: 0 20px 40px -26px rgba(75, 58, 54, .45); }
+[data-theme="wedding"] .print-card:nth-child(3n+2) { transform: translateY(18px); }
+[data-theme="wedding"] .print-card:hover { transform: translateY(-6px); }
+[data-theme="wedding"] .print-card::before { display: none; }
+[data-theme="wedding"] .pc-img img { border-radius: 999px 999px 0 0; filter: saturate(.72) sepia(.12) brightness(1.04); }
+[data-theme="wedding"] .print-card:hover .pc-img img { filter: saturate(.95); }
+[data-theme="wedding"] .pc-cap { text-align: center; }
+[data-theme="wedding"] .pc-n { color: var(--amber); letter-spacing: .3em; }
+[data-theme="wedding"] .pc-cap h3 { font-weight: 400; }
+[data-theme="wedding"] .pc-cap h3 em { color: var(--red); }
+[data-theme="wedding"] .how-grid { border-top: 1px solid var(--amber); }
+[data-theme="wedding"] .how-grid article { text-align: center; padding-inline: 26px !important; }
+[data-theme="wedding"] .how-n { font-family: var(--serif); font-size: 52px; color: var(--amber); }
+[data-theme="wedding"] .how-n::before, [data-theme="wedding"] .how-n::after { content: ' ✦ '; font-size: 14px; vertical-align: middle; }
+[data-theme="wedding"] .foot { background: var(--dark); }
+[data-theme="wedding"] .modal { border-radius: 6px; }
+[data-theme="wedding"] .pf-img img { filter: saturate(.8) sepia(.08); }
+[data-theme="wedding"] .pf-body h2 { font-weight: 400; }
+/* ניהול ופורטל */
+[data-theme="wedding"] .panel { border-color: rgba(184, 151, 90, .3); box-shadow: 0 10px 30px -24px rgba(75, 58, 54, .45); border-radius: 6px; }
+[data-theme="wedding"] :is(.kpi, .ro, .kcol, .kcard) { border-color: rgba(184, 151, 90, .3); border-radius: 6px; }
+[data-theme="wedding"] .p-h { color: var(--amber); letter-spacing: .24em; }
+[data-theme="wedding"] .side-nav button { border-radius: 99px; }
+[data-theme="wedding"] .side-nav button.on { background: var(--red); }
+[data-theme="wedding"] .gate { background: var(--paper-2); background-image: radial-gradient(ellipse 50% 50% at 50% 0%, rgba(184, 151, 90, .25), transparent 70%); }
+[data-theme="wedding"] .gate-box { transform: none; border-radius: 160px 160px 6px 6px; padding-top: 70px; text-align: center; outline: 1px solid var(--amber); outline-offset: -8px; box-shadow: 0 30px 60px -30px rgba(75, 58, 54, .5); }
+[data-theme="wedding"] .gate-box .logo { justify-content: center; }
+[data-theme="wedding"] .kpi-hero::after { background: var(--amber); }
+[data-theme="wedding"] .pt-hello img { border-radius: 999px 999px 6px 6px; height: 110px; }
+
+
+/* ============================================================
+   06 · ציאנוטייפ — הדפס שמש כחול, נייר שרטוט
+   ============================================================ */
+:root[data-theme="cyanotype"] {
+  --paper: #1B4F8A; --paper-2: #174679; --paper-3: #133D6B;
+  --ink: #F3F8FD; --ink-2: #CFE0F2; --muted: #93B4D6; --line: rgba(243, 248, 253, .22);
+  --red: #FFFFFF; --red-deep: #DCEBFA; --amber: #A9D8FF;
+  --dark: #0E2F55; --dark-2: #133B69; --dark-3: #194879; --cream: #184A82; --ok: #9FE3B8;
+  --serif: 'Heebo', system-ui, sans-serif;
+  --sans: 'Heebo', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Heebo', ui-monospace, monospace;
+  --r: 0;
+  --grid: linear-gradient(rgba(255, 255, 255, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px), linear-gradient(rgba(255, 255, 255, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .09) 1px, transparent 1px);
+  --cyan: grayscale(1) sepia(1) hue-rotate(172deg) saturate(2.6) brightness(.88) contrast(1.15);
+}
+[data-theme="cyanotype"] body { background-color: var(--paper); background-image: var(--grid); background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px; }
+[data-theme="cyanotype"] body::after { opacity: .09; }
+[data-theme="cyanotype"] :is(h1, h2, h3, h4) { font-weight: 300; letter-spacing: -.02em; }
+[data-theme="cyanotype"] .kicker { color: var(--amber); letter-spacing: .14em; }
+[data-theme="cyanotype"] .btn { border-style: dashed; }
+[data-theme="cyanotype"] .btn-red { color: var(--paper); border-style: solid; font-weight: 700; }
+[data-theme="cyanotype"] .btn-red:hover:not(:disabled) { background: var(--amber); }
+[data-theme="cyanotype"] .btn-ink { color: var(--paper); }
+[data-theme="cyanotype"] .btn-line:hover { color: var(--paper); }
+[data-theme="cyanotype"] .logo-mark { border: 1.5px dashed var(--ink); }
+[data-theme="cyanotype"] .logo-mark::after { background: var(--amber); inset: 3px; }
+[data-theme="cyanotype"] .logo-word { font-weight: 800; }
+[data-theme="cyanotype"] .topbar { border-bottom: 1px dashed var(--line); }
+[data-theme="cyanotype"] .topnav a { color: var(--ink-2); font-family: var(--mono); font-size: 13px; }
+[data-theme="cyanotype"] .topnav a:hover { color: #fff; }
+/* hero */
+[data-theme="cyanotype"] .hero h1 { font-weight: 200; letter-spacing: -.04em; }
+[data-theme="cyanotype"] .hero h1 .hl { font-style: normal; font-weight: 800; color: var(--amber); }
+[data-theme="cyanotype"] .lead { color: var(--ink-2); }
+[data-theme="cyanotype"] .hero-facts { border-top: 1px dashed var(--line); }
+[data-theme="cyanotype"] .hero-facts dt { color: var(--amber); }
+[data-theme="cyanotype"] .hs-strip { background: rgba(255, 255, 255, .05); border: 1px dashed rgba(255, 255, 255, .5); transform: none; box-shadow: none; }
+[data-theme="cyanotype"] .hs-strip::before, [data-theme="cyanotype"] .hs-strip::after { position: absolute; font: 11px/1 var(--mono); color: var(--amber); }
+[data-theme="cyanotype"] .hs-strip::before { content: 'FIG. 01 — 9 × PORTRAIT'; top: -22px; inset-inline-start: 0; }
+[data-theme="cyanotype"] .hs-strip::after { content: '↔ 120 mm'; bottom: -22px; inset-inline-end: 0; }
+[data-theme="cyanotype"] .hs-frame img { filter: var(--cyan); outline: 1px solid rgba(255, 255, 255, .35); outline-offset: 3px; }
+[data-theme="cyanotype"] .hs-frame.mk-circle img { filter: var(--cyan) brightness(1.12); }
+[data-theme="cyanotype"] .hs-frame figcaption { color: var(--amber); }
+[data-theme="cyanotype"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: #fff; font-family: var(--sans); font-weight: 300; }
+[data-theme="cyanotype"] .hs-note { color: var(--ink-2); font-family: var(--mono); font-style: normal; font-size: 12px; margin-top: 40px; }
+/* אזור ההזמנה */
+[data-theme="cyanotype"] .darkroom {
+  --fg: #F3F8FD; --fg-2: #CFE0F2; --fg-mute: #93B4D6; --ln: rgba(243, 248, 253, .2); --surf: rgba(255, 255, 255, .04);
+  background-color: #0E2F55; background-image: var(--grid); background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  border-block: 1px dashed var(--line);
+}
+[data-theme="cyanotype"] .darkroom::before { display: none; }
+[data-theme="cyanotype"] .darkroom .kicker.safelight { color: var(--amber) !important; }
+[data-theme="cyanotype"] .filmsteps { border-style: dashed; }
+[data-theme="cyanotype"] .filmsteps li { border-inline-start-style: dashed; }
+[data-theme="cyanotype"] .filmsteps li.on { background: #fff; color: var(--dark); }
+[data-theme="cyanotype"] .filmsteps li.on .mono { color: var(--dark-3); }
+[data-theme="cyanotype"] :is(.type, .filters, .studio-card) { background: rgba(255, 255, 255, .03); border-style: dashed; }
+[data-theme="cyanotype"] .type:hover { background: rgba(255, 255, 255, .08); border-style: solid; }
+[data-theme="cyanotype"] .type.is-sel { border: 1px solid #fff; background: rgba(255, 255, 255, .1); }
+[data-theme="cyanotype"] .type-name { font-weight: 500; }
+[data-theme="cyanotype"] .frame-card { background: transparent; border: 1px dashed rgba(255, 255, 255, .4); padding: 8px 8px 0; }
+[data-theme="cyanotype"] .fc-img img { filter: var(--cyan); }
+[data-theme="cyanotype"] .frame-card:hover .fc-img img, [data-theme="cyanotype"] .frame-card.is-sel .fc-img img { filter: var(--cyan) brightness(1.15); }
+[data-theme="cyanotype"] .fc-body { background: rgba(255, 255, 255, .04); margin: 0 -8px; }
+[data-theme="cyanotype"] .fc-badge { color: var(--dark); background: #fff; }
+[data-theme="cyanotype"] .fc-body h4 { font-weight: 500; }
+[data-theme="cyanotype"] .darkroom .cal-cell { border-style: dashed; }
+[data-theme="cyanotype"] .darkroom .cal-cell.is-selected { color: var(--dark); border-style: solid; }
+[data-theme="cyanotype"] .darkroom .cal-cell.is-selected .cal-tag { color: var(--dark-3); }
+[data-theme="cyanotype"] .cal-cell .grease path { stroke: var(--amber); }
+[data-theme="cyanotype"] .lvl-many { background: rgba(169, 216, 255, .14) !important; border-color: rgba(169, 216, 255, .4) !important; }
+[data-theme="cyanotype"] .lvl-many .cal-tag { color: var(--amber) !important; }
+[data-theme="cyanotype"] .ticket { background: #F3F8FD; color: #0E2F55; --fg-mute: #4A6E95; --ln: rgba(14, 47, 85, .18); transform: none; }
+[data-theme="cyanotype"] .ticket :is(.ticket-h, dt, .ticket-fine, .ticket-p span) { color: #4A6E95; }
+[data-theme="cyanotype"] .ticket :is(dl div, .ticket-h, .ticket-fine) { border-color: rgba(14, 47, 85, .18); }
+[data-theme="cyanotype"] .ticket-p img { filter: var(--cyan); }
+[data-theme="cyanotype"] .ticket-q { background: #0E2F55; color: #fff; }
+[data-theme="cyanotype"] .print { background: #F3F8FD; }
+[data-theme="cyanotype"] .print-cap { color: #0E2F55; }
+[data-theme="cyanotype"] .print-img img { filter: var(--cyan); }
+/* הצלמות: דגימות על נייר שרטוט */
+[data-theme="cyanotype"] .print-card, [data-theme="cyanotype"] .print-card:nth-child(n) { background: rgba(255, 255, 255, .04); border: 1px dashed rgba(255, 255, 255, .45); transform: none; box-shadow: none; }
+[data-theme="cyanotype"] .print-card:hover { background: rgba(255, 255, 255, .09); transform: translateY(-4px); }
+[data-theme="cyanotype"] .print-card::before { content: '+'; width: auto; height: auto; background: none; box-shadow: none; top: -11px; left: -6px; transform: none; color: var(--amber); font: 300 18px/1 var(--mono); }
+[data-theme="cyanotype"] .pc-img img { filter: var(--cyan); }
+[data-theme="cyanotype"] .print-card:hover .pc-img img { filter: var(--cyan) brightness(1.12); }
+[data-theme="cyanotype"] .pc-n { color: var(--amber); }
+[data-theme="cyanotype"] .pc-cap h3 { font-weight: 500; }
+[data-theme="cyanotype"] .pc-cap h3 em { color: var(--amber); }
+[data-theme="cyanotype"] .pc-cap p { color: var(--ink-2); }
+[data-theme="cyanotype"] .how { border-top: 1px dashed var(--line); }
+[data-theme="cyanotype"] .how-grid { border-top: 1px solid var(--ink); }
+[data-theme="cyanotype"] .how-grid article { border-inline-start-style: dashed; }
+[data-theme="cyanotype"] .how-n { color: var(--amber); font-size: 54px; font-weight: 300; }
+[data-theme="cyanotype"] .how-grid p { color: var(--ink-2); }
+[data-theme="cyanotype"] .foot { background: var(--dark); border-top: 1px dashed var(--line); color: var(--muted); }
+[data-theme="cyanotype"] .modal { background: var(--dark); box-shadow: 0 0 0 1px var(--line), 0 40px 80px -20px #000; }
+[data-theme="cyanotype"] .modal-x { color: var(--dark); }
+[data-theme="cyanotype"] .pf-img img { filter: var(--cyan); }
+[data-theme="cyanotype"] .pf-tag { color: var(--amber); }
+[data-theme="cyanotype"] .chip.on { color: var(--dark); }
+/* ניהול ופורטל */
+[data-theme="cyanotype"] .side { background: var(--dark); border-inline-end: 1px dashed var(--line); color: var(--ink-2); }
+[data-theme="cyanotype"] .side-nav button { color: var(--ink-2); }
+[data-theme="cyanotype"] .side-nav button .mono { color: var(--muted); }
+[data-theme="cyanotype"] .side-nav button.on { background: #fff; color: var(--dark); }
+[data-theme="cyanotype"] .side-nav button.on .mono { color: var(--dark-3); }
+[data-theme="cyanotype"] .badge { background: var(--amber); }
+[data-theme="cyanotype"] .side-who img { filter: var(--cyan); }
+[data-theme="cyanotype"] :is(.panel, .kpi, .ro, .kcol, .kcard, .search) { background: rgba(255, 255, 255, .045); border-style: dashed; border-color: rgba(255, 255, 255, .32); box-shadow: none; }
+[data-theme="cyanotype"] .kcol .p-h { background: rgba(255, 255, 255, .05); }
+[data-theme="cyanotype"] .p-h { color: var(--amber); border-bottom-style: dashed; }
+[data-theme="cyanotype"] .kpi-hero::after { background: var(--amber); opacity: .25; }
+[data-theme="cyanotype"] .insight { background: transparent; }
+[data-theme="cyanotype"] .r:hover { background: rgba(255, 255, 255, .06); }
+[data-theme="cyanotype"] .cal-big .cal-cell:not(:disabled):hover { background: rgba(255, 255, 255, .06); }
+[data-theme="cyanotype"] .cal-big .cal-cell.is-pastday { background: rgba(0, 0, 0, .12); }
+[data-theme="cyanotype"] .bk-p { background: rgba(255, 255, 255, .06); }
+[data-theme="cyanotype"] :is(.ro > img, .bk-p img, .assign img, .pt-hello img, .lock-note img, .peek-faces img, .busy li img) { filter: var(--cyan); }
+[data-theme="cyanotype"] .gate { background-color: var(--dark); background-image: var(--grid); background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px; }
+[data-theme="cyanotype"] .gate-box { transform: none; border: 1px dashed rgba(255, 255, 255, .5); box-shadow: none; }
+[data-theme="cyanotype"] .st-new { background: rgba(169, 216, 255, .15); color: var(--amber); border-color: rgba(169, 216, 255, .5); }
+[data-theme="cyanotype"] .tag-salary { background: rgba(169, 216, 255, .15); color: var(--amber); border-color: rgba(169, 216, 255, .5); }
+[data-theme="cyanotype"] .bar-com { background: var(--amber); }
+[data-theme="cyanotype"] .lbar i { background: var(--amber); }
+[data-theme="cyanotype"] .pp.on { background: rgba(255, 255, 255, .06); }
+[data-theme="cyanotype"] .portal-top select { background: var(--dark); color: var(--ink); }
+
+
+/* ============================================================
+   07 · ניאון — לילה בעיר. ורוד וטורקיז זוהרים
+   ============================================================ */
+:root[data-theme="neon"] {
+  --paper: #0C0716; --paper-2: #150D24; --paper-3: #1F1433;
+  --ink: #F5EEFF; --ink-2: #C9B9E8; --muted: #8A78AD; --line: rgba(245, 238, 255, .13);
+  --red: #FF2E88; --red-deep: #E0006A; --amber: #22E4FF;
+  --dark: #07030E; --dark-2: #130A22; --dark-3: #1D1131; --cream: #160D27; --ok: #3DFFA2;
+  --serif: 'Rubik', system-ui, sans-serif;
+  --sans: 'Rubik', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Rubik', ui-monospace, monospace;
+  --r: 10px;
+  --glow-p: 0 0 8px rgba(255, 46, 136, .8), 0 0 24px rgba(255, 46, 136, .5), 0 0 60px rgba(255, 46, 136, .3);
+  --glow-c: 0 0 8px rgba(34, 228, 255, .7), 0 0 24px rgba(34, 228, 255, .4);
+}
+[data-theme="neon"] body { background: var(--paper); }
+[data-theme="neon"] body::after { opacity: .05; }
+[data-theme="neon"] :is(h1, h2, h3, h4) { font-weight: 800; letter-spacing: -.02em; }
+[data-theme="neon"] .kicker { color: var(--amber); text-shadow: var(--glow-c); letter-spacing: .14em; }
+[data-theme="neon"] .btn { border-radius: 99px; font-weight: 600; }
+[data-theme="neon"] .btn-red { color: #fff; box-shadow: var(--glow-p); }
+[data-theme="neon"] .btn-red:hover:not(:disabled) { background: #ff4f9c; }
+[data-theme="neon"] .btn-ink { background: var(--amber); color: #07030E; box-shadow: var(--glow-c); }
+[data-theme="neon"] .btn-ink:hover { background: #7cf0ff; }
+[data-theme="neon"] .btn-line { border-color: var(--amber); color: var(--amber); }
+[data-theme="neon"] .btn-line:hover { background: var(--amber); color: #07030E; box-shadow: var(--glow-c); }
+[data-theme="neon"] .btn-ghost-l:hover, [data-theme="neon"] .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+[data-theme="neon"] .logo-mark { border-color: var(--red); box-shadow: var(--glow-p), inset 0 0 6px rgba(255, 46, 136, .8); border-radius: 3px; }
+[data-theme="neon"] .logo-mark::after { background: transparent; }
+[data-theme="neon"] .logo-word { text-shadow: 0 0 18px rgba(245, 238, 255, .35); }
+[data-theme="neon"] .topbar { border-bottom-color: rgba(255, 46, 136, .25); }
+[data-theme="neon"] .topnav a:hover { color: var(--amber); text-shadow: var(--glow-c); }
+/* hero: רצפת רשת ושמש שקיעה */
+[data-theme="neon"] .hero { position: relative; overflow: hidden; isolation: isolate; }
+[data-theme="neon"] .hero::before { content: ''; position: absolute; inset: auto -30% 0; height: 46%; z-index: -1; pointer-events: none;
+  background: linear-gradient(rgba(34, 228, 255, .5) 1px, transparent 1px) 0 0 / 100% 44px, linear-gradient(90deg, rgba(255, 46, 136, .45) 1px, transparent 1px) 50% 0 / 64px 100%;
+  transform: perspective(380px) rotateX(62deg); transform-origin: bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 20%, transparent); mask-image: linear-gradient(to top, #000 20%, transparent); }
+[data-theme="neon"] .hero::after { content: ''; position: absolute; width: min(460px, 70vw); aspect-ratio: 1; left: 6%; bottom: 22%; z-index: -2; border-radius: 50%; pointer-events: none;
+  background: linear-gradient(#FFB443, #FF2E88 60%, #9B2BFF);
+  -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 60%, transparent 60% 64%, #000 64% 70%, transparent 70% 75%, #000 75% 80%, transparent 80% 86%, #000 86% 90%, transparent 90%);
+  mask-image: linear-gradient(to bottom, #000 0 58%, transparent 58% 62%, #000 62% 70%, transparent 70% 75%, #000 75% 81%, transparent 81% 87%, #000 87% 92%, transparent 92%);
+  opacity: .5; filter: blur(.5px) drop-shadow(0 0 40px rgba(255, 46, 136, .6)); }
+[data-theme="neon"] .hero h1 { font-weight: 900; text-shadow: 0 0 30px rgba(155, 43, 255, .35); }
+[data-theme="neon"] .hero h1 .hl { font-style: normal; font-weight: 900; color: #fff; text-shadow: var(--glow-p); }
+[data-theme="neon"] .lead { color: var(--ink-2); }
+[data-theme="neon"] .hero-facts { border-top-color: rgba(34, 228, 255, .3); }
+[data-theme="neon"] .hero-facts dt { color: var(--amber); text-shadow: var(--glow-c); }
+[data-theme="neon"] .hs-strip { background-color: #05020B; border-radius: 14px; transform: rotate(-2deg); box-shadow: 0 0 0 1px rgba(34, 228, 255, .6), 0 0 30px rgba(34, 228, 255, .35), 0 0 90px rgba(255, 46, 136, .25); background-image: linear-gradient(to left, rgba(34, 228, 255, .35) 0 9px, transparent 9px), linear-gradient(to left, rgba(34, 228, 255, .35) 0 9px, transparent 9px); }
+[data-theme="neon"] .hs-frame img { border-radius: 6px; filter: saturate(1.35) contrast(1.1) hue-rotate(-12deg) brightness(.92); }
+[data-theme="neon"] .hs-frame figcaption { color: var(--amber); }
+[data-theme="neon"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: #fff; text-shadow: var(--glow-p); }
+[data-theme="neon"] .hs-frame .grease path { stroke: var(--amber); filter: drop-shadow(0 0 4px var(--amber)); }
+[data-theme="neon"] .hs-note { color: var(--muted); }
+/* אזור ההזמנה */
+[data-theme="neon"] .darkroom {
+  --fg: #F5EEFF; --fg-2: #C9B9E8; --fg-mute: #8A78AD; --ln: rgba(245, 238, 255, .12); --surf: #130A22;
+  background: #07030E; background-image: radial-gradient(ellipse 50% 50% at 90% 0%, rgba(255, 46, 136, .18), transparent 70%), radial-gradient(ellipse 40% 40% at 0% 100%, rgba(34, 228, 255, .12), transparent 70%);
+}
+[data-theme="neon"] .darkroom::before { height: 2px; opacity: 1; background: linear-gradient(to left, transparent, var(--red), var(--amber), transparent); box-shadow: var(--glow-p); }
+[data-theme="neon"] .darkroom .kicker.safelight { color: var(--red) !important; text-shadow: var(--glow-p); }
+[data-theme="neon"] .filmsteps { border-radius: 99px; }
+[data-theme="neon"] .filmsteps li.on { background: var(--red); color: #fff; box-shadow: var(--glow-p); }
+[data-theme="neon"] .filmsteps li.past .mono { color: var(--amber); }
+[data-theme="neon"] .type { background: #110920; border-radius: 14px; }
+[data-theme="neon"] .type:hover { background: #170D2A; border-color: var(--amber); box-shadow: 0 0 22px -4px rgba(34, 228, 255, .5); }
+[data-theme="neon"] .type.is-sel { border-color: var(--red); box-shadow: var(--glow-p); }
+[data-theme="neon"] .type-n { color: var(--amber); }
+[data-theme="neon"] .filters { background: #110920; border-radius: 14px; }
+[data-theme="neon"] .frame-card { background: #05020B; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255, 255, 255, .06); }
+[data-theme="neon"] .frame-card:hover, [data-theme="neon"] .frame-card.is-sel { box-shadow: 0 0 0 1px var(--red), 0 0 28px -2px rgba(255, 46, 136, .6); }
+[data-theme="neon"] .fc-img { border-radius: 8px; }
+[data-theme="neon"] .fc-img img { filter: saturate(.6) contrast(1.05) brightness(.85); }
+[data-theme="neon"] .frame-card:hover .fc-img img, [data-theme="neon"] .frame-card.is-sel .fc-img img { filter: saturate(1.35) hue-rotate(-12deg); }
+[data-theme="neon"] .fc-badge { border-radius: 99px; box-shadow: var(--glow-p); color: #fff; }
+[data-theme="neon"] .fc-edge { color: var(--amber); }
+[data-theme="neon"] .fc-body { background: #110920; }
+[data-theme="neon"] .studio-card { border-color: var(--amber); border-radius: 14px; }
+[data-theme="neon"] .studio-inner .mono { color: var(--amber); }
+[data-theme="neon"] .darkroom .cal-cell { border-radius: 8px; }
+[data-theme="neon"] .darkroom .cal-cell.is-selected { box-shadow: var(--glow-p); color: #fff; }
+[data-theme="neon"] .lvl-many { background: rgba(34, 228, 255, .1) !important; border-color: rgba(34, 228, 255, .4) !important; }
+[data-theme="neon"] .lvl-many .cal-tag { color: var(--amber) !important; }
+[data-theme="neon"] .lvl-few { background: rgba(34, 228, 255, .04) !important; }
+[data-theme="neon"] .ticket { background: #1D1131; transform: none; box-shadow: 0 0 0 1px rgba(34, 228, 255, .4), 0 0 30px -10px rgba(34, 228, 255, .6); }
+[data-theme="neon"] .ticket-q { background: var(--red); color: #fff; }
+[data-theme="neon"] .print { background: #1D1131; border-radius: 6px; box-shadow: var(--glow-p); }
+[data-theme="neon"] .chip.on { background: var(--amber); border-color: var(--amber); color: #07030E; box-shadow: var(--glow-c); }
+/* הצלמות */
+[data-theme="neon"] .print-card { background: #130A22; border-radius: 16px; padding: 10px 10px 16px; box-shadow: 0 0 0 1px rgba(255, 46, 136, .55), 0 0 26px -6px rgba(255, 46, 136, .6); }
+[data-theme="neon"] .print-card:nth-child(even) { box-shadow: 0 0 0 1px rgba(34, 228, 255, .55), 0 0 26px -6px rgba(34, 228, 255, .6); }
+[data-theme="neon"] .print-card:hover { box-shadow: 0 0 0 1px #fff, 0 0 40px rgba(255, 46, 136, .6); }
+[data-theme="neon"] .print-card::before { display: none; }
+[data-theme="neon"] .pc-img { border-radius: 10px; overflow: hidden; }
+[data-theme="neon"] .pc-img img { filter: saturate(.6) brightness(.85); }
+[data-theme="neon"] .print-card:hover .pc-img img { filter: saturate(1.35) hue-rotate(-12deg); }
+[data-theme="neon"] .pc-n { color: var(--amber); }
+[data-theme="neon"] .pc-cap h3 em { color: var(--red); }
+[data-theme="neon"] .pc-cap p { color: var(--ink-2); }
+[data-theme="neon"] .how { border-top-color: var(--line); }
+[data-theme="neon"] .how-grid { border-top: 2px solid; border-image: linear-gradient(to left, var(--red), var(--amber)) 1; }
+[data-theme="neon"] .how-n { font-family: var(--sans); font-weight: 900; font-size: 64px; background: linear-gradient(135deg, var(--red), #9B2BFF 50%, var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+[data-theme="neon"] .how-grid p { color: var(--ink-2); }
+[data-theme="neon"] .foot { background: #05020B; border-top: 1px solid rgba(255, 46, 136, .3); }
+[data-theme="neon"] .modal { background: var(--paper-2); border-radius: 16px; box-shadow: 0 0 0 1px rgba(255, 46, 136, .4), 0 0 60px -10px rgba(255, 46, 136, .5); }
+[data-theme="neon"] .modal-x { background: var(--red); color: #fff; }
+[data-theme="neon"] .pf-tag { color: var(--red); text-shadow: 0 0 14px rgba(255, 46, 136, .5); }
+[data-theme="neon"] .toast { background: #1D1131; color: #fff; border-inline-start-color: var(--amber); box-shadow: var(--glow-c); }
+/* ניהול ופורטל */
+[data-theme="neon"] .side { background: #05020B; border-inline-end: 1px solid rgba(255, 46, 136, .2); color: var(--ink-2); }
+[data-theme="neon"] .side-nav button { color: var(--ink-2); border-radius: 99px; }
+[data-theme="neon"] .side-nav button .mono { color: var(--muted); }
+[data-theme="neon"] .side-nav button.on { background: var(--red); color: #fff; box-shadow: var(--glow-p); }
+[data-theme="neon"] :is(.panel, .kpi, .ro, .kcol, .kcard, .search) { background: #130A22; border-color: var(--line); border-radius: 14px; }
+[data-theme="neon"] .panel { overflow: hidden; }
+[data-theme="neon"] .kcol .p-h { background: #170D2A; }
+[data-theme="neon"] .p-h { color: var(--amber); }
+[data-theme="neon"] .kpi-hero { box-shadow: 0 0 0 1px rgba(255, 46, 136, .5), 0 0 30px -8px rgba(255, 46, 136, .6); }
+[data-theme="neon"] .kpi-hero::after { background: var(--red); opacity: .6; }
+[data-theme="neon"] .kpi-hero b { text-shadow: var(--glow-p); }
+[data-theme="neon"] .r:hover { background: #170D2A; }
+[data-theme="neon"] .insight { background: #0F0820; }
+[data-theme="neon"] .bk-p { background: #170D2A; }
+[data-theme="neon"] .cal-big .cal-cell:not(:disabled):hover { background: #170D2A; }
+[data-theme="neon"] .cal-big .cal-cell.is-pastday { background: #0A0514; }
+[data-theme="neon"] .gate { background: #07030E; background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255, 46, 136, .3), transparent 70%); }
+[data-theme="neon"] .gate-box { background: #130A22; border-radius: 18px; transform: none; box-shadow: 0 0 0 1px rgba(34, 228, 255, .5), 0 0 50px -10px rgba(34, 228, 255, .5); }
+[data-theme="neon"] .st-new { background: rgba(34, 228, 255, .12); color: var(--amber); border-color: rgba(34, 228, 255, .5); }
+[data-theme="neon"] .tag-salary { background: rgba(34, 228, 255, .12); color: var(--amber); border-color: rgba(34, 228, 255, .5); }
+[data-theme="neon"] .bar-own { background: #9B2BFF; }
+[data-theme="neon"] .bar-sal { background: var(--amber); }
+[data-theme="neon"] .pp.on { background: #170D2A; }
+[data-theme="neon"] .portal-top select { background: #130A22; color: var(--ink); }
+[data-theme="neon"] .pt-hello img { box-shadow: var(--glow-p); }
+
+
+/* ============================================================
+   08 · זין — פוטוקופיה, ריזוגרף, מסגרות שחורות וצללים קשים
+   ============================================================ */
+:root[data-theme="zine"] {
+  --paper: #F1EEE3; --paper-2: #E6E2D3; --paper-3: #D9D3BF;
+  --ink: #111111; --ink-2: #333333; --muted: #6B675C; --line: rgba(17, 17, 17, .28);
+  --red: #FF3EA5; --red-deep: #E0208A; --amber: #FFE500;
+  --dark: #111111; --dark-2: #1E1E1E; --dark-3: #2A2A2A; --cream: #FFFFFF; --ok: #00A86B;
+  --serif: 'Karantina', 'Rubik', sans-serif;
+  --sans: 'Rubik', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Rubik', ui-monospace, monospace;
+  --r: 0;
+  --bd: 2.5px solid #111;
+  --hard: 5px 5px 0 #111;
+}
+[data-theme="zine"] body::after { opacity: .16; }
+[data-theme="zine"] :is(h1, h2, h3, h4) { font-weight: 700; letter-spacing: 0; line-height: .95; }
+[data-theme="zine"] .kicker { color: var(--ink); background: var(--amber); display: inline-block; align-self: flex-start; padding: 3px 8px; border: 2px solid #111; transform: rotate(-1.5deg); font-weight: 500; }
+[data-theme="zine"] .btn { border: var(--bd); box-shadow: 4px 4px 0 #111; font-weight: 700; }
+[data-theme="zine"] .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111; }
+[data-theme="zine"] .btn:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 #111; }
+[data-theme="zine"] .btn-red { color: #111; }
+[data-theme="zine"] .btn-red:hover:not(:disabled) { background: var(--amber); }
+[data-theme="zine"] .btn-line:hover { background: #111; color: var(--amber); }
+[data-theme="zine"] .btn-ghost-l, [data-theme="zine"] .btn-ghost { background: #fff; border-color: #111; color: #111; }
+[data-theme="zine"] .logo-mark { border: 3px solid #111; background: var(--red); width: 24px; height: 20px; transform: rotate(-6deg); }
+[data-theme="zine"] .logo-mark::after { inset: 3px; background: var(--amber); }
+[data-theme="zine"] .logo-word { font-family: var(--serif); font-size: 40px; font-weight: 700; }
+[data-theme="zine"] .topbar { border-bottom: 3px solid #111; }
+[data-theme="zine"] .topnav a { font-weight: 500; color: #111; }
+[data-theme="zine"] .topnav a:hover { background: var(--amber); color: #111; }
+/* hero: גזירים מודבקים */
+[data-theme="zine"] .hero h1 { font-size: clamp(66px, 11vw, 168px); line-height: .86; }
+[data-theme="zine"] .hero h1 .hl { font-style: normal; font-weight: 700; color: #111; background: linear-gradient(transparent 18%, var(--amber) 18% 88%, transparent 88%); padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+[data-theme="zine"] .lead { color: #222; font-weight: 500; }
+[data-theme="zine"] .hero-facts { border-top: 3px solid #111; }
+[data-theme="zine"] .hero-facts dt { background: var(--red); color: #111; padding: 1px 6px; border: 2px solid #111; }
+[data-theme="zine"] .hs-strip { background: none; transform: none; box-shadow: none; padding: 6px; gap: 22px 16px; }
+[data-theme="zine"] .hs-frame { background: #fff; padding: 6px; border: var(--bd); box-shadow: var(--hard); }
+[data-theme="zine"] .hs-frame:nth-child(4n+1) { transform: rotate(-3deg); }
+[data-theme="zine"] .hs-frame:nth-child(4n+2) { transform: rotate(2deg) translateY(10px); }
+[data-theme="zine"] .hs-frame:nth-child(4n+3) { transform: rotate(-1deg); }
+[data-theme="zine"] .hs-frame:nth-child(4n) { transform: rotate(3deg); }
+[data-theme="zine"] .hs-frame img { filter: grayscale(1) contrast(1.7) brightness(1.08); }
+[data-theme="zine"] .hs-frame:nth-child(3n+2)::before, [data-theme="zine"] .hs-frame:nth-child(3n)::before { content: ''; position: absolute; inset: 6px; z-index: 1; pointer-events: none; mix-blend-mode: multiply; background: var(--red); }
+[data-theme="zine"] .hs-frame:nth-child(3n)::before { background: var(--amber); }
+[data-theme="zine"] .hs-frame figcaption { bottom: -2px; inset-inline-start: -2px; color: #111; background: var(--amber); border: 2px solid #111; padding: 1px 5px; z-index: 2; }
+[data-theme="zine"] .hs-frame figcaption span { display: none; }
+[data-theme="zine"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { z-index: 2; color: #111; background: var(--amber); width: 34px; height: 34px; border-radius: 50%; border: 2px solid #111; display: grid; place-items: center; font-size: 20px; font-family: var(--sans); text-shadow: none; }
+[data-theme="zine"] .hs-frame .grease path { stroke: #111; stroke-width: 4; }
+[data-theme="zine"] .hs-note { font-family: var(--mono); font-style: normal; font-size: 12px; color: #111; margin-top: 34px; }
+/* אזור ההזמנה: צהוב */
+[data-theme="zine"] .darkroom {
+  --fg: #111111; --fg-2: #222222; --fg-mute: #4D4A33; --ln: rgba(17, 17, 17, .35); --surf: #FFFFFF;
+  background: var(--amber); background-image: radial-gradient(rgba(17, 17, 17, .12) 1px, transparent 1.2px); background-size: 7px 7px;
+  border-block: 3px solid #111;
+}
+[data-theme="zine"] .darkroom::before { top: -3px; height: 14px; opacity: 1; background: linear-gradient(135deg, var(--paper) 25%, transparent 25%) 0 0 / 14px 14px, linear-gradient(225deg, var(--paper) 25%, transparent 25%) 0 0 / 14px 14px; }
+[data-theme="zine"] .darkroom .kicker.safelight { color: #fff !important; background: #111; justify-self: start; }
+[data-theme="zine"] .dr-head h2 { font-size: clamp(56px, 8vw, 110px); }
+[data-theme="zine"] .filmsteps { border: var(--bd); background: #fff; box-shadow: var(--hard); border-radius: 0; }
+[data-theme="zine"] .filmsteps li { border-inline-start: 2px solid #111; color: #555; }
+[data-theme="zine"] .filmsteps li.on { background: #111; color: var(--amber); }
+[data-theme="zine"] .filmsteps li.on .mono { color: var(--red); }
+[data-theme="zine"] .filmsteps li.past .mono { color: var(--red-deep); }
+[data-theme="zine"] .type { background: #fff; border: var(--bd); box-shadow: var(--hard); }
+[data-theme="zine"] .type:hover { background: #fff; transform: translate(-2px, -2px); box-shadow: 7px 7px 0 #111; }
+[data-theme="zine"] .type.is-sel { background: var(--red); border-color: #111; }
+[data-theme="zine"] .type.is-sel .type-desc { color: #111; }
+[data-theme="zine"] .type-n { color: var(--red-deep); }
+[data-theme="zine"] .type-name { font-size: 32px; }
+[data-theme="zine"] .wz-q { font-size: clamp(34px, 4vw, 48px); }
+[data-theme="zine"] .filters { background: #fff; border: var(--bd); box-shadow: var(--hard); }
+[data-theme="zine"] .frame-card { background: #fff; border: var(--bd); box-shadow: var(--hard); padding: 6px 6px 0; }
+[data-theme="zine"] .frame-card:hover { transform: translate(-2px, -2px) rotate(-1deg); box-shadow: 8px 8px 0 #111; }
+[data-theme="zine"] .frame-card.is-sel { background: var(--red); }
+[data-theme="zine"] .fc-img img { filter: grayscale(1) contrast(1.6) brightness(1.05); }
+[data-theme="zine"] .fc-badge { background: var(--red); color: #111; border: 2px solid #111; font-weight: 700; }
+[data-theme="zine"] .fc-edge { color: #111; }
+[data-theme="zine"] .fc-body { background: #fff; margin: 0 -6px; border-top: var(--bd); }
+[data-theme="zine"] .fc-body h4 { font-size: 30px; }
+[data-theme="zine"] .studio-card { border: 2.5px dashed #111; background: rgba(255, 255, 255, .5); }
+[data-theme="zine"] .studio-inner .mono { color: var(--red-deep); }
+[data-theme="zine"] .studio-inner h4 { font-size: 40px; }
+[data-theme="zine"] .chip { border: 2px solid #111; color: #111; background: #fff; }
+[data-theme="zine"] .chip.on { background: #111; color: var(--amber); }
+[data-theme="zine"] .darkroom .cal-cell { border: 1.5px solid rgba(17, 17, 17, .5); background: rgba(255, 255, 255, .6); }
+[data-theme="zine"] .darkroom .cal-cell.is-selected { background: #111 !important; color: var(--amber); }
+[data-theme="zine"] .darkroom .cal-cell.is-selected .cal-tag { color: var(--amber); }
+[data-theme="zine"] .lvl-many { background: var(--red) !important; border-color: #111 !important; }
+[data-theme="zine"] .lvl-many .cal-tag { color: #111 !important; }
+[data-theme="zine"] .lvl-none { background-color: transparent !important; }
+[data-theme="zine"] .cal-cell .grease path { stroke: #111; }
+[data-theme="zine"] .lg-many { background: var(--red); border-color: #111; }
+[data-theme="zine"] .peek-date { color: var(--red-deep); }
+[data-theme="zine"] .ticket { background: #fff; border: var(--bd); transform: rotate(1deg); -webkit-mask: none; mask: none; box-shadow: var(--hard) !important; }
+[data-theme="zine"] .print { background: #fff; border: var(--bd); box-shadow: 8px 8px 0 #111 !important; }
+[data-theme="zine"] .print-img img { filter: grayscale(1) contrast(1.5); }
+/* הצלמות: גזירים עם סלוטייפ צהוב */
+[data-theme="zine"] .sec-head h2 { font-size: clamp(56px, 8vw, 120px); }
+[data-theme="zine"] .print-card { background: #fff; border: var(--bd); box-shadow: 6px 6px 0 #111; padding: 8px 8px 14px; }
+[data-theme="zine"] .print-card:hover { box-shadow: 10px 10px 0 var(--red), 10px 10px 0 2px #111; }
+[data-theme="zine"] .print-card::before { background: var(--amber); opacity: .9; border: 1px solid rgba(0, 0, 0, .2); }
+[data-theme="zine"] .pc-img img { filter: grayscale(1) contrast(1.6) brightness(1.05); }
+[data-theme="zine"] .print-card:nth-child(3n+2) .pc-img { background: var(--red); }
+[data-theme="zine"] .print-card:nth-child(3n+2) .pc-img img { mix-blend-mode: multiply; }
+[data-theme="zine"] .pc-cap h3 { font-size: 34px; }
+[data-theme="zine"] .pc-cap h3 em { color: #111; background: var(--amber); padding: 0 4px; font-size: 13px; }
+[data-theme="zine"] .pc-n { color: var(--red-deep); font-weight: 500; }
+[data-theme="zine"] .how { border-top: 3px solid #111; }
+[data-theme="zine"] .how-grid { border-top: 0; gap: 18px; }
+[data-theme="zine"] .how-grid article { background: #fff; border: var(--bd); box-shadow: var(--hard); padding: 20px !important; }
+[data-theme="zine"] .how-grid article:nth-child(2) { background: var(--red); transform: rotate(1deg); }
+[data-theme="zine"] .how-grid article:nth-child(2) p { color: #111; }
+[data-theme="zine"] .how-n { font-family: var(--serif); font-weight: 700; font-size: 96px; line-height: .8; color: var(--amber); -webkit-text-stroke: 2.5px #111; }
+[data-theme="zine"] .how-grid h3 { font-size: 34px; }
+[data-theme="zine"] .foot { border-top: 3px solid #111; }
+[data-theme="zine"] .foot .logo-word { color: var(--amber); }
+[data-theme="zine"] .modal { border: 3px solid #111; box-shadow: 10px 10px 0 #111; }
+[data-theme="zine"] .modal-x { background: var(--amber); color: #111; border: 2px solid #111; }
+[data-theme="zine"] .pf-img img { filter: grayscale(1) contrast(1.4); }
+[data-theme="zine"] .pf-body h2 { font-size: 60px; }
+[data-theme="zine"] .pf-tag { color: #111; background: var(--amber); display: inline; font-style: normal; }
+[data-theme="zine"] .toast { background: var(--amber); color: #111; border: 2px solid #111; border-radius: 0; box-shadow: 5px 5px 0 #111; }
+/* ניהול ופורטל */
+[data-theme="zine"] .side { background: #111; border-inline-end: 3px solid #111; }
+[data-theme="zine"] .side .logo-word { color: var(--amber); }
+[data-theme="zine"] .side-nav button.on { background: var(--amber); color: #111; }
+[data-theme="zine"] .side-nav button.on .mono { color: #111; }
+[data-theme="zine"] .badge { background: var(--red); color: #111; }
+[data-theme="zine"] :is(.panel, .kpi, .ro, .kcol) { background: #fff; border: var(--bd); box-shadow: var(--hard); }
+[data-theme="zine"] .kcard { border: 2px solid #111; }
+[data-theme="zine"] .p-h { color: #111; border-bottom: 2.5px solid #111; font-weight: 700; }
+[data-theme="zine"] .kcol .p-h { background: var(--amber); }
+[data-theme="zine"] .kpi-hero { background: var(--amber); color: #111; }
+[data-theme="zine"] .kpi-hero b { color: #111; }
+[data-theme="zine"] :is(.kpi-hero span, .kpi-hero small) { color: #333; }
+[data-theme="zine"] .kpi-hero::after { display: none; }
+[data-theme="zine"] .kpi-alert { background: var(--red); }
+[data-theme="zine"] .kpi-alert span, [data-theme="zine"] .kpi-alert small { color: #111; }
+[data-theme="zine"] .m-head h1 { font-size: clamp(48px, 6vw, 84px); }
+[data-theme="zine"] .insight { background: var(--amber); }
+[data-theme="zine"] .r:hover { background: var(--amber); }
+[data-theme="zine"] .tabs button.on { background: #111; color: var(--amber); border-color: #111; }
+[data-theme="zine"] .gate { background: var(--amber); background-image: radial-gradient(rgba(17, 17, 17, .14) 1px, transparent 1.2px); background-size: 7px 7px; }
+[data-theme="zine"] .gate-box { border: 3px solid #111; box-shadow: 10px 10px 0 #111; background: #fff; }
+[data-theme="zine"] :is(.ro > img, .bk-p img, .assign img, .side-who img) { filter: grayscale(1) contrast(1.4); }
+[data-theme="zine"] .pt-hello img { border: 3px solid #111; box-shadow: 4px 4px 0 var(--red); filter: grayscale(1) contrast(1.4); }
+[data-theme="zine"] .search { border: 2.5px solid #111; }
+
+
+/* ============================================================
+   09 · סטודיו לבן — מינימליזם נורדי, אוויר, צל רך
+   ============================================================ */
+:root[data-theme="studio"] {
+  --paper: #FAFAF7; --paper-2: #F1F0EC; --paper-3: #E6E4DE;
+  --ink: #1A1A1A; --ink-2: #55534E; --muted: #9A978F; --line: rgba(26, 26, 26, .09);
+  --red: #C8693A; --red-deep: #A9532A; --amber: #B08A5A;
+  --dark: #1A1A1A; --dark-2: #262626; --dark-3: #333333; --cream: #FFFFFF; --ok: #5E8C61;
+  --serif: 'Heebo', system-ui, sans-serif;
+  --sans: 'Heebo', system-ui, sans-serif;
+  --mono: 'Heebo', system-ui, sans-serif;
+  --r: 14px;
+  --soft: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 32px -16px rgba(0, 0, 0, .14);
+}
+[data-theme="studio"] body::after { display: none; }
+[data-theme="studio"] :is(h1, h2, h3, h4) { font-weight: 300; letter-spacing: -.03em; }
+[data-theme="studio"] .kicker { letter-spacing: .16em; font-weight: 500; font-size: 11px; }
+[data-theme="studio"] .btn { border-radius: 99px; font-weight: 500; }
+[data-theme="studio"] .btn-red { background: var(--ink); }
+[data-theme="studio"] .btn-red:hover:not(:disabled) { background: var(--red); }
+[data-theme="studio"] .btn-line { border-width: 1px; border-color: var(--line); background: #fff; }
+[data-theme="studio"] .btn-line:hover { border-color: var(--ink); }
+[data-theme="studio"] .logo-mark { border: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--red); }
+[data-theme="studio"] .logo-mark::after { display: none; }
+[data-theme="studio"] .logo-word { font-weight: 700; letter-spacing: -.04em; font-size: 26px; }
+[data-theme="studio"] .topbar { border-bottom: 0; padding-block: 24px; }
+[data-theme="studio"] .topnav a { color: var(--ink-2); }
+[data-theme="studio"] .topnav a:hover { color: var(--ink); }
+/* hero */
+[data-theme="studio"] .hero { padding-top: clamp(40px, 9vw, 130px); }
+[data-theme="studio"] .hero h1 { font-weight: 300; letter-spacing: -.05em; line-height: 1; }
+[data-theme="studio"] .hero h1 .hl { font-style: normal; font-weight: 700; color: var(--ink); }
+[data-theme="studio"] .hero h1 .hl::after { content: '.'; color: var(--red); }
+[data-theme="studio"] .lead { font-weight: 300; }
+[data-theme="studio"] .hero-facts { border-top-color: var(--line); }
+[data-theme="studio"] .hero-facts dt { color: var(--muted); }
+[data-theme="studio"] .hs-strip { background: none; transform: none; box-shadow: none; padding: 0; gap: 12px; }
+[data-theme="studio"] .hs-frame:nth-child(3n+2) { transform: translateY(36px); }
+[data-theme="studio"] .hs-frame img { border-radius: 14px; filter: saturate(.9) brightness(1.03); }
+[data-theme="studio"] .hs-frame figcaption { display: none; }
+[data-theme="studio"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: var(--ink); background: #fff; font-family: var(--sans); font-size: 15px; font-weight: 700; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; transform: none; text-shadow: none; box-shadow: var(--soft); }
+[data-theme="studio"] .hs-frame .grease { display: none; }
+[data-theme="studio"] .hs-frame.mk-circle img { outline: 2px solid var(--red); outline-offset: 3px; }
+[data-theme="studio"] .hs-note { margin-top: 56px; font-family: var(--sans); font-style: normal; font-weight: 300; }
+/* אזור ההזמנה: אפור בהיר, כרטיסים לבנים */
+[data-theme="studio"] .darkroom {
+  --fg: #1A1A1A; --fg-2: #55534E; --fg-mute: #9A978F; --ln: rgba(26, 26, 26, .1); --surf: #FFFFFF;
+  background: var(--paper-2); background-image: none;
+}
+[data-theme="studio"] .darkroom::before { display: none; }
+[data-theme="studio"] .darkroom .kicker.safelight { color: var(--red) !important; }
+[data-theme="studio"] .filmsteps { border-radius: 99px; background: #fff; border: 0; box-shadow: var(--soft); padding: 4px; gap: 4px; }
+[data-theme="studio"] .filmsteps li { border: 0; border-radius: 99px; }
+[data-theme="studio"] .filmsteps li.on { background: var(--ink); }
+[data-theme="studio"] .filmsteps li.past .mono { color: var(--red); }
+[data-theme="studio"] .type { background: #fff; border: 0; border-radius: 18px; box-shadow: var(--soft); }
+[data-theme="studio"] .type:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 2px 4px rgba(0, 0, 0, .04), 0 22px 40px -18px rgba(0, 0, 0, .2); }
+[data-theme="studio"] .type.is-sel { box-shadow: 0 0 0 2px var(--ink), var(--soft); }
+[data-theme="studio"] .type-n { color: var(--muted); }
+[data-theme="studio"] .type-name { font-weight: 500; }
+[data-theme="studio"] .filters { background: #fff; border: 0; border-radius: 18px; box-shadow: var(--soft); }
+[data-theme="studio"] .frame-card { background: #fff; border-radius: 20px; padding: 8px 8px 0; box-shadow: var(--soft); overflow: hidden; }
+[data-theme="studio"] .frame-card:hover { transform: translateY(-4px); }
+[data-theme="studio"] .frame-card.is-sel { box-shadow: 0 0 0 2px var(--ink), var(--soft); }
+[data-theme="studio"] .fc-img { border-radius: 14px; }
+[data-theme="studio"] .fc-img img { filter: saturate(.9); }
+[data-theme="studio"] .fc-badge { border-radius: 99px; background: #fff; color: var(--ink); font-weight: 500; }
+[data-theme="studio"] .fc-edge { color: var(--muted); }
+[data-theme="studio"] .fc-body { background: #fff; }
+[data-theme="studio"] .fc-body h4 { font-weight: 500; }
+[data-theme="studio"] .fc-foot { border-top-style: solid; }
+[data-theme="studio"] .studio-card { border: 1.5px dashed rgba(26, 26, 26, .2); border-radius: 20px; }
+[data-theme="studio"] .studio-inner .mono { color: var(--red); }
+[data-theme="studio"] .studio-card.is-sel { border-color: var(--ink); }
+[data-theme="studio"] .chip { border-color: rgba(26, 26, 26, .14); background: #fff; }
+[data-theme="studio"] .darkroom .cal-cell { border-radius: 10px; background: #fff; border-color: transparent; }
+[data-theme="studio"] .darkroom .cal-cell.is-blank { background: transparent; }
+[data-theme="studio"] .darkroom .cal-cell.is-selected { background: var(--ink) !important; border-color: var(--ink) !important; }
+[data-theme="studio"] .cal-cell .grease { display: none; }
+[data-theme="studio"] .lvl-many { background: #F6EBE3 !important; border-color: transparent !important; }
+[data-theme="studio"] .lvl-many .cal-tag { color: var(--red) !important; }
+[data-theme="studio"] .lvl-none { background-color: transparent !important; }
+[data-theme="studio"] .peek-date { color: var(--red); }
+[data-theme="studio"] .cal-nav { background: #fff; border-color: transparent; box-shadow: var(--soft); }
+[data-theme="studio"] .ticket { background: #fff; transform: none; border-radius: 18px; -webkit-mask: none; mask: none; box-shadow: var(--soft) !important; }
+[data-theme="studio"] .print { transform: none; border-radius: 18px; }
+[data-theme="studio"] .print-img img { border-radius: 10px; }
+/* הצלמות */
+[data-theme="studio"] .sheet { gap: 40px 24px; }
+[data-theme="studio"] .print-card, [data-theme="studio"] .print-card:nth-child(n) { transform: none; background: #fff; border-radius: 22px; padding: 10px 10px 16px; box-shadow: var(--soft); }
+[data-theme="studio"] .print-card:hover { transform: translateY(-6px); box-shadow: 0 2px 4px rgba(0, 0, 0, .04), 0 30px 50px -24px rgba(0, 0, 0, .25); }
+[data-theme="studio"] .print-card::before { display: none; }
+[data-theme="studio"] .pc-img { border-radius: 16px; overflow: hidden; }
+[data-theme="studio"] .pc-img img { filter: saturate(.9); }
+[data-theme="studio"] .pc-cap { padding-inline: 8px; }
+[data-theme="studio"] .pc-cap h3 { font-weight: 500; }
+[data-theme="studio"] .pc-cap h3 em { color: var(--red); }
+[data-theme="studio"] .pc-n { color: var(--muted); }
+[data-theme="studio"] .how { border-top: 0; }
+[data-theme="studio"] .how-grid { border-top: 0; gap: 18px; }
+[data-theme="studio"] .how-grid article { background: #fff; border: 0; border-radius: 22px; padding: 30px !important; box-shadow: var(--soft); }
+[data-theme="studio"] .how-n { font-size: 15px; font-weight: 500; color: #fff; background: var(--ink); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 24px; }
+[data-theme="studio"] .how-grid h3 { font-weight: 500; }
+[data-theme="studio"] .foot { background: var(--paper); color: var(--muted); border-top: 1px solid var(--line); }
+[data-theme="studio"] .foot .logo-word { color: var(--ink); }
+[data-theme="studio"] .modal { border-radius: 22px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .35); }
+[data-theme="studio"] .modal-wrap { background: rgba(250, 250, 247, .7); backdrop-filter: blur(10px); }
+[data-theme="studio"] .pf-body h2 { font-weight: 300; }
+[data-theme="studio"] .pf-tag { font-family: var(--sans); font-style: normal; font-weight: 300; }
+[data-theme="studio"] .toast { border-inline-start: 0; }
+/* ניהול ופורטל: סרגל צד לבן */
+[data-theme="studio"] .side { background: #fff; color: var(--ink-2); border-inline-end: 1px solid var(--line); }
+[data-theme="studio"] .side .logo-word { color: var(--ink); }
+[data-theme="studio"] .side-who { color: var(--ink); border-color: var(--line); }
+[data-theme="studio"] .side-who small { color: var(--muted); }
+[data-theme="studio"] .side-who img { filter: none; }
+[data-theme="studio"] .side-nav button { color: var(--ink-2); border-radius: 99px; }
+[data-theme="studio"] .side-nav button .mono { color: var(--muted); }
+[data-theme="studio"] .side-nav button:hover { color: var(--ink); background: var(--paper-2); }
+[data-theme="studio"] .side-nav button.on { background: var(--ink); color: #fff; }
+[data-theme="studio"] .side-link { color: var(--muted); }
+[data-theme="studio"] .side-link:hover { color: var(--ink); }
+[data-theme="studio"] :is(.panel, .kpi, .ro) { border: 0; border-radius: 20px; box-shadow: var(--soft); background: #fff; }
+[data-theme="studio"] .panel { overflow: hidden; }
+[data-theme="studio"] .p-h { border-bottom-color: var(--line); }
+[data-theme="studio"] .kcol { border: 0; border-radius: 20px; background: var(--paper-2); overflow: hidden; }
+[data-theme="studio"] .kcol .p-h { background: transparent; }
+[data-theme="studio"] .kcard { border: 0; border-radius: 14px; box-shadow: var(--soft); border-inline-start: 3px solid transparent; }
+[data-theme="studio"] .kpi-hero { background: var(--ink); }
+[data-theme="studio"] .kpi-hero::after { background: var(--red); }
+[data-theme="studio"] .kpi-alert { background: #F6EBE3; }
+[data-theme="studio"] .insight { background: var(--paper-2); border: 0; box-shadow: none; }
+[data-theme="studio"] .search { border-radius: 99px; background: #fff; border-color: var(--line); }
+[data-theme="studio"] .tabs button.on { border-color: var(--ink); }
+[data-theme="studio"] .ro > img { border-radius: 12px; filter: none; }
+[data-theme="studio"] .gate { background: var(--paper-2); }
+[data-theme="studio"] .gate-box { transform: none; border-radius: 24px; background: #fff; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .25); }
+[data-theme="studio"] .portal-top { border-bottom: 0; }
+[data-theme="studio"] .portal-top select { border-radius: 99px; background: #fff; }
+[data-theme="studio"] .r:hover { background: var(--paper); }
+
+
+/* ============================================================
+   10 · ספיה 1900 — דאגרוטייפ, מסגרות אובליות, פליז ועור
+   ============================================================ */
+:root[data-theme="sepia"] {
+  --paper: #E8DABD; --paper-2: #DCCBA7; --paper-3: #CDB88F;
+  --ink: #3B2A1A; --ink-2: #5E4630; --muted: #8C7356; --line: rgba(59, 42, 26, .22);
+  --red: #7E2F1D; --red-deep: #5E2013; --amber: #B38A45;
+  --dark: #2B1F14; --dark-2: #36281A; --dark-3: #433222; --cream: #F3EAD6; --ok: #5F6E3A;
+  --serif: 'David Libre', 'Frank Ruhl Libre', serif;
+  --sans: 'David Libre', 'Frank Ruhl Libre', serif;
+  --mono: 'David Libre', serif;
+  --r: 0;
+  --sep: sepia(.85) contrast(1.08) brightness(.93) saturate(.9);
+}
+[data-theme="sepia"] body { font-size: 17px; background: radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(90, 60, 30, .22) 100%) fixed, var(--paper); }
+[data-theme="sepia"] body::after { opacity: .14; }
+[data-theme="sepia"] :is(h1, h2, h3, h4) { font-weight: 700; letter-spacing: 0; }
+[data-theme="sepia"] .kicker { letter-spacing: .2em; color: var(--red); }
+[data-theme="sepia"] .btn { border-width: 1px; letter-spacing: .04em; box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px currentColor; }
+[data-theme="sepia"] .btn-red, [data-theme="sepia"] .btn-ink { box-shadow: inset 0 0 0 3px var(--red), inset 0 0 0 4px rgba(243, 234, 214, .5); }
+[data-theme="sepia"] .btn-ink { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px rgba(243, 234, 214, .4); }
+[data-theme="sepia"] .btn-line:hover { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px rgba(243, 234, 214, .4); }
+[data-theme="sepia"] .btn-ghost-l, [data-theme="sepia"] .btn-ghost { box-shadow: none; }
+[data-theme="sepia"] .logo-mark { border: 2px solid var(--amber); border-radius: 50%; width: 18px; height: 22px; }
+[data-theme="sepia"] .logo-mark::after { border-radius: 50%; background: var(--ink); inset: 2px; }
+[data-theme="sepia"] .logo-word { font-weight: 700; letter-spacing: .02em; }
+[data-theme="sepia"] .topbar { border-bottom: 0; box-shadow: inset 0 -1px 0 var(--ink-2), inset 0 -4px 0 var(--paper), inset 0 -5px 0 var(--ink-2); }
+/* hero: אלבום משפחתי */
+[data-theme="sepia"] .hero h1 { font-weight: 700; line-height: 1.02; }
+[data-theme="sepia"] .hero h1 .hl { font-style: normal; font-weight: 400; color: var(--red); }
+[data-theme="sepia"] .hero-facts { border-top: 0; box-shadow: inset 0 1px 0 var(--ink-2), inset 0 4px 0 var(--paper), inset 0 5px 0 var(--ink-2); }
+[data-theme="sepia"] .hero-facts dt { color: var(--red); }
+[data-theme="sepia"] .hs-strip { background: var(--dark); background-image: radial-gradient(ellipse at 50% 30%, rgba(179, 138, 69, .18), transparent 70%); transform: rotate(-1deg); border-radius: 6px; padding: 30px 24px; gap: 30px 16px; box-shadow: inset 0 0 0 6px var(--dark), inset 0 0 0 7px var(--amber), inset 0 0 0 11px var(--dark), inset 0 0 0 12px rgba(179, 138, 69, .5), 0 30px 60px -20px rgba(43, 31, 20, .7); }
+[data-theme="sepia"] .hs-frame { padding: 5px; background: linear-gradient(135deg, #D9B672, #8A6A31 50%, #D9B672); border-radius: 50%; }
+[data-theme="sepia"] .hs-frame img { border-radius: 50%; filter: var(--sep); }
+[data-theme="sepia"] .hs-frame.mk-circle img { filter: sepia(.5) contrast(1.05); }
+[data-theme="sepia"] .hs-frame::before { content: ''; position: absolute; inset: 5px; border-radius: 50%; z-index: 1; pointer-events: none; box-shadow: inset 0 0 22px 6px rgba(43, 31, 20, .65); }
+[data-theme="sepia"] .hs-frame figcaption { bottom: -24px; inset-inline: 0; text-align: center; color: var(--amber); font-family: var(--serif); letter-spacing: .1em; }
+[data-theme="sepia"] .hs-frame figcaption span { display: none; }
+[data-theme="sepia"] :is(.hs-frame.mk-x, .hs-frame.mk-check)::after { color: #E9D8B4; z-index: 2; text-shadow: 0 1px 3px #000; }
+[data-theme="sepia"] .hs-frame .grease path { stroke: #E9D8B4; }
+[data-theme="sepia"] .hs-note { color: var(--ink-2); }
+/* אזור ההזמנה: עור חום ופליז */
+[data-theme="sepia"] .darkroom {
+  --fg: #EADBC0; --fg-2: #CDB896; --fg-mute: #9C8466; --ln: rgba(234, 219, 192, .16); --surf: #36281A;
+  background: var(--dark); background-image: radial-gradient(ellipse 60% 50% at 80% 0%, rgba(179, 138, 69, .16), transparent 70%), radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, .35));
+}
+[data-theme="sepia"] .darkroom::before { top: 16px; inset-inline: var(--gut); height: 5px; background: none; opacity: .7; border-block: 1px solid var(--amber); }
+[data-theme="sepia"] .darkroom .kicker.safelight { color: var(--amber) !important; }
+[data-theme="sepia"] .filmsteps { border-color: var(--amber); }
+[data-theme="sepia"] .filmsteps li { border-color: rgba(179, 138, 69, .4); }
+[data-theme="sepia"] .filmsteps li.on { background: var(--red); }
+[data-theme="sepia"] .type { background: var(--dark-2); border-color: rgba(179, 138, 69, .35); outline: 1px solid rgba(179, 138, 69, .2); outline-offset: -6px; }
+[data-theme="sepia"] .type:hover { border-color: var(--amber); }
+[data-theme="sepia"] .type.is-sel { border-color: var(--amber); background: #4A361F; }
+[data-theme="sepia"] .type-n { color: var(--amber); }
+[data-theme="sepia"] .filters { border-color: rgba(179, 138, 69, .35); }
+[data-theme="sepia"] .frame-card { background: #1E150D; border: 1px solid rgba(179, 138, 69, .35); }
+[data-theme="sepia"] .fc-img { border-radius: 50% / 46%; }
+[data-theme="sepia"] .fc-img img { filter: var(--sep); }
+[data-theme="sepia"] .frame-card:hover .fc-img img, [data-theme="sepia"] .frame-card.is-sel .fc-img img { filter: sepia(.45) contrast(1.05); }
+[data-theme="sepia"] .fc-badge { inset-inline-start: 50%; transform: translateX(50%); top: auto; bottom: 8px; white-space: nowrap; background: var(--red); }
+[data-theme="sepia"] .fc-edge { color: var(--amber); }
+[data-theme="sepia"] .fc-body { text-align: center; }
+[data-theme="sepia"] .fc-foot { text-align: start; }
+[data-theme="sepia"] .studio-card { border-color: var(--amber); }
+[data-theme="sepia"] .darkroom .cal-cell .grease path { stroke: var(--amber); }
+[data-theme="sepia"] .ticket { background: var(--cream); transform: rotate(-1deg); outline: 1px solid var(--line); outline-offset: -6px; }
+[data-theme="sepia"] .ticket-p img { filter: var(--sep); }
+[data-theme="sepia"] .print { background: var(--cream); }
+[data-theme="sepia"] .print-img img { filter: var(--sep); border-radius: 50% / 46%; }
+/* הצלמות: דיוקנאות אובליים במסגרות קרטון */
+[data-theme="sepia"] .print-card { background: var(--cream); padding: 22px 18px 18px; outline: 1px solid var(--ink-2); outline-offset: -8px; box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 18px 34px -18px rgba(43, 31, 20, .6); }
+[data-theme="sepia"] .print-card::before { width: 18px; height: 18px; left: auto; top: 3px; right: 3px; transform: none; background: linear-gradient(225deg, var(--ink-2) 50%, transparent 50%); box-shadow: none; }
+[data-theme="sepia"] .print-card::after { content: ''; position: absolute; width: 18px; height: 18px; bottom: 3px; left: 3px; background: linear-gradient(45deg, var(--ink-2) 50%, transparent 50%); }
+[data-theme="sepia"] .pc-img { padding: 6px; background: linear-gradient(135deg, #D9B672, #8A6A31 50%, #D9B672); border-radius: 50%; }
+[data-theme="sepia"] .pc-img img { border-radius: 50%; filter: var(--sep); }
+[data-theme="sepia"] .print-card:hover .pc-img img { filter: sepia(.4) contrast(1.04); }
+[data-theme="sepia"] .pc-cap { text-align: center; }
+[data-theme="sepia"] .pc-n { color: var(--amber); letter-spacing: .2em; }
+[data-theme="sepia"] .pc-cap h3 em { color: var(--red); font-family: var(--serif); }
+[data-theme="sepia"] .how-grid { counter-reset: hw; border-top: 0; box-shadow: inset 0 2px 0 var(--ink-2), inset 0 6px 0 var(--paper), inset 0 7px 0 var(--ink-2); padding-top: 10px; }
+[data-theme="sepia"] .how-grid article { counter-increment: hw; text-align: center; padding-inline: 22px !important; }
+[data-theme="sepia"] .how-n { font-size: 0; }
+[data-theme="sepia"] .how-n::before { content: counter(hw, upper-roman); font-family: var(--serif); font-size: 50px; color: var(--red); }
+[data-theme="sepia"] .foot { background: var(--dark); box-shadow: inset 0 6px 0 var(--dark), inset 0 7px 0 var(--amber); }
+[data-theme="sepia"] .modal { outline: 1px solid var(--ink-2); outline-offset: -8px; }
+[data-theme="sepia"] .pf-img img { filter: var(--sep); }
+/* ניהול ופורטל */
+[data-theme="sepia"] .side { background: var(--dark); box-shadow: inset -6px 0 0 var(--dark), inset -7px 0 0 rgba(179, 138, 69, .6); }
+[data-theme="sepia"] .side-nav button.on { background: var(--red); }
+[data-theme="sepia"] .side-nav button.on .mono { color: var(--amber); }
+[data-theme="sepia"] :is(.panel, .kpi, .ro, .kcol) { border-color: var(--ink-2); outline: 1px solid var(--line); outline-offset: -5px; }
+[data-theme="sepia"] .p-h { color: var(--red); letter-spacing: .2em; font-family: var(--serif); }
+[data-theme="sepia"] .kpi-hero { background: var(--dark); outline-color: rgba(179, 138, 69, .5); }
+[data-theme="sepia"] .kpi-hero::after { background: var(--amber); opacity: .4; }
+[data-theme="sepia"] .kpi-alert { background: #EBD6AC; }
+[data-theme="sepia"] .gate { background: var(--dark); background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(179, 138, 69, .25), transparent 70%); }
+[data-theme="sepia"] .gate-box { outline: 1px solid var(--ink-2); outline-offset: -8px; transform: none; }
+[data-theme="sepia"] :is(.ro > img, .side-who img, .bk-p img, .assign img, .lock-note img, .peek-faces img, .busy li img) { filter: var(--sep); }
+[data-theme="sepia"] .ro > img { border-radius: 50%; }
+[data-theme="sepia"] .pt-hello img { filter: var(--sep); border-radius: 50%; height: 110px; box-shadow: 0 0 0 4px var(--amber), 0 0 0 5px var(--ink-2); }
+
+/* ============================================================
+   מסכים צרים
+   ============================================================ */
+@media (max-width: 1080px) {
+  [data-theme="magazine"] .filmsteps li { min-width: 0; }
+}
+@media (max-width: 860px) {
+  [data-theme="magazine"] .hero { grid-template-columns: 1fr; }
+  [data-theme="retro"] .hs-strip { margin: 0 18px 18px 0; box-shadow: 6px 6px 0 var(--amber), 12px 12px 0 var(--red), 18px 18px 0 #8E2E1A; }
+  [data-theme="neon"] .hero::after { left: auto; right: -10%; bottom: 40%; }
+}
+@media (max-width: 560px) {
+  [data-theme="magazine"] .hero h1 { font-size: 58px; }
+  [data-theme="magazine"] .filmsteps { gap: 8px; }
+  [data-theme="zine"] .hero h1 { font-size: 68px; }
+  [data-theme="zine"] .dr-head h2, [data-theme="zine"] .sec-head h2 { font-size: 60px; }
+  [data-theme="wedding"] .gate-box { border-radius: 120px 120px 6px 6px; }
+  :is([data-theme="polaroid"], [data-theme="zine"], [data-theme="retro"], [data-theme="studio"], [data-theme="wedding"]) .how-grid article { margin-bottom: 4px; }
+}
