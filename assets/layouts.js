@@ -109,7 +109,7 @@ window.Layouts = (function () {
     let k = 0;
     function step() {
       reel.style.setProperty('--turn', `${-k * 360 / n}deg`);
-      const p = c.ps[k % n]; b.textContent = p.name; s.textContent = p.tagline;
+      const p = c.ps[k % n]; b.textContent = p.name; s.textContent = c.brandify(p.tagline);
       el.querySelectorAll('.hx-slide').forEach((x, i) => x.classList.toggle('on', i === k % n));
       k++;
     }
@@ -140,7 +140,7 @@ window.Layouts = (function () {
   function noirRun(el, c) {
     const shots = el.querySelectorAll('.hx-shot'), subs = el.querySelector('.hx-subs span'), no = el.querySelector('.hx-reel-no em'), lead = el.querySelector('.hx-leader b'), leader = el.querySelector('.hx-leader');
     let k = 0, n = 3;
-    const say = () => { const p = c.ps[k]; subs.textContent = `— ${p.name}: «${p.tagline}»`; no.textContent = String(k + 1).padStart(2, '0'); };
+    const say = () => { const p = c.ps[k]; subs.textContent = `— ${p.name}: «${c.brandify(p.tagline)}»`; no.textContent = String(k + 1).padStart(2, '0'); };
     say();
     every(1000, () => { if (n > 1) lead.textContent = --n; else leader.classList.add('hx-gone'); });
     every(4500, () => { shots[k].classList.remove('on'); k = (k + 1) % shots.length; shots[k].classList.add('on'); say(); });
