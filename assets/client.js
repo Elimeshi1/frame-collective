@@ -244,6 +244,8 @@
       if (p && !S.canTake(p, w.date, w.typeId)) { toast('אופס — התאריך נתפס הרגע. בחרו צלמת אחרת.'); return go(3); }
       w.done = S.createBooking({ date: w.date, typeId: w.typeId, time: w.time, photographerId: p ? p.id : null, area: d.area, viaStudio: !p, client: { name: d.name, phone: d.phone, email: d.email, notes: d.notes } });
       render();
+      /* מסך הסיום קצר מהטופס — גוללים אליו כדי שלא יישאר מעל המסך */
+      scrollTo({ top: $('#book').getBoundingClientRect().top + scrollY - 10, behavior: 'smooth' });
     };
   }
 
